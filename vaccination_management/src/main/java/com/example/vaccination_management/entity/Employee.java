@@ -15,7 +15,7 @@ public class Employee {
     private String name;
 
     @Column(name = "gender")
-    private int gender;
+    private boolean gender;
 
     @Column(name = "address")
     private String address;
@@ -43,7 +43,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int id, String name, int gender, String address, String phoneNumber, String birthday, boolean enableFlag, String idCard, Account account, Position position) {
+    public Employee(int id, String name, boolean gender, String address, String phoneNumber, String birthday, boolean enableFlag, String idCard, Account account, Position position) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -72,11 +72,11 @@ public class Employee {
         this.name = name;
     }
 
-    public int getGender() {
+    public boolean isGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(boolean gender) {
         this.gender = gender;
     }
 

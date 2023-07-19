@@ -16,7 +16,7 @@ public class Patient {
     private String healthInsurance;
 
     @Column(name = "gender")
-    private int gender;
+    private boolean gender;
 
     @Column(name = "address")
     private String address;
@@ -45,7 +45,7 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(int id, String name, String healthInsurance, int gender, String address, String phoneNumber, String birthday, String guardianName, String guardianPhone, boolean enableFlag, Account account) {
+    public Patient(int id, String name, String healthInsurance, boolean gender, String address, String phoneNumber, String birthday, String guardianName, String guardianPhone, boolean enableFlag, Account account) {
         this.id = id;
         this.name = name;
         this.healthInsurance = healthInsurance;
@@ -83,11 +83,11 @@ public class Patient {
         this.healthInsurance = healthInsurance;
     }
 
-    public int getGender() {
+    public boolean isGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(boolean gender) {
         this.gender = gender;
     }
 

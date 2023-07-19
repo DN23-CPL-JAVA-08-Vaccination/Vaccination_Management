@@ -23,11 +23,11 @@ public class Vaccine {
     @Column(name = "enable_flag")
     private boolean enableFlag;
 
-    @Column(name = "create_date", columnDefinition = "Datetime" )
-    private boolean createDate;
+    @Column(name = "create_date", columnDefinition = "Datetime")
+    private String createDate;
 
-    @Column(name = "update_date", columnDefinition = "Datetime" )
-    private boolean updateDate;
+    @Column(name = "update_date", columnDefinition = "Datetime")
+    private String updateDate;
 
     @Column(name = "price")
     private Double price;
@@ -42,7 +42,7 @@ public class Vaccine {
     public Vaccine() {
     }
 
-    public Vaccine(int id, String name, String code, String description, boolean enableFlag, boolean createDate, boolean updateDate, double price, int duration, VaccineType vaccineType) {
+    public Vaccine(int id, String name, String code, String description, boolean enableFlag, String createDate, String updateDate, Double price, int duration, VaccineType vaccineType) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -95,27 +95,28 @@ public class Vaccine {
         this.enableFlag = enableFlag;
     }
 
-    public boolean isCreateDate() {
+
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(boolean createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 
-    public boolean isUpdateDate() {
+    public String getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(boolean updateDate) {
+    public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
