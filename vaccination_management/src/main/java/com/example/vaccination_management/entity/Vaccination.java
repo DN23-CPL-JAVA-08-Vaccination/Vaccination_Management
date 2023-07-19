@@ -29,6 +29,9 @@ public class Vaccination {
     @Column(name = "times")
     private int times;
 
+    @Column(name = "description" )
+    private String description;
+
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
