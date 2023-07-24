@@ -29,9 +29,16 @@ public class VaccinationHistory {
     @Column(name = "vaccination_times")
     private int vaccinationTimes;
 
+    @Column(name = "guardian_name")
+    private String guardianName;
+
+    @Column(name = "guardian_phone")
+    private String guardianPhone;
+
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
+
 
     @ManyToOne
     @JoinColumn(name = "vaccination_id")
@@ -48,7 +55,7 @@ public class VaccinationHistory {
     public VaccinationHistory() {
     }
 
-    public VaccinationHistory(int id, String preStatus, int dosage, String startTime, String endTime, boolean enableFlag, int vaccinationTimes, Patient patient, Vaccination vaccination, Employee employee, VaccinationStatus vaccinationStatus) {
+    public VaccinationHistory(int id, String preStatus, int dosage, String startTime, String endTime, boolean enableFlag, int vaccinationTimes, String guardianName, String guardianPhone, Patient patient, Vaccination vaccination, Employee employee, VaccinationStatus vaccinationStatus) {
         this.id = id;
         this.preStatus = preStatus;
         this.dosage = dosage;
@@ -56,6 +63,8 @@ public class VaccinationHistory {
         this.endTime = endTime;
         this.enableFlag = enableFlag;
         this.vaccinationTimes = vaccinationTimes;
+        this.guardianName = guardianName;
+        this.guardianPhone = guardianPhone;
         this.patient = patient;
         this.vaccination = vaccination;
         this.employee = employee;
@@ -116,6 +125,22 @@ public class VaccinationHistory {
 
     public void setVaccinationTimes(int vaccinationTimes) {
         this.vaccinationTimes = vaccinationTimes;
+    }
+
+    public String getGuardianName() {
+        return guardianName;
+    }
+
+    public void setGuardianName(String guardianName) {
+        this.guardianName = guardianName;
+    }
+
+    public String getGuardianPhone() {
+        return guardianPhone;
+    }
+
+    public void setGuardianPhone(String guardianPhone) {
+        this.guardianPhone = guardianPhone;
     }
 
     public Patient getPatient() {

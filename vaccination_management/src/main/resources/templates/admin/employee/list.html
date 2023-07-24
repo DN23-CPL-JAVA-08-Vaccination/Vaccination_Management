@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">STT</th>
+        <th scope="col">Mã khách hàng</th>
+        <th scope="col">Họ tên</th>
+        <th scope="col">Ngày sinh</th>
+        <th scope="col">Số CMND</th>
+        <th scope="col">Giới tính</th>
+        <th scope="col">Số điện thoại</th>
+        <th scope="col">Email</th>
+        <th scope="col">Địa chỉ</th>
+        <th scope="col">Loại khách hàng</th>
+        <th colspan="2">Thao tác</th>
+        <th scope="col">
+            <button id="btn" type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                    data-bs-toggle="modal" data-bs-target="#deleteModals">Xoá nhiều
+            </button>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="employee,row :${employeeListDTOS}">
+        <td th:text="${row.count}"></td>
+        <td th:text="${employee.getId()}"></td>
+        <td th:text="${employee.getName()}"></td>
+        <td th:text="${employee.getBirthday()}"></td>
+        <td th:text="${employee.getIdCard()}"></td>
+        <td th:switch="${employee.getGender()}">
+            <span th:case="true">Nam</span>
+            <span th:case="false">Nữ</span>
+        </td>
+        <td th:text="${employee.getPhone()}"></td>
+        <td th:text="${employee.getEmail()}"></td>
+        <td th:text="${employee.getAddress()}"></td>
+        <td th:text="${employee.getPosition()}"></td>
+        <td>
+            <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#detailCustomer"
+                    th:attr="onclick=|getDetail('${employee.getId()}')|">
+                Xem nội dung
+            </button>
+        </td>
+        <td>
+            <button class="btn btn-warning">
+                <a th:href="@{/customer/update(id=${employee.getId()})}">Cập nhật</a>
+            </button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                    th:attr="onclick=|deleteCustomer('${employee.getId()}','${employee.getName()}')|"> Xoá
+            </button>
+        </td>
+        <td>
+            <input name="idDelete" class="form-check-input" type="checkbox" th:value="${employee.getId()}">
+        </td>
+    </tr>
+    <tr th:if="${employeeListDTOS.isEmpty()}">
+        <td colspan="9">Danh sách trống</td>
+        <!--        </tr>-->
+    </tbody>
+</table>
+</body>
+</html>

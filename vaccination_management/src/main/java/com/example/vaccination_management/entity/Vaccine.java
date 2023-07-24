@@ -35,6 +35,15 @@ public class Vaccine {
     @Column(name = "duration")
     private int duration;
 
+    @Column(name = "age")
+    private String age;
+
+    @Column(name = "image")
+    private String image;
+
+    @Column(name = "dosage")
+    private int dosage;
+
     @ManyToOne
     @JoinColumn(name = "vaccine_type_id")
     private VaccineType vaccineType;
@@ -42,7 +51,8 @@ public class Vaccine {
     public Vaccine() {
     }
 
-    public Vaccine(int id, String name, String code, String description, boolean enableFlag, String createDate, String updateDate, Double price, int duration, VaccineType vaccineType) {
+
+    public Vaccine(int id, String name, String code, String description, boolean enableFlag, String createDate, String updateDate, Double price, int duration, String age, String image, int dosage, VaccineType vaccineType) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -52,8 +62,12 @@ public class Vaccine {
         this.updateDate = updateDate;
         this.price = price;
         this.duration = duration;
+        this.age = age;
+        this.image = image;
+        this.dosage = dosage;
         this.vaccineType = vaccineType;
     }
+
 
     public int getId() {
         return id;
@@ -116,6 +130,30 @@ public class Vaccine {
         return price;
     }
 
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public int getDosage() {
+        return dosage;
+    }
+
+    public void setDosage(int dosage) {
+        this.dosage = dosage;
+    }
+
     public void setPrice(Double price) {
         this.price = price;
     }
@@ -135,4 +173,6 @@ public class Vaccine {
     public void setVaccineType(VaccineType vaccineType) {
         this.vaccineType = vaccineType;
     }
+
+
 }
