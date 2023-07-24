@@ -26,11 +26,14 @@ public class Employee {
     @Column(name = "birthday", columnDefinition = "Date")
     private String birthday;
 
-    @Column(name = "enable_flag")
-    private boolean enableFlag;
+    @Column(name = "delete_flag")
+    private boolean deleteFlag;
 
     @Column(name = "id_card")
     private String idCard;
+
+    @Column(name = "image")
+    private String image;
 
     @OneToOne
     @JoinColumn(name = "account_id")
@@ -43,14 +46,14 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int id, String name, boolean gender, String address, String phoneNumber, String birthday, boolean enableFlag, String idCard, Account account, Position position) {
+    public Employee(int id, String name, boolean gender, String address, String phoneNumber, String birthday, boolean deleteFlag, String idCard, Account account, Position position) {
         this.id = id;
         this.name = name;
         this.gender = gender;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.birthday = birthday;
-        this.enableFlag = enableFlag;
+        this.deleteFlag = deleteFlag;
         this.idCard = idCard;
         this.account = account;
         this.position = position;
@@ -104,12 +107,20 @@ public class Employee {
         this.birthday = birthday;
     }
 
-    public boolean isEnableFlag() {
-        return enableFlag;
+    public boolean isDeleteFlag() {
+        return deleteFlag;
     }
 
-    public void setEnableFlag(boolean enableFlag) {
-        this.enableFlag = enableFlag;
+    public void setDeleteFlag(boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getIdCard() {
