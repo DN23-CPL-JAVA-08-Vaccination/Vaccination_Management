@@ -1,0 +1,344 @@
+  <!DOCTYPE html>
+  <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Inner Page - Medilab Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link th:href="@{/patient/assets/img/favicon.png}" rel="icon">
+  <link th:href="@{/patient/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link th:href="@{/patient/assets/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet">
+  <link th:href="@{/patient/assets/vendor/animate.css/animate.min.css}" rel="stylesheet">
+  <link th:href="@{/patient/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/patient/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{/patient/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+  <link th:href="@{/patient/assets/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
+  <link th:href="@{/patient/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
+  <link th:href="@{/patient/assets/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
+
+
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+
+  <!-- Template Main CSS File -->
+  <link th:href="@{/patient/assets/css/style.css}" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/patient/assets/css/style1.css}">
+
+  <!-- =======================================================
+  * Template Name: Medilab
+  * Updated: Jun 23 2023 with Bootstrap v5.3.0
+  * Template URL: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Top Bar ======= -->
+  <div id="topbar" class="d-flex align-items-center fixed-top">
+    <div class="container d-flex justify-content-between">
+      <div class="contact-info d-flex align-items-center">
+        <i class="bi bi-envelope"></i> <a href="mailto:contact@example.com">contact@example.com</a>
+        <i class="bi bi-phone"></i> +1 5589 55488 55
+      </div>
+      <div class="d-none d-lg-flex social-links align-items-center">
+        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+        <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+
+      <h1 class="logo me-auto"><a href="index.html">Medilab</a></h1>
+      <!-- Uncomment below if you prefer to use an image logo -->
+      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+
+      <nav id="navbar" class="navbar order-last order-lg-0">
+        <ul>
+          <li><a class="nav-link scrollto " href="#hero">Home</a></li>
+          <li><a class="nav-link scrollto" href="#about">About</a></li>
+          <li><a class="nav-link scrollto" href="#services">Services</a></li>
+          <li><a class="nav-link scrollto" href="#departments">Departments</a></li>
+          <li><a class="nav-link scrollto" href="#doctors">Doctors</a></li>
+          <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="#">Drop Down 1</a></li>
+              <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
+                <ul>
+                  <li><a href="#">Deep Drop Down 1</a></li>
+                  <li><a href="#">Deep Drop Down 2</a></li>
+                  <li><a href="#">Deep Drop Down 3</a></li>
+                  <li><a href="#">Deep Drop Down 4</a></li>
+                  <li><a href="#">Deep Drop Down 5</a></li>
+                </ul>
+              </li>
+              <li><a href="#">Drop Down 2</a></li>
+              <li><a href="#">Drop Down 3</a></li>
+              <li><a href="#">Drop Down 4</a></li>
+            </ul>
+          </li>
+          <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+      <a href="#appointment" class="appointment-btn scrollto"><span class="d-none d-md-inline">Make an</span> Appointment</a>
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Breadcrumbs Section ======= -->
+    <section class="breadcrumbs">
+      <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+          <h2>Requires Account Login</h2>
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li>Requires Account</li>
+          </ol>
+        </div>
+
+      </div>
+    </section><!-- End Breadcrumbs Section -->
+
+    <section class="inner-page">
+      <div class="container">
+        <div class="container register" style="margin-top: -30px;">
+          <div class="row">
+              <div class="col-md-3 register-left">
+                  <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
+                  <h3>Welcome</h3>
+                  <p>Please enter all information in the form next to !!
+                    <p style="font-size: 15px; font-style: italic; color: rgb(187, 187, 187);">Information marked with (*) is mandatory information</p></p>
+                  <h6 style="color: rgb(255, 109, 47);">Note:</h6>
+                  <p style="font-size: 10px; font-style: italic; color:tomato;">Enter the correct email address to receive the allocated account</p>
+                  
+              </div>
+              <div class="col-md-9 register-right">
+                  <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                     
+                      <li class="nav-item">
+                          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Vaccination</a>
+                      </li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                      <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                          </br>
+                          <div th:if="${message}" th:text="${message}"
+                               class="alert alert-success w-50" role="alert" style="color: green; font-weight: bold; font-size: 15px; margin-left: 100px; text-align: center"></div>
+<!--                          <div th:if="${message} != null" class="alert alert-success text-center"  >-->
+<!--                              <h6 th:text="${message}"></h6>-->
+<!--                          </div>-->
+                      <form th:action="@{/account/insert_account}" class="form" method="post" th:object="${patient}">
+                          <h3 class="register-heading">Information required for an account</h3>
+                          <div class="row register-form">
+
+                                  <div class="col-md-6">
+                                      <input type="hidden" name="id" th:field="*{id}">
+                                      <div class="form-group">
+                                          <input  name="name" type="text" class="form-control" placeholder="User Name *" th:field="*{name}"/>
+                                      </div>
+                                      <div class="form-group">
+                                          <input name="healthInsurance" type="text" class="form-control" placeholder="Health Insurance *" th:field="*{healthInsurance}"/>
+                                      </div>
+                                      <div class="form-group">
+                                          <input name="address" type="text" class="form-control" placeholder="Address *" th:field="*{address}"/>
+                                      </div>
+                                      <div class="form-group"> Birthday:
+                                          <input name="birthday" id="birthday" type="date" class="form-control" placeholder="Birthday *" th:field="*{birthday} " onchange="showGuardianFields()"/>
+                                      </div>
+                                      <div class="form-group">
+                                          <div class="maxl">
+                                              <label class="radio inline">
+                                                  <input type="radio" th:name="gender" th:field="*{gender}" value="true">
+                                                  <span> Male </span>
+                                              </label>
+                                              <label class="radio inline">
+                                                  <input type="radio" th:name="gender"th:field="*{gender}" value="false">
+                                                  <span>Female </span>
+                                              </label>
+                                          </div>
+                                      </div>
+
+                                  </div>
+                                  <div class="col-md-6">
+
+                                      <div class="form-group">
+                                          <input name="phone" type="text" class="form-control" placeholder="Phone *" th:field="*{phone}">
+                                      </div>
+                                      <div class="form-group">
+                                         <input name="email" type="email" class="form-control"  placeholder="Email *" th:field="*{email}" />
+                                        </div>
+<!--                                      <select id="options" onchange="showInputs()">-->
+<!--                                          <option value="">Over 16 years old</option>-->
+<!--                                          <option value="option1">Under 16 years old</option>-->
+<!--                                      </select>-->
+
+                                      <div id="inputContainer" style="display: none;">
+                                          <div id="option1Inputs" style="display: none;">
+                                              <div class="form-group">
+                                                  <input name="guardianName" id="input1" type="text" class="form-control" placeholder="Guardian Name " th:field="*{guardianName}" />
+                                              </div>
+                                              <div class="form-group">
+                                                  <input name="guardianPhone" id="input2" type="text"  class="form-control" placeholder="Guardian Phone" th:field="*{guardianPhone}"/>
+                                              </div>
+                                          </div>
+                                      </div>
+
+                                      <script>
+                                          function showGuardianFields() {
+                                              var birthdayInput = document.getElementById("birthday");
+                                              var inputContainer = document.getElementById("inputContainer");
+                                              var option1Inputs = document.getElementById("option1Inputs");
+                                              var guardianNameInput = document.getElementById("input1");
+                                              var guardianPhoneInput = document.getElementById("input2");
+
+                                              // Tính tuổi dựa vào ngày sinh và ngày hiện tại
+                                              var birthday = new Date(birthdayInput.value);
+                                              var today = new Date();
+                                              var age = today.getFullYear() - birthday.getFullYear();
+
+                                              // Kiểm tra năm sinh nhỏ hơn 16
+                                              if (age < 16) {
+                                                  inputContainer.style.display = "block";
+                                                  option1Inputs.style.display = "block";
+                                                  guardianNameInput.required = true;
+                                                  guardianPhoneInput.required = true;
+                                              } else {
+                                                  inputContainer.style.display = "none";
+                                                  option1Inputs.style.display = "none";
+                                                  guardianNameInput.required = false;
+                                                  guardianPhoneInput.required = false;
+                                              }
+                                          }
+                                      </script>
+                                      <input type="submit" class="btnRegister"  value="Send require"/>
+                                  </div>
+
+                          </div>
+                      </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-3 col-md-6 footer-contact">
+            <h3>Medilab</h3>
+            <p>
+              A108 Adam Street <br>
+              New York, NY 535022<br>
+              United States <br><br>
+              <strong>Phone:</strong> +1 5589 55488 55<br>
+              <strong>Email:</strong> info@example.com<br>
+            </p>
+          </div>
+
+          <div class="col-lg-2 col-md-6 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-3 col-md-6 footer-links">
+            <h4>Our Services</h4>
+            <ul>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
+            </ul>
+          </div>
+
+          <div class="col-lg-4 col-md-6 footer-newsletter">
+            <h4>Join Our Newsletter</h4>
+            <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
+            <form action="" method="post">
+              <input type="email" name="email"><input type="submit" value="Subscribe">
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container d-md-flex py-4">
+
+      <div class="me-md-auto text-center text-md-start">
+        <div class="copyright">
+          &copy; Copyright <strong><span>Medilab</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+          <!-- All the links in the footer should remain intact. -->
+          <!-- You can delete the links only if you purchased the pro version. -->
+          <!-- Licensing information: https://bootstrapmade.com/license/ -->
+          <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/ -->
+          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+        </div>
+      </div>
+      <div class="social-links text-center text-md-right pt-3 pt-md-0">
+        <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+        <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+        <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+        <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+        <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <div id="preloader"></div>
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script th:src="@{/patient/assets/vendor/purecounter/purecounter_vanilla.js}"></script>
+  <script th:src="@{/patient/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/patient/assets/vendor/glightbox/js/glightbox.min.js}"></script>
+  <script th:src="@{/patient/assets/vendor/swiper/swiper-bundle.min.js}"></script>
+  <script th:src="@{/patient/assets/vendor/php-email-form/validate.js}"></script>
+
+  <!-- Template Main JS File -->
+  <script th:src="@{/patient/assets/js/main.js}"></script>
+
+</body>
+
+</html>
