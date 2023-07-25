@@ -18,8 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/employee")
@@ -35,6 +33,11 @@ public class EmployeeController {
     @Autowired
     private EmployeeCreateValidator employeeCreateValidator;
 
+
+    /**
+     * ThangLV
+     * get list Employee by Employee's name
+     */
     @GetMapping("/list")
     public String showList(Model model,
                            @RequestParam(required = false, defaultValue = "") String searchName,
@@ -47,20 +50,29 @@ public class EmployeeController {
 
         Page<EmployeeListDTO> employeeListDTOS;
 
-        employeeListDTOS = employeeService.searchByName('%'+searchName+'%', pageable);
+        employeeListDTOS = employeeService.searchByName('%' + searchName + '%', pageable);
 
         model.addAttribute("employeeListDTOS", employeeListDTOS);
         model.addAttribute("searchName", searchName);
         return "admin/employee/list";
     }
 
+    /**
+     * ThangLV
+     * get information of employee
+     */
     @GetMapping("/infor/{id}")
-    public String getAttachFacility(Model model,@PathVariable int id) {
+    public String getAttachFacility(Model model, @PathVariable int id) {
         EmployeeListDTO employeeDTO = employeeService.getInforById(id);
         model.addAttribute("employeeDTO", employeeDTO);
         return "admin/account-information";
     }
 
+
+    /**
+     * ThangLV
+     * show form Create Employee
+     */
     @GetMapping("/create")
     public String showFormCreate(Model model) {
         model.addAttribute("employeeDTO", new EmployeeCreateDTO());
@@ -69,11 +81,15 @@ public class EmployeeController {
         return "admin/employee/create";
     }
 
+    /**
+     * ThangLV
+     * get Data in form use create Employee
+     */
     @PostMapping("/create")
     public String save(@Validated @ModelAttribute EmployeeCreateDTO employeeDTO, BindingResult bindingResult) {
         employeeCreateValidator.validate(employeeDTO, bindingResult);
 
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             return "admin/employee/create";
         }
         employeeService.create(employeeDTO);

@@ -14,6 +14,11 @@ public class PositionService implements IPositionService {
     @Autowired
     private IPositionRepository positionRepository;
 
+
+    /**
+     * ThangLV
+     * get list Position of Employee
+     */
     @Override
     public List<Position> findAll() {
         return positionRepository.findAll();

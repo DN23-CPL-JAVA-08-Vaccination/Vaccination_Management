@@ -2,7 +2,7 @@ package com.example.vaccination_management.validation;
 
 import com.example.vaccination_management.dto.EmployeeCreateDTO;
 import com.example.vaccination_management.service.IEmployeeService;
-import lombok.SneakyThrows;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -13,6 +13,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+
+/**
+ * ThangLV
+ * validator Employee before insert new Employee
+ */
 @Component
 public class EmployeeCreateValidator implements Validator {
 
@@ -82,15 +87,15 @@ public class EmployeeCreateValidator implements Validator {
         } else if (!Pattern.compile("^(\\+?84|0)(3[2-9]|5[689]|7[0|6-9]|8[1-9]|9[0-9])[0-9]{7}$").matcher(employeeDTO.getPhone()).find()) {
             errors.rejectValue(fieldPhone, "phone.format", "Vui lòng nhập số điện thoại đúng định dạng 09xxxxxxx, 03xxxxxxx, 07xxxxxxx, (84) + 90xxxxxxx.");
         } else if (employeeService.findByPhone(employeeDTO.getPhone()) > 0) {
-            errors.rejectValue(fieldPhone, "phone.duplicate", "Số điện thoại đã tồn tại");
+            errors.rejectValue(fieldPhone, "phone.duplicate", "Số điện thoại đã tồn tại.");
         }
 
         if (employeeDTO.getEmail() == null) {
             errors.rejectValue(fieldEmail, "email.null", "Vui lòng nhập email.");
         } else if (!Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$").matcher(employeeDTO.getEmail()).find()) {
-            errors.rejectValue(fieldEmail, "email.format", "Email tuân thủ theo định dạng ex: abc@gmail.com");
+            errors.rejectValue(fieldEmail, "email.format", "Email tuân thủ theo định dạng ex: abc@gmail.com.");
         } else if (employeeService.findByEmail(employeeDTO.getEmail()) > 0) {
-            errors.rejectValue(fieldEmail, "email.duplicate", "Email đã tồn tại");
+            errors.rejectValue(fieldEmail, "email.duplicate", "Email đã tồn tại.");
         }
 
         if (employeeDTO.getAddress() == null) {

@@ -11,11 +11,20 @@ public class AccountService implements IAccountService {
     @Autowired
     private IAccountRepository accountRepository;
 
+    /**
+     * ThangLV
+     * insert new Account of Patient
+     */
     @Override
     public void addNew(Account account) {
         accountRepository.insertAccount(account.getEmail(), account.isEnableFlag(), account.getPassword(), account.getUserName());
     }
 
+
+    /**
+     * ThangLV
+     * find Id of Account by Username
+     */
     @Override
     public Integer findIdAccountByUserName(String username) {
         return accountRepository.findIdUserByUserName(username);

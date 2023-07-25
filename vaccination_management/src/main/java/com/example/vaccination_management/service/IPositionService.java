@@ -6,5 +6,9 @@ import java.util.List;
 
 public interface IPositionService {
 
+    /**
+     * ThangLV
+     * get list Position of Employee
+     */
     List<Position> findAll();
 }

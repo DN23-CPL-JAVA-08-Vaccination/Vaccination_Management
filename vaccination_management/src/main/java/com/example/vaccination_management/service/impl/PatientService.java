@@ -11,9 +11,10 @@ public class PatientService implements IPatientService {
 
     @Autowired
     IPatientRepository patientRepository;
+
     /**
      * ThangLV
-     * get Information of Patient
+     * get all information of Patient
      */
     @Override
     public PatientInforDTO getInforById(int i) {
