@@ -20,8 +20,8 @@ public class Vaccine {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "enable_flag")
-    private boolean enableFlag;
+    @Column(name = "delete_flag")
+    private boolean deleteFlag;
 
     @Column(name = "create_date", columnDefinition = "Datetime")
     private String createDate;
@@ -33,7 +33,7 @@ public class Vaccine {
     private Double price;
 
     @Column(name = "duration")
-    private int duration;
+    private String duration;
 
     @Column(name = "age")
     private String age;
@@ -42,7 +42,7 @@ public class Vaccine {
     private String image;
 
     @Column(name = "dosage")
-    private int dosage;
+    private Double dosage;
 
     @ManyToOne
     @JoinColumn(name = "vaccine_type_id")
@@ -52,12 +52,12 @@ public class Vaccine {
     }
 
 
-    public Vaccine(int id, String name, String code, String description, boolean enableFlag, String createDate, String updateDate, Double price, int duration, String age, String image, int dosage, VaccineType vaccineType) {
+    public Vaccine(int id, String name, String code, String description, boolean deleteFlag, String createDate, String updateDate, Double price, String duration, String age, String image, Double dosage, VaccineType vaccineType) {
         this.id = id;
         this.name = name;
         this.code = code;
         this.description = description;
-        this.enableFlag = enableFlag;
+        this.deleteFlag = deleteFlag;
         this.createDate = createDate;
         this.updateDate = updateDate;
         this.price = price;
@@ -101,14 +101,13 @@ public class Vaccine {
         this.description = description;
     }
 
-    public boolean isEnableFlag() {
-        return enableFlag;
+    public boolean isDeleteFlag() {
+        return deleteFlag;
     }
 
-    public void setEnableFlag(boolean enableFlag) {
-        this.enableFlag = enableFlag;
+    public void setDeleteFlag(boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
     }
-
 
     public String getCreateDate() {
         return createDate;
@@ -130,6 +129,18 @@ public class Vaccine {
         return price;
     }
 
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
     public String getAge() {
         return age;
     }
@@ -146,24 +157,12 @@ public class Vaccine {
         this.image = image;
     }
 
-    public int getDosage() {
+    public Double getDosage() {
         return dosage;
     }
 
-    public void setDosage(int dosage) {
+    public void setDosage(Double dosage) {
         this.dosage = dosage;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
     }
 
     public VaccineType getVaccineType() {
@@ -173,6 +172,4 @@ public class Vaccine {
     public void setVaccineType(VaccineType vaccineType) {
         this.vaccineType = vaccineType;
     }
-
-
 }
