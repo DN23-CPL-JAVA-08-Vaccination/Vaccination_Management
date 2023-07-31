@@ -11242,3 +11242,31 @@ body {
   border-radius: 0.375rem !important;
 }
 
+.action-buttons {
+  display: flex;
+  justify-content: space-around;
+  padding-left: 10px;
+  padding-right: 10px
+}
+.action-buttons1{
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10px;
+  padding-right: 10px
+}
+.notification {
+  color: green;
+  font-weight: bold;
+  font-size: 15px;
+  text-align: center;
+  margin-bottom: 0;
+}
+.notificationer{
+  color: #800000;
+  font-weight: bold;
+  font-size: 15px;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+

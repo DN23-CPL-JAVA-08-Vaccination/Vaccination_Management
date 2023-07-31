@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <meta charset="utf-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>Tables - SB Admin</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-        <link href="css/styles.css" rel="stylesheet" />
+        <link th:href="@{/admin/css/styles.css}" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+            <a class="navbar-brand ps-3" th:href="@{Admin/index.html}">Start Bootstrap</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -43,18 +44,18 @@
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="index.html">
+                            <a class="nav-link" th:href="@{/account/view_account}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
                             <div class="sb-sidenav-menu-heading">Addons</div>
                             <a class="nav-link" th:href="@{/account/view_account}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-circle-user"></i></div>
-                                Account
+                                Tài khoản
                             </a>
                             <a class="nav-link" th:href="@{/patient/view_patient}">
                                 <div class="sb-nav-link-icon"><i class="fas fa-hospital-user"></i></div>
-                                Patient
+                                Bệnh nhân
                             </a>
                         </div>
                     </div>
@@ -67,63 +68,71 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4"><i class="fas fa-hospital-user"></i> Patient</h1>
+                        <h1 class="mt-4"><i class="fas fa-circle-user"></i>  Tài khoản </h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Patient Management</li>
+                            <li class="breadcrumb-item active">Thông tin tài khoản bệnh nhân</li>
                         </ol>
                         <div class="card mb-4">
-                            <div class="card-body">
-                              
-                                
-                            </div>
+                            <div class="card-body alert alert-success notification" role="alert" th:if="${messageSuccess}" th:text="${messageSuccess}"></div>
+                            <div class="card-body alert alert-danger notificationer" role="alert" th:if="${messageError}" th:text="${messageError}"></div>
+
                         </div>
                         <div class="card mb-4">
                             <div class="card-header">
-                                <i class="fas fa-hospital-user"></i>
-                                TABLE PATIENT
+                                <i class="fas fa-circle-user"></i>
+                                Bảng tài khoản
                             </div>
                             <div class="card-body">
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Birthday</th>
-                                            <th>Gender</th>
-                                            <th>Phone</th>
-                                            <th>Status</th> 
-                                            <th></th> 
+                                            <th>Số BHYT</th>
+                                            <th>Mật khẩu</th>
+                                            <th>Email</th>
+                                            <th>Họ và tên</th>
+                                            <th>Trạng thái</th>
+                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Birthday</th>
-                                            <th>Gender</th>
-                                            <th>Phone</th>
-                                            <th>Status</th> 
-                                            <th></th> 
+                                            <th>Số BHYT</th>
+                                            <th>Mật khẩu</th>
+                                            <th>Email</th>
+                                            <th>Họ và tên</th>
+                                            <th>Trạng thái</th>
+                                            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                        <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
-                                            <td>$320,800</td>
-                                 
+                                        <tr th:each="account : ${accountList}">
+                                            <td th:text="${account.id}"></td>
+                                            <td th:text="${account.verificationCode}"></td>
+                                            <td th:text="${account.password}"></td>
+                                            <td th:text="${account.email}"></td>
+                                            <td th:text="${account.userName}"></td>
+                                            <td th:if="${account.enableFlag}"> <i class="far fa-circle-check" style="color: green;"></i> Kích hoạt </td>
+                                            <td th:if="${!account.enableFlag}"><i class="far fa-exclamation-circle" style="color: red;"></i> Chưa kích hoạt</td>
+                                            <td>
+                                                <span class="action-buttons">
+                                                    <div>
+                                                    <a th:href="@{'/account/detail/'+ ${account.id}}" type="button" style="color: black;"><i class="far fa-eye"></i></a></div>
+                                                    <a th:if="${account.enableFlag}" th:href="@{/account/send_email/{id}/{enableFlag}(id=${account.id}, enableFlag=${false})}" style="color: green;" onclick="return sendDisEmail(event)"><i class="fas fa-envelope-open-text"></i></a>
+                                                    <a th:if="${!account.enableFlag}" th:href="@{/account/send_email/{id}/{enableFlag}(id=${account.id}, enableFlag=${true})}" style="color: rgba(47,49,47,0.96); " onclick="return sendEmail(event)"><i class="fas fa-envelope-open-text"></i></a>
+                                                </span>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                    </div>
+
+                    </div>      <!-- Button trigger modal -->
                 </main>
+
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
@@ -139,8 +148,37 @@
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
+        <script th:src="@{/admin/js/scripts.js}"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
+        <script th:src="@{/admin/js/datatables-simple-demo.js}"></script>
+
+<!--    hộp thoại thông báo-->
+<script>
+    function sendEmail(event) {
+        // Sử dụng hàm confirm() để hiển thị hộp thoại xác nhận
+        var result = confirm("Bạn có chắc chắn gửi email xác nhập cấp tài khoản cho bệnh nhân này không?");
+
+        // Nếu người dùng nhấn OK (đồng ý), cho phép chuyển hướng tới trang xóa bệnh nhân
+        if (result) {
+            return true;
+        } else {
+            // Nếu người dùng chọn "Cancel" (hủy), hủy bỏ việc chuyển hướng
+            event.preventDefault();
+            return false;
+        }
+    }
+
+    function sendDisEmail(event) {
+        var result = confirm("Bạn có muốn gửi email xác nhập hủy kích hoạt tài khoản của bệnh nhân này không?");
+
+        if (result) {
+            return true;
+        } else {
+            event.preventDefault();
+            return false;
+        }
+    }
+
+</script>
     </body>
 </html>

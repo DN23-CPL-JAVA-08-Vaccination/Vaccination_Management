@@ -18,4 +18,8 @@ public interface IAccountService {
     List<Account> findAll();
 
     IAccountDetailDTO findAccountById(Integer id);
+
+    void updateEnableFlagById(Boolean enableFlag, Integer id);
+
+    void deleteById(Integer integer);
 }

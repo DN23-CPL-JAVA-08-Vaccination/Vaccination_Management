@@ -1,22 +1,22 @@
 package com.example.vaccination_management.dto;
 
+
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import java.time.LocalDate;
 
 
 public class PatientDTO {
     private int id;
+
     private String name;
     private String healthInsurance;
 
     private Boolean gender;
     private String email;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthday;
+    private String formBirthday;
     private String guardianName;
     private String guardianPhone;
     private String address;
@@ -25,24 +25,19 @@ public class PatientDTO {
     private Integer account;
 
     private String password;
+    private Boolean deleteFlag;
+
     public PatientDTO() {
     }
 
-    public Integer getAccount() {
-        return account;
-    }
-
-    public void setAccount(Integer account) {
-        this.account = account;
-    }
-
-    public PatientDTO(int id, String name, String healthInsurance, Boolean gender, String email, LocalDate birthday, String guardianName, String guardianPhone, String address, String phone, boolean enableFlag, Integer account, String password) {
+    public PatientDTO(int id, String name, String healthInsurance, Boolean gender, String email, LocalDate birthday, String formBirthday, String guardianName, String guardianPhone, String address, String phone, Boolean enableFlag, Integer account, String password, Boolean deleteFlag) {
         this.id = id;
         this.name = name;
         this.healthInsurance = healthInsurance;
         this.gender = gender;
         this.email = email;
         this.birthday = birthday;
+        this.formBirthday = formBirthday;
         this.guardianName = guardianName;
         this.guardianPhone = guardianPhone;
         this.address = address;
@@ -50,14 +45,7 @@ public class PatientDTO {
         this.enableFlag = enableFlag;
         this.account = account;
         this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+        this.deleteFlag = deleteFlag;
     }
 
     public int getId() {
@@ -108,6 +96,14 @@ public class PatientDTO {
         this.birthday = birthday;
     }
 
+    public String getFormBirthday() {
+        return formBirthday;
+    }
+
+    public void setFormBirthday(String formBirthday) {
+        this.formBirthday = formBirthday;
+    }
+
     public String getGuardianName() {
         return guardianName;
     }
@@ -140,12 +136,36 @@ public class PatientDTO {
         this.phone = phone;
     }
 
-    public boolean getEnableFlag() {
+    public Boolean getEnableFlag() {
         return enableFlag;
     }
 
-    public void setEnableFlag(boolean enableFlag) {
+    public void setEnableFlag(Boolean enableFlag) {
         this.enableFlag = enableFlag;
+    }
+
+    public Integer getAccount() {
+        return account;
+    }
+
+    public void setAccount(Integer account) {
+        this.account = account;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Boolean getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(Boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
     }
 }
 

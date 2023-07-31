@@ -21,10 +21,16 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
     Integer findLatestAccountId();
 
 
-    @Query(value = "SELECT account.id, account.verification_code AS accountVerificationCode, account.password, account.email, patient.name AS patientName, patient.birthday, patient.gender, patient.address, patient.phone, patient.guardian_name AS patientGuardianName, patient.guardian_phone AS patientGuardianPhone, account.enable_flag AS accountEnableFlag " +
+    @Query(value = "SELECT account.id, account.verification_code AS accountVerificationCode, account.password, account.email, patient.name AS patientName, patient.birthday, patient.gender, patient.address, patient.phone, patient.guardian_name AS patientGuardianName, patient.guardian_phone AS patientGuardianPhone, patient.detele_flag AS patientDeleteFlag, account.enable_flag AS accountEnableFlag " +
             "FROM account JOIN patient ON patient.account_id = account.id " +
             "WHERE account.id = ?1", nativeQuery = true)
-    IAccountDetailDTO findAccountById(Integer id);
+    IAccountDetailDTO findAccountById(Integer id);;
     //"AS" để đổi tên cho trường hiển thị trường dữ liệu trở nên rõ ràng hơn và tránh được sự mâu thuẫn
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE account SET enable_flag = ?1 WHERE account.id = ?2",nativeQuery = true)
+    void updateEnableFlagById(Boolean enableFlag, Integer id);
+
+
 
 }

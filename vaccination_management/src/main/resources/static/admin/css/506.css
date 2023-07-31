@@ -85,3 +85,8 @@
 #container {
     background-color: #dcdcdc;
 }
+input {
+    border: none; /* Loại bỏ đường viền */
+    outline: none; /* Loại bỏ đường viền khi focus */
+    /* Thêm các kiểu khác nếu cần */
+}

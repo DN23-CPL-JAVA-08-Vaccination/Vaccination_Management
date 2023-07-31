@@ -15,6 +15,6 @@ public interface IAccountDetailDTO {
     String getPatientGuardianName();
     String getPatientGuardianPhone();
     Boolean getAccountEnableFlag();
-
+    Boolean getPatientDeleteFlag();
 
 }

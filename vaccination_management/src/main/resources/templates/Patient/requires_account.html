@@ -130,10 +130,10 @@
               <div class="col-md-3 register-left">
                   <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
                   <h3>Welcome</h3>
-                  <p>Please enter all information in the form next to !!
-                    <p style="font-size: 15px; font-style: italic; color: rgb(187, 187, 187);">Information marked with (*) is mandatory information</p></p>
-                  <h6 style="color: rgb(255, 109, 47);">Note:</h6>
-                  <p style="font-size: 10px; font-style: italic; color:tomato;">Enter the correct email address to receive the allocated account</p>
+                  <p>Vui lòng điền đầy đủ thông tin cần thiết vào form bên cạnh!!
+                    <p style="font-size: 15px; font-style: italic; color: rgb(187, 187, 187);">Những thông tin (*) là những thông tin bắt buộc</p></p>
+                  <h6 style="color: rgb(255, 109, 47);">Chú ý:</h6>
+                  <p style="font-size: 10px; font-style: italic; color:tomato;">Nhập chính xác địa chỉ email để nhận tài khoản được cấp phát</p>
                   
               </div>
               <div class="col-md-9 register-right">
@@ -152,44 +152,51 @@
 <!--                              <h6 th:text="${message}"></h6>-->
 <!--                          </div>-->
                       <form th:action="@{/account/insert_account}" class="form" method="post" th:object="${patient}">
-                          <h3 class="register-heading">Information required for an account</h3>
+                          <h3 class="register-heading">Thông tin yêu cầu cấp tài khoản</h3>
                           <div class="row register-form">
 
                                   <div class="col-md-6">
                                       <input type="hidden" name="id" th:field="*{id}">
                                       <div class="form-group">
-                                          <input  name="name" type="text" class="form-control" placeholder="User Name *" th:field="*{name}"/>
+                                          <input  name="name" type="text" class="form-control" placeholder="Họ và tên *" th:field="*{name}"/>
+                                          <p class="errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
                                       </div>
                                       <div class="form-group">
-                                          <input name="healthInsurance" type="text" class="form-control" placeholder="Health Insurance *" th:field="*{healthInsurance}"/>
+                                          <input name="healthInsurance" type="text" class="form-control" placeholder="Mã BHYT *" th:field="*{healthInsurance}"/>
+                                          <p class="errors" th:if="${#fields.hasErrors('healthInsurance')}" th:errors="*{healthInsurance}"></p>
                                       </div>
                                       <div class="form-group">
-                                          <input name="address" type="text" class="form-control" placeholder="Address *" th:field="*{address}"/>
+                                          <input name="address" type="text" class="form-control" placeholder="Địa chỉ  *" th:field="*{address}"/>
+                                          <p class="errors" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
                                       </div>
                                       <div class="form-group"> Birthday:
-                                          <input name="birthday" id="birthday" type="date" class="form-control" placeholder="Birthday *" th:field="*{birthday} " onchange="showGuardianFields()"/>
+                                          <input name="birthday" id="birthday" type="date" class="form-control" placeholder="Ngày sinh  *" th:field="*{birthday} " onchange="showGuardianFields()"/>
+                                          <p class="errors" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></p>
                                       </div>
                                       <div class="form-group">
                                           <div class="maxl">
                                               <label class="radio inline">
                                                   <input type="radio" th:name="gender" th:field="*{gender}" value="true">
-                                                  <span> Male </span>
+                                                  <span> Nam </span>
                                               </label>
                                               <label class="radio inline">
                                                   <input type="radio" th:name="gender"th:field="*{gender}" value="false">
-                                                  <span>Female </span>
+                                                  <span>Nữ </span>
                                               </label>
                                           </div>
+                                          <p class="errors" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></p>
                                       </div>
 
                                   </div>
                                   <div class="col-md-6">
 
                                       <div class="form-group">
-                                          <input name="phone" type="text" class="form-control" placeholder="Phone *" th:field="*{phone}">
+                                          <input name="phone" type="text" class="form-control" placeholder="Số điện thoại  *" th:field="*{phone}">
+                                          <p class="errors" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
                                       </div>
                                       <div class="form-group">
-                                         <input name="email" type="email" class="form-control"  placeholder="Email *" th:field="*{email}" />
+                                         <input name="email" type="email" class="form-control"  placeholder="Email  *" th:field="*{email}" />
+                                          <p class="errors" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
                                         </div>
 <!--                                      <select id="options" onchange="showInputs()">-->
 <!--                                          <option value="">Over 16 years old</option>-->
@@ -199,10 +206,12 @@
                                       <div id="inputContainer" style="display: none;">
                                           <div id="option1Inputs" style="display: none;">
                                               <div class="form-group">
-                                                  <input name="guardianName" id="input1" type="text" class="form-control" placeholder="Guardian Name " th:field="*{guardianName}" />
+                                                  <input name="guardianName" id="input1" type="text" class="form-control" placeholder="Tên người giám hộ "  th:field="*{guardianName}" />
+                                                  <p class="errors" th:if="${#fields.hasErrors('guardianName')}" th:errors="*{guardianName}"></p>
                                               </div>
                                               <div class="form-group">
-                                                  <input name="guardianPhone" id="input2" type="text"  class="form-control" placeholder="Guardian Phone" th:field="*{guardianPhone}"/>
+                                                  <input name="guardianPhone" id="input2" type="text"  class="form-control" placeholder="Số điện thoại ngươ giám hộ " th:field="*{guardianPhone}"/>
+                                                  <p class="errors" th:if="${#fields.hasErrors('guardianPhone')}" th:errors="*{guardianPhone}"></p>
                                               </div>
                                           </div>
                                       </div>
@@ -231,10 +240,36 @@
                                                   option1Inputs.style.display = "none";
                                                   guardianNameInput.required = false;
                                                   guardianPhoneInput.required = false;
+
+                                                  guardianNameInput.value = "";
+                                                  guardianPhoneInput.value = "";
                                               }
                                           }
+                                          function validateForm() {
+                                              showGuardianFields(); // Check the age again before submitting
+
+                                              var guardianNameInput = document.getElementById("input1");
+                                              var guardianPhoneInput = document.getElementById("input2");
+
+                                              // Kiểm tra trạng thái của trường người đại diện
+                                              if (guardianNameInput.required && guardianNameInput.value.trim() === "") {
+                                                  alert("Vui lòng nhập tên người giám hộ");
+                                                  return false; // Ngăn form gửi khi dữ liệu nhập sai
+                                              }
+
+                                              if (guardianPhoneInput.required && guardianPhoneInput.value.trim() === "") {
+                                                  alert("Vui lòng nhập số điện thoại người giám hộ");
+                                                  return false; // Ngăn form gửi khi dữ liệu nhập sai
+                                              }
+
+                                              return true; // Gửi form nếu dữ liệu hợp lệ
+                                          }
+
+                                          // Gọi hàm hiển thị trường người đại diện khi tải trang
+                                          showGuardianFields();
                                       </script>
-                                      <input type="submit" class="btnRegister"  value="Send require"/>
+                                      </script>
+                                      <input type="submit" class="btnRegister"  value="Gửi yêu cầu"/>
                                   </div>
 
                           </div>
