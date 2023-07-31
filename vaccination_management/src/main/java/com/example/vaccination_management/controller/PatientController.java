@@ -1,10 +1,8 @@
 package com.example.vaccination_management.controller;
 
-import com.example.vaccination_management.dto.EmployeeListDTO;
 import com.example.vaccination_management.dto.PatientInforDTO;
 import com.example.vaccination_management.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.annotation.AccessType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +20,6 @@ public class PatientController {
     public String getAttachFacility(Model model, @PathVariable int id) {
         PatientInforDTO patientInforDTO = patientService.getInforById(id);
         model.addAttribute("patientInforDTO", patientInforDTO);
-        return "admin/account-information";
+        return "admin/account_information";
     }
 }

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <base href="/">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{css/style-thangLv.css}" type="text/css">
+
+
+</head>
+
+<body>
+
+<div class="container-change-pass">
+
+    <main class="card">
+
+        <section class="esquerda">
+            <h2 class="title">Đăng nhập</h2>
+            <form th:action="@{/j_spring_security_check}" method="post">
+                <section class="caixa__input">
+                    <label for="username">Tài khoản </label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="username" name="username"
+                               placeholder="Nhấn vào để nhập" value="">
+                    </div>
+                    <!--                    <p style="color: #ff0033">Tên đăng nhập không được trống</p>-->
+                </section>
+                <section class="caixa__input">
+                    <label for="newPassword">Mật khẩu </label>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" id="newPasswordInput" name="password"
+                               placeholder="Nhấn vào để nhập" value="">
+                        <span class="input-group-text"><i class="far fa-eye-slash" id="newPassword"></i></span>
+                    </div>
+<!--                    <p style="color: #ff0032">Mật khẩu mới không được để trống</p>-->
+
+                    <div class="d-flex row">
+                        <div class="d-flex col-6">
+                            <input type="checkbox" id="remember" name="remember-me" style="width: 16px;">
+                            <span for="remember" style="padding: 13px 13px">Ghi nhớ tài khoản</span>
+                        </div>
+                        <div class="text-right col-6" style="padding-top: 13px">
+                            <a href="#">
+                                Quên mật khẩu ?
+                            </a>
+                        </div>
+                    </div>
+
+                </section>
+                <section class="controle__acesso">
+                    <div class="container-login100-form-btn">
+                        <div class="">
+                            <button type="submit" class="btn_login">
+                                Đăng nhập
+                            </button>
+                            <!--                        <div>-->
+                            <!--                            <button>Đăng nhập </button>-->
+                            <!--&lt;!&ndash;                            <a type="button" class="btn btn-outline-success btn-padding-10 login">Đăng nhập</a>&ndash;&gt;-->
+                            <!--                        </div>-->
+                        </div>
+                    </div>
+                </section>
+
+            </form>
+        </section>
+
+        <section class="direita d-flex align-items-center">
+            <div class="background__imagem ">
+                <img th:src="@{img/logo_vaccination.png}"/>
+            </div>
+        </section>
+        <div class="title-signup">
+            <a>
+                Đăng ký tài khoản
+            </a>
+        </div>
+    </main>
+</div>
+<script>
+    const newPassword = document.querySelector("#newPassword");
+    const newPasswordInput = document.querySelector("#newPasswordInput");
+    newPassword.addEventListener("click", function () {
+        const type = newPasswordInput.getAttribute("type") === "password" ? "text" : "password";
+        newPasswordInput.setAttribute("type", type);
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash')
+    });
+</script>
+</body>
+</html>

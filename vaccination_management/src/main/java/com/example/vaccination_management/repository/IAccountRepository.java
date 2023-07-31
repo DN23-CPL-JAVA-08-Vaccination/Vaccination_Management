@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Transactional
 public interface IAccountRepository extends JpaRepository<Account, Integer> {
 
@@ -23,5 +25,13 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
      */
     @Query(value = "select a.id from account a where a.username = ?", nativeQuery = true)
     Integer findIdUserByUserName(String userName);
+
+    /**
+     * ThangLV
+     * get  Account By UserName
+     */
+    @Query(value = "SELECT * FROM account where username = ?1", nativeQuery = true)
+    Optional<Account> findAccountByUserName(String username);
+
 
 }

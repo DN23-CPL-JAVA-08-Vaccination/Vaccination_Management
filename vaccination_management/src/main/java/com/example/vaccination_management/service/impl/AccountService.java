@@ -6,6 +6,8 @@ import com.example.vaccination_management.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AccountService implements IAccountService {
     @Autowired
@@ -28,6 +30,11 @@ public class AccountService implements IAccountService {
     @Override
     public Integer findIdAccountByUserName(String username) {
         return accountRepository.findIdUserByUserName(username);
+    }
+
+    @Override
+    public Optional<Account> findAccountByUserName(String username) {
+        return accountRepository.findAccountByUserName(username);
     }
 
 

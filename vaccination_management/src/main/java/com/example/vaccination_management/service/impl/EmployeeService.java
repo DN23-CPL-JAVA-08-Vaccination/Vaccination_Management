@@ -2,9 +2,10 @@ package com.example.vaccination_management.service.impl;
 
 import com.example.vaccination_management.dto.EmployeeCreateDTO;
 import com.example.vaccination_management.dto.EmployeeListDTO;
+import com.example.vaccination_management.dto.InforEmployeeDTO;
 import com.example.vaccination_management.entity.Account;
 import com.example.vaccination_management.entity.Employee;
-import com.example.vaccination_management.repository.IAccountRoleRepository;
+import com.example.vaccination_management.entity.Position;
 import com.example.vaccination_management.repository.IEmployeeRepository;
 import com.example.vaccination_management.service.IAccountRoleService;
 import com.example.vaccination_management.service.IAccountService;
@@ -51,8 +52,8 @@ public class EmployeeService implements IEmployeeService {
     }
 
     @Override
-    public void delete(Employee employee) {
-
+    public boolean delete(int index) {
+        return false;
     }
 
     @Override
@@ -60,11 +61,44 @@ public class EmployeeService implements IEmployeeService {
 
     }
 
+    /**
+     * ThangLV
+     * get information of Employee use Update
+     */
     @Override
-    public EmployeeListDTO getInforById(int i) {
-        return employeeRepository.getInforById(i);
+    public EmployeeCreateDTO getInforUpdateById(int id) {
+
+        InforEmployeeDTO employeeDTO = getInforById(id);
+        System.out.println(employeeDTO.getPositionId());
+        System.out.println(employeeDTO.getPositionName());
+        EmployeeCreateDTO employeeUpdateDTO =  new EmployeeCreateDTO();
+
+        employeeUpdateDTO.setId(employeeDTO.getId());
+        employeeUpdateDTO.setName(employeeDTO.getName());
+        employeeUpdateDTO.setAddress(employeeDTO.getAddress());
+        employeeUpdateDTO.setBirthday(employeeDTO.getBirthday());
+        employeeUpdateDTO.setGender(employeeDTO.getGender());
+        employeeUpdateDTO.setIdCard(employeeDTO.getIdCard());
+        employeeUpdateDTO.setPhone(employeeDTO.getPhone());
+        employeeUpdateDTO.setImage(employeeDTO.getImage());
+
+
+        int positionId = Integer.parseInt(employeeDTO.getPositionId());
+        String positionName =  employeeDTO.getPositionName();
+
+        employeeUpdateDTO.setPosition(new Position( positionId, positionName));
+        employeeUpdateDTO.setEmail(employeeDTO.getEmail());
+        return employeeUpdateDTO;
     }
 
+    /**
+     * ThangLV
+     * get information of Employee by id
+     */
+    @Override
+    public InforEmployeeDTO getInforById(int i) {
+        return employeeRepository.getInforById(i);
+    }
 
     /**
      * ThangLV

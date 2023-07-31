@@ -3,10 +3,10 @@ package com.example.vaccination_management.controller;
 import com.example.vaccination_management.dto.EmployeeCreateDTO;
 import com.example.vaccination_management.dto.EmployeeListDTO;
 
+import com.example.vaccination_management.dto.InforEmployeeDTO;
 import com.example.vaccination_management.service.IEmployeeService;
 import com.example.vaccination_management.service.IPositionService;
 import com.example.vaccination_management.validation.EmployeeCreateValidator;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
-@RequestMapping("/employee")
+@RequestMapping("/admin/employee")
 @Controller
 public class EmployeeController {
 
@@ -38,7 +38,7 @@ public class EmployeeController {
      * ThangLV
      * get list Employee by Employee's name
      */
-    @GetMapping("/list")
+    @GetMapping("")
     public String showList(Model model,
                            @RequestParam(required = false, defaultValue = "") String searchName,
                            @RequestParam Optional<Integer> page) {
@@ -59,13 +59,13 @@ public class EmployeeController {
 
     /**
      * ThangLV
-     * get information of employee
+     * get information of employee , use Show
      */
     @GetMapping("/infor/{id}")
     public String getAttachFacility(Model model, @PathVariable int id) {
-        EmployeeListDTO employeeDTO = employeeService.getInforById(id);
+        InforEmployeeDTO employeeDTO = employeeService.getInforById(id);
         model.addAttribute("employeeDTO", employeeDTO);
-        return "admin/account-information";
+        return "account_information";
     }
 
 
@@ -94,5 +94,34 @@ public class EmployeeController {
         }
         employeeService.create(employeeDTO);
         return "redirect:/employee/list";
+    }
+
+
+    @GetMapping("/update")
+    public String showFormUpdate(@RequestParam int id, Model model) {
+        model.addAttribute("employee", employeeService.getInforUpdateById(id));
+        model.addAttribute("positionList", positionService.findAll());
+        return "admin/employee/update";
+    }
+
+    @PostMapping("/update")
+    public String update(@Validated @ModelAttribute EmployeeCreateDTO employeeDTO, @RequestParam String date, BindingResult bindingResult) {
+//        employeeDTO.setBirthday(date);
+//
+//        if (bindingResult.hasErrors()) {
+//            return "employee/create";
+//        }
+//        Customer customer = new Customer();
+//        BeanUtils.copyProperties(employeeDTO, customer);
+//        customerService.save(customer);
+        return "redirect:/customer/list";
+    }
+
+    @GetMapping("/delete")
+    public String delete(@RequestParam int id) {
+        if (employeeService.delete(id)){
+
+        }
+        return "redirect:/customer/list";
     }
 }

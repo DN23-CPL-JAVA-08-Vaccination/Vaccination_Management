@@ -12,12 +12,13 @@ public class EmployeeCreateDTO {
     private String phone;
     private String email;
     private String address;
+    private String image;
     private Position position;
 
     public EmployeeCreateDTO() {
     }
 
-    public EmployeeCreateDTO(int id, String name, String birthday, boolean gender, String idCard, String phone, String email, String address, Position position) {
+    public EmployeeCreateDTO(int id, String name, String birthday, boolean gender, String idCard, String phone, String email, String address, String image, Position position) {
         this.id = id;
         this.name = name;
         this.birthday = birthday;
@@ -26,6 +27,7 @@ public class EmployeeCreateDTO {
         this.phone = phone;
         this.email = email;
         this.address = address;
+        this.image = image;
         this.position = position;
     }
 
@@ -99,5 +101,13 @@ public class EmployeeCreateDTO {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
