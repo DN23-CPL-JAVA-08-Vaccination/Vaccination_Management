@@ -20,20 +20,29 @@ public class Vaccine {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "enable_flag")
-    private boolean enableFlag;
+    @Column(name = "delete_flag")
+    private boolean deleteFlag;
 
     @Column(name = "create_date", columnDefinition = "Datetime" )
-    private boolean createDate;
+    private String createDate;
 
     @Column(name = "update_date", columnDefinition = "Datetime" )
-    private boolean updateDate;
+    private String updateDate;
 
     @Column(name = "price")
     private Double price;
 
     @Column(name = "duration")
-    private int duration;
+    private String duration;
+
+    @Column(name = "age")
+    private String age;
+
+    @Column(name = "image")
+    private String image;
+
+    @Column(name = "dosage")
+    private String dosage;
 
     @ManyToOne
     @JoinColumn(name = "vaccine_type_id")
@@ -42,16 +51,19 @@ public class Vaccine {
     public Vaccine() {
     }
 
-    public Vaccine(int id, String name, String code, String description, boolean enableFlag, boolean createDate, boolean updateDate, double price, int duration, VaccineType vaccineType) {
+    public Vaccine(int id, String name, String code, String description, boolean deleteFlag, String createDate, String updateDate, Double price, String duration, String age, String image, String dosage, VaccineType vaccineType) {
         this.id = id;
         this.name = name;
         this.code = code;
         this.description = description;
-        this.enableFlag = enableFlag;
+        this.deleteFlag = deleteFlag;
         this.createDate = createDate;
         this.updateDate = updateDate;
         this.price = price;
         this.duration = duration;
+        this.age = age;
+        this.image = image;
+        this.dosage = dosage;
         this.vaccineType = vaccineType;
     }
 
@@ -87,43 +99,43 @@ public class Vaccine {
         this.description = description;
     }
 
-    public boolean isEnableFlag() {
-        return enableFlag;
+    public boolean isDeleteFlag() {
+        return deleteFlag;
     }
 
-    public void setEnableFlag(boolean enableFlag) {
-        this.enableFlag = enableFlag;
+    public void setDeleteFlag(boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
     }
 
-    public boolean isCreateDate() {
+    public String getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(boolean createDate) {
+    public void setCreateDate(String createDate) {
         this.createDate = createDate;
     }
 
-    public boolean isUpdateDate() {
+    public String getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(boolean updateDate) {
+    public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public int getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
@@ -133,5 +145,29 @@ public class Vaccine {
 
     public void setVaccineType(VaccineType vaccineType) {
         this.vaccineType = vaccineType;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getDosage() {
+        return dosage;
+    }
+
+    public void setDosage(String dosage) {
+        this.dosage = dosage;
     }
 }
