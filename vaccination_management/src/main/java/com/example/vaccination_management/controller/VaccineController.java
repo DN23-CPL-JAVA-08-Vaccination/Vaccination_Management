@@ -34,7 +34,7 @@ public class VaccineController {
 
         model.addAttribute("vaccinesList", vaccinesList);
 
-        return "/Admin/VaccinesManager";
+        return "/Admin/Vaccines/VaccinesManager";
     }
 
     @GetMapping("/recycleVaccine")
@@ -43,7 +43,7 @@ public class VaccineController {
 
         model.addAttribute("recycleVaccineList", recycleVaccineList);
 
-        return "Admin/RecycleVaccine";
+        return "/Admin/Vaccines/RecycleVaccine";
     }
 
     @GetMapping("/newVaccine")
@@ -53,7 +53,7 @@ public class VaccineController {
         model.addAttribute("newVaccine", new Vaccine());
         modelMap.addAttribute("typeList", vaccineTypeList);
 
-        return "/Admin/NewVaccineForm";
+        return "/Admin/Vaccines/NewVaccineForm";
     }
 
     @PostMapping("/saveVaccine")
@@ -76,7 +76,7 @@ public class VaccineController {
             e.printStackTrace();
         }
 
-        return "/Admin/UpdateVaccineForm";
+        return "/Admin/Vaccines/UpdateVaccineForm";
     }
 
     @PostMapping("/updateVaccine")
@@ -132,6 +132,6 @@ public class VaccineController {
             e.printStackTrace();
         }
 
-        return "/Admin/VaccineDetail";
+        return "/Admin/Vaccines/VaccineDetail";
     }
 }

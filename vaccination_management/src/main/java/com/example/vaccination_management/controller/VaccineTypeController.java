@@ -31,7 +31,7 @@ public class VaccineTypeController {
 
         model.addAttribute("vaccineTypeList", vaccineTypeList);
 
-        return "/Admin/VaccineTypeManager";
+        return "/Admin/VaccineType/VaccineTypeManager";
     }
 
     @GetMapping("/{id}")
@@ -47,14 +47,14 @@ public class VaccineTypeController {
             e.printStackTrace();
         }
 
-        return "/Admin/VaccinesByType";
+        return "/Admin/VaccineType/VaccinesByType";
     }
 
     @GetMapping("/newVaccineType")
     public String showNewForm(Model model) {
         model.addAttribute("newVaccineType", new VaccineType());
 
-        return "/Admin/NewVaccineTypeForm";
+        return "/Admin/VaccineType/NewVaccineTypeForm";
     }
 
     @PostMapping("/saveVaccineType")
@@ -85,7 +85,7 @@ public class VaccineTypeController {
             model.addAttribute("pageTitle", vaccineType.getName());
             model.addAttribute("vaccineType", vaccineType);
 
-            return "Admin/UpdateVaccineTypeForm";
+            return "/Admin/VaccineType/UpdateVaccineTypeForm";
         } catch (VaccineTypeNoFoundException e) {
             redirectAttributes.addFlashAttribute("messages", "The vaccine type has been updated successfully");
 

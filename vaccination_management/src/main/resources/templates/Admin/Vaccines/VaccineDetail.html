@@ -43,7 +43,7 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Core</div>
-                    <a class="nav-link" href="../index.html">
+                    <a class="nav-link" href="../../index.html">
                         <div class="sb-nav-link-icon"><i class="fa fa-home"></i></div>
                         Dashboard
                     </a>
@@ -81,6 +81,9 @@
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                         Detail
                         <a th:href="@{/vaccines/newInventory/{id}(id=${vaccine.id})}"><button type="button" class="btn btn-outline-primary btn-sm" style="float: right"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
+                    </div>
+                    <div th:if="${messages}" class="alert alert-success text-center">
+                        [[${messages}]]
                     </div>
                     <div class="card-body">
                         <div class="container" style="border: #343a40">

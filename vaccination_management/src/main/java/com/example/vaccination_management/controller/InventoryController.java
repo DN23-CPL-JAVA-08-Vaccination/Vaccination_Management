@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.persistence.criteria.CriteriaBuilder;
-
 @Controller
 public class InventoryController {
     @Autowired
@@ -35,16 +33,16 @@ public class InventoryController {
             e.printStackTrace();
         }
 
-        return "Admin/NewInventoryForm";
+        return "Admin/Inventory/NewInventoryForm";
     }
 
     @PostMapping("/vaccines/saveInventory")
     public String saveInventory(Inventory inventory, RedirectAttributes redirectAttributes) {
         inventoryService.saveInventory(inventory);
 
-        redirectAttributes.addFlashAttribute("messages", "The inventory has been updated successfully");
+        redirectAttributes.addFlashAttribute("messages", "The inventory has been created successfully");
 
-        return "redirect:/vaccines";
+        return "redirect:/vaccines/" + inventory.getVaccine().getId();
     }
 
     @GetMapping("/vaccines/editInventory/{id}")
@@ -60,7 +58,7 @@ public class InventoryController {
             e.printStackTrace();
         }
 
-        return "Admin/UpdateInventoryForm";
+        return "Admin/Inventory/UpdateInventoryForm";
     }
 
     @PostMapping("/vaccines/updateInventory")
@@ -69,12 +67,16 @@ public class InventoryController {
 
         redirectAttributes.addFlashAttribute("messages", "The inventory has been updated successfully");
 
-        return "redirect:/vaccines";
+        return "redirect:/vaccines/" + updatedInventory.getVaccine().getId();
     }
 
     @GetMapping("/vaccines/deleteInventory/{id}")
     public String deleteInventory(@PathVariable("id") int inventoryID, RedirectAttributes redirectAttributes) {
+        int vaccineID = 0;
         try {
+            Inventory inventory = inventoryService.getInventoryByID(inventoryID);
+            vaccineID = inventory.getVaccine().getId();
+
             inventoryService.deleteInventory(inventoryID);
         } catch (InventoryNotFoundException e) {
             e.printStackTrace();
@@ -82,6 +84,6 @@ public class InventoryController {
 
         redirectAttributes.addFlashAttribute("messages", "The inventory has been destroyed successfully");
 
-        return "redirect:/vaccines";
+        return "redirect:/vaccines/" + vaccineID;
     }
 }
