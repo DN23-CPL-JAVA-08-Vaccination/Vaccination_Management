@@ -22,6 +22,12 @@ public class AccountService implements IAccountService {
         accountRepository.insertAccount(account.getEmail(), account.isEnableFlag(), account.getPassword(), account.getUserName());
     }
 
+    @Override
+    public void update(Account account) {
+        Integer idAccount = accountRepository.findIdUserByUserName(account.getUserName());
+        accountRepository.updateAccount(account.getEmail(), account.getUserName(), idAccount);
+    }
+
 
     /**
      * ThangLV
@@ -32,6 +38,10 @@ public class AccountService implements IAccountService {
         return accountRepository.findIdUserByUserName(username);
     }
 
+    /**
+     * ThangLV
+     * find Account by Username
+     */
     @Override
     public Optional<Account> findAccountByUserName(String username) {
         return accountRepository.findAccountByUserName(username);

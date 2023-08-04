@@ -14,6 +14,10 @@ public class EmployeeCreateDTO {
     private String address;
     private String image;
     private Position position;
+    private String currentEmail;
+    private String currentPhone;
+    private String currentIdCard;
+
 
     public EmployeeCreateDTO() {
     }
@@ -109,5 +113,29 @@ public class EmployeeCreateDTO {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getCurrentEmail() {
+        return currentEmail;
+    }
+
+    public void setCurrentEmail(String currentEmail) {
+        this.currentEmail = currentEmail;
+    }
+
+    public String getCurrentPhone() {
+        return currentPhone;
+    }
+
+    public void setCurrentPhone(String currentPhone) {
+        this.currentPhone = currentPhone;
+    }
+
+    public String getCurrentIdCard() {
+        return currentIdCard;
+    }
+
+    public void setCurrentIdCard(String currentIdCard) {
+        this.currentIdCard = currentIdCard;
     }
 }

@@ -1,17 +1,18 @@
 package com.example.vaccination_management.dto;
 
-public interface PatientInforDTO {
+import java.util.Date;
 
+public interface InfoEmployeeAccountDTO {
     int getId();
     String getName();
     String getAddress();
-    String getBirthday();
+    Date getBirthday();
     boolean getGender();
-    String getHealthInsurance();
+    String getIdCard();
     String getPhone();
-    String getGuardianName();
-    String getGuardianPhone();
+    String getImage();
+    String getPositionId();
+    String getPositionName();
     String getEmail();
     String getUsername();
-
 }

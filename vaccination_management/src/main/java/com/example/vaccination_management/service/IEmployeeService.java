@@ -2,6 +2,7 @@ package com.example.vaccination_management.service;
 
 import com.example.vaccination_management.dto.EmployeeCreateDTO;
 import com.example.vaccination_management.dto.EmployeeListDTO;
+import com.example.vaccination_management.dto.InfoEmployeeAccountDTO;
 import com.example.vaccination_management.dto.InforEmployeeDTO;
 import com.example.vaccination_management.entity.Employee;
 import org.springframework.data.domain.Page;
@@ -15,9 +16,9 @@ public interface IEmployeeService {
 
     void create(EmployeeCreateDTO employeeDTO);
 
-    boolean delete(int index);
+    void delete(int index);
 
-    void update(Employee employee);
+    void update(EmployeeCreateDTO employeeDTO);
 
     EmployeeCreateDTO getInforUpdateById(int id);
 
@@ -26,6 +27,12 @@ public interface IEmployeeService {
      * get information of Employee by id
      */
     InforEmployeeDTO getInforById(int i);
+
+    /**
+     * ThangLV
+     * get information of Employee by id
+     */
+    InfoEmployeeAccountDTO getInforByUsername(String username);
 
     /**
      * ThangLV
@@ -50,4 +57,8 @@ public interface IEmployeeService {
      * check duplicate Email of Employee table
      */
     Integer findByEmail(String email);
+
+    List<EmployeeListDTO> getEmployeeByPage(String nameSearch, Pageable pageable);
+
+    long getTotalEmployee(String nameSearch);
 }

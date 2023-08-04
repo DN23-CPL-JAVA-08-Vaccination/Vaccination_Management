@@ -2,6 +2,7 @@ package com.example.vaccination_management.service.impl;
 
 import com.example.vaccination_management.dto.EmployeeCreateDTO;
 import com.example.vaccination_management.dto.EmployeeListDTO;
+import com.example.vaccination_management.dto.InfoEmployeeAccountDTO;
 import com.example.vaccination_management.dto.InforEmployeeDTO;
 import com.example.vaccination_management.entity.Account;
 import com.example.vaccination_management.entity.Employee;
@@ -13,7 +14,9 @@ import com.example.vaccination_management.service.IEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -29,6 +32,9 @@ public class EmployeeService implements IEmployeeService {
     @Autowired
     private IAccountRoleService accountRoleService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public List<Employee> findAll() {
         return null;
@@ -40,25 +46,34 @@ public class EmployeeService implements IEmployeeService {
      */
     @Override
     public void create(EmployeeCreateDTO employeeDTO) {
+        String randomPassword = generateRandom(6);
+
         Account account = new Account();
         account.setUserName(employeeDTO.getIdCard());
         account.setEmail(employeeDTO.getEmail());
         account.setEnableFlag(true);
-        account.setPassword("123");
+//        account.setPassword(passwordEncoder.encode(randomPassword));
+        account.setPassword(passwordEncoder.encode("123"));
         accountService.addNew(account);
         Integer idAccount = accountService.findIdAccountByUserName(account.getUserName());
-        accountRoleService.insertAccountRole(idAccount , 3);
-        employeeRepository.createNewEmployee(employeeDTO.getAddress(),employeeDTO.getBirthday(),true,employeeDTO.isGender(),employeeDTO.getIdCard(),employeeDTO.getName(),employeeDTO.getPhone(),idAccount,employeeDTO.getPosition().getId());
+        accountRoleService.insertAccountRole(idAccount, 2);
+        employeeRepository.createNewEmployee(employeeDTO.getAddress(), employeeDTO.getBirthday(), false, employeeDTO.isGender()
+                , employeeDTO.getIdCard(), employeeDTO.getName(), employeeDTO.getPhone(), employeeDTO.getImage(), idAccount, employeeDTO.getPosition().getId());
     }
 
     @Override
-    public boolean delete(int index) {
-        return false;
+    public void delete(int index) {
+        employeeRepository.deleteEmployee(index);
     }
 
     @Override
-    public void update(Employee employee) {
-
+    public void update(EmployeeCreateDTO employeeDTO) {
+        Account account = new Account();
+        account.setUserName(employeeDTO.getIdCard());
+        account.setEmail(employeeDTO.getEmail());
+        accountService.update(account);
+        employeeRepository.updateEmployee(employeeDTO.getAddress(), employeeDTO.getBirthday(), employeeDTO.isGender(), employeeDTO.getIdCard()
+                , employeeDTO.getImage(), employeeDTO.getName(), employeeDTO.getPhone(), employeeDTO.getPosition().getId(), employeeDTO.getId());
     }
 
     /**
@@ -71,7 +86,7 @@ public class EmployeeService implements IEmployeeService {
         InforEmployeeDTO employeeDTO = getInforById(id);
         System.out.println(employeeDTO.getPositionId());
         System.out.println(employeeDTO.getPositionName());
-        EmployeeCreateDTO employeeUpdateDTO =  new EmployeeCreateDTO();
+        EmployeeCreateDTO employeeUpdateDTO = new EmployeeCreateDTO();
 
         employeeUpdateDTO.setId(employeeDTO.getId());
         employeeUpdateDTO.setName(employeeDTO.getName());
@@ -84,9 +99,9 @@ public class EmployeeService implements IEmployeeService {
 
 
         int positionId = Integer.parseInt(employeeDTO.getPositionId());
-        String positionName =  employeeDTO.getPositionName();
+        String positionName = employeeDTO.getPositionName();
 
-        employeeUpdateDTO.setPosition(new Position( positionId, positionName));
+        employeeUpdateDTO.setPosition(new Position(positionId, positionName));
         employeeUpdateDTO.setEmail(employeeDTO.getEmail());
         return employeeUpdateDTO;
     }
@@ -98,6 +113,15 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public InforEmployeeDTO getInforById(int i) {
         return employeeRepository.getInforById(i);
+    }
+
+    /**
+     * ThangLV
+     * get information of Employee by username
+     */
+    @Override
+    public InfoEmployeeAccountDTO getInforByUsername(String username) {
+        return employeeRepository.getInforByUsername(username);
     }
 
     /**
@@ -134,5 +158,31 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public Integer findByEmail(String email) {
         return employeeRepository.findByEmail(email);
+    }
+
+    /**
+     * ThangLV
+     * random Password
+     */
+    public static String generateRandom(int length) {
+        String allAlpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        String randomId = "";
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = (int) Math.floor(52 * Math.random());
+            randomId += allAlpha.charAt(randomIndex);
+        }
+        return randomId;
+    }
+
+    @Override
+    public List<EmployeeListDTO> getEmployeeByPage(String nameSearch,Pageable pageable) {
+        Page<EmployeeListDTO> employeeListDTOPage = employeeRepository.findEmployeeList(nameSearch, pageable);
+        return employeeListDTOPage.getContent();
+    }
+
+    @Override
+    public long getTotalEmployee(String name) {
+        return employeeRepository.getTotalEmployee(name);
     }
 }

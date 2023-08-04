@@ -12,7 +12,7 @@
 body {
   font-family: "Open Sans", sans-serif;
   color: #444444;
-  background-image: linear-gradient(rgba(99, 92, 66, 0.5), rgba(99, 92, 66, 0.5)), url("https://d2jx2rerrg6sh3.cloudfront.net/images/news/ImageForNews_735874_16738670828505688.jpg");
+  background-image: url("https://d2jx2rerrg6sh3.cloudfront.net/images/news/ImageForNews_735874_16738670828505688.jpg");
   background-size: cover;
   background-attachment: fixed;
 

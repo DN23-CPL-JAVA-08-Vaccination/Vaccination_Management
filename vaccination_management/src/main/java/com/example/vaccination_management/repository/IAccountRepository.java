@@ -21,6 +21,14 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
 
     /**
      * ThangLV
+     * Update Account of Employee
+     */
+    @Modifying
+    @Query(value = "UPDATE account SET email = ?1, username = ?2 WHERE (id = ?3);",nativeQuery = true)
+    void updateAccount(String email, String username, Integer id);
+
+    /**
+     * ThangLV
      * get Id of Account By UserName
      */
     @Query(value = "select a.id from account a where a.username = ?", nativeQuery = true)

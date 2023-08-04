@@ -1,19 +1,3 @@
-html,
-body {
-    height: 100vh;
-    display: grid;
-    place-items: center;
-    font-family: "Open Sans", sans-serif;
-}
-
-body {
-    /*background-image: url("https://images.pexels.com/photos/2079438/pexels-photo-2079438.jpeg?cs=srgb&dl=pexels-emre-can-acer-2079438.jpg&fm=jpg");*/
-    background-image: url("https://d2jx2rerrg6sh3.cloudfront.net/images/news/ImageForNews_735874_16738670828505688.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-}
-
 * {
     margin: 0;
     padding: 0;
@@ -34,6 +18,9 @@ body {
     --cor-background-desfocado: rgba(255, 255, 255, 0.15);
     --cor-shadow-desfocado: rgba(0, 0, 0, 0.1);
     --cor-borda-desfocado: rgba(255, 255, 255, 0.2);
+}
+html, body {
+    height: 100%;
 }
 
 .avatar {
@@ -63,8 +50,9 @@ body {
     background-image: url("https://d2jx2rerrg6sh3.cloudfront.net/images/news/ImageForNews_735874_16738670828505688.jpg");
     background-size: cover;
     background-attachment: fixed;
-    height: 1000px;
+    height: 100%;
     text-align: -webkit-center;
+    padding-top: 80px;
 }
 
 .content_add {
@@ -72,7 +60,8 @@ body {
     padding: 48px;
     margin-top: 100px;
     opacity: 0.9;
-    border-radius: 30px
+    border-radius: 30px;
+    margin-bottom: 70px;
 }
 
 .content_add .form-group{
@@ -90,6 +79,9 @@ body {
     color: #203a4f;
     padding: 13px 0px 13px 5px;
     font-size: larger;
+}
+.info{
+    padding: 0 10px 10px 10px;
 }
 .d-flex label{
     color: #203a4f;
@@ -152,7 +144,6 @@ body {
     color: #a60184 !important;
 }
 main.card {
-    margin-top: 80px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 100%;

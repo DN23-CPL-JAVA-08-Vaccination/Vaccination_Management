@@ -14,13 +14,19 @@ public interface IAccountService {
 
     /**
      * ThangLV
+     * insert new Account of Patient
+     */
+    void update(Account account);
+
+    /**
+     * ThangLV
      * find Id of Account by Username
      */
     Integer findIdAccountByUserName(String username);
 
     /**
      * ThangLV
-     * find Id of Account by Username
+     * find Account by Username
      */
     Optional<Account> findAccountByUserName(String username);
 }

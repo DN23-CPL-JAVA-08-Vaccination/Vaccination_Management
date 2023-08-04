@@ -3,12 +3,11 @@ package com.example.vaccination_management.controller;
 import com.example.vaccination_management.dto.EmployeeCreateDTO;
 import com.example.vaccination_management.dto.EmployeeListDTO;
 
-import com.example.vaccination_management.dto.InforEmployeeDTO;
 import com.example.vaccination_management.service.IEmployeeService;
 import com.example.vaccination_management.service.IPositionService;
 import com.example.vaccination_management.validation.EmployeeCreateValidator;
+import com.example.vaccination_management.validation.EmployeeEditValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,8 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Optional;
+import java.util.List;
 
 @RequestMapping("/admin/employee")
 @Controller
@@ -33,40 +33,38 @@ public class EmployeeController {
     @Autowired
     private EmployeeCreateValidator employeeCreateValidator;
 
+    @Autowired
+    private EmployeeEditValidator employeeEditValidator;
+
+
+
+    String currentEmail = null;
+    String currentPhone = null;
+    String currentIdCard = null;
 
     /**
      * ThangLV
      * get list Employee by Employee's name
      */
     @GetMapping("")
-    public String showList(Model model,
-                           @RequestParam(required = false, defaultValue = "") String searchName,
-                           @RequestParam Optional<Integer> page) {
-        int pageBegin = 0;
-        if (page.isPresent()) {
-            pageBegin = page.get();
-        }
-        Pageable pageable = PageRequest.of(pageBegin, 4, Sort.by("name").descending());
+    public String listEmPloyee(@RequestParam(value = "page", defaultValue = "0") int page,
+                               @RequestParam(value = "size", defaultValue = "4") int size,
+                               @RequestParam(required = false, defaultValue = "") String searchName,
+                               Model model) {
 
-        Page<EmployeeListDTO> employeeListDTOS;
-
-        employeeListDTOS = employeeService.searchByName('%' + searchName + '%', pageable);
-
+        Pageable pageable = PageRequest.of(page, size, Sort.by("name").descending());
+        List<EmployeeListDTO> employeeListDTOS = employeeService.getEmployeeByPage('%' + searchName + '%', pageable);
         model.addAttribute("employeeListDTOS", employeeListDTOS);
+        long totalEmployee = employeeService.getTotalEmployee('%' + searchName + '%');
+        int totalPages = (int) Math.ceil((double) totalEmployee / size);
+        model.addAttribute("totalPages", totalPages);
         model.addAttribute("searchName", searchName);
+
+        model.addAttribute("currentPage", page);
         return "admin/employee/list";
     }
 
-    /**
-     * ThangLV
-     * get information of employee , use Show
-     */
-    @GetMapping("/infor/{id}")
-    public String getAttachFacility(Model model, @PathVariable int id) {
-        InforEmployeeDTO employeeDTO = employeeService.getInforById(id);
-        model.addAttribute("employeeDTO", employeeDTO);
-        return "account_information";
-    }
+
 
 
     /**
@@ -75,8 +73,7 @@ public class EmployeeController {
      */
     @GetMapping("/create")
     public String showFormCreate(Model model) {
-        model.addAttribute("employeeDTO", new EmployeeCreateDTO());
-
+        model.addAttribute("employeeCreateDTO", new EmployeeCreateDTO());
         model.addAttribute("positionList", positionService.findAll());
         return "admin/employee/create";
     }
@@ -86,42 +83,75 @@ public class EmployeeController {
      * get Data in form use create Employee
      */
     @PostMapping("/create")
-    public String save(@Validated @ModelAttribute EmployeeCreateDTO employeeDTO, BindingResult bindingResult) {
-        employeeCreateValidator.validate(employeeDTO, bindingResult);
+    public String save(@Validated @ModelAttribute EmployeeCreateDTO employeeCreateDTO, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
 
+        employeeCreateValidator.validate(employeeCreateDTO, bindingResult);
         if (bindingResult.hasErrors()) {
+            model.addAttribute("positionList", positionService.findAll());
+            model.addAttribute("msg", "Vui lòng nhập đúng các trường !");
             return "admin/employee/create";
         }
-        employeeService.create(employeeDTO);
-        return "redirect:/employee/list";
+        try {
+            employeeService.create(employeeCreateDTO);
+
+        } catch (Exception ex) {
+            attributes.addFlashAttribute("msg", "Thêm mới thất bại !");
+            return "redirect:/admin/employee";
+        }
+        attributes.addFlashAttribute("msg", "Thêm mới thành công !");
+        return "redirect:/admin/employee";
     }
 
 
     @GetMapping("/update")
     public String showFormUpdate(@RequestParam int id, Model model) {
-        model.addAttribute("employee", employeeService.getInforUpdateById(id));
+        EmployeeCreateDTO employeeCreateDTO = employeeService.getInforUpdateById(id);
+        if (employeeCreateDTO == null) {
+            return "redirect:/admin/employee";
+        }
+        this.currentEmail = employeeCreateDTO.getEmail();
+        this.currentIdCard = employeeCreateDTO.getIdCard();
+        this.currentPhone = employeeCreateDTO.getPhone();
+        model.addAttribute("employeeCreateDTO", employeeCreateDTO);
         model.addAttribute("positionList", positionService.findAll());
         return "admin/employee/update";
     }
 
     @PostMapping("/update")
-    public String update(@Validated @ModelAttribute EmployeeCreateDTO employeeDTO, @RequestParam String date, BindingResult bindingResult) {
-//        employeeDTO.setBirthday(date);
-//
-//        if (bindingResult.hasErrors()) {
-//            return "employee/create";
-//        }
-//        Customer customer = new Customer();
-//        BeanUtils.copyProperties(employeeDTO, customer);
-//        customerService.save(customer);
-        return "redirect:/customer/list";
+    public String update(@Validated @ModelAttribute EmployeeCreateDTO employeeCreateDTO, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
+        employeeCreateDTO.setCurrentEmail(this.currentEmail);
+        employeeCreateDTO.setCurrentPhone(this.currentPhone);
+        employeeCreateDTO.setCurrentIdCard(this.currentIdCard);
+        employeeEditValidator.validate(employeeCreateDTO, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("positionList", positionService.findAll());
+            model.addAttribute("msg", "Vui lòng nhập đúng các trường !");
+            return "admin/employee/update";
+        }
+
+        try {
+            employeeService.update(employeeCreateDTO);
+        } catch (Exception e) {
+            attributes.addFlashAttribute("msg", "Cập nhật thất bại !");
+            return "redirect:/admin/employee";
+
+        }
+        attributes.addFlashAttribute("msg", "Cập nhật thành công !");
+        return "redirect:/admin/employee";
     }
 
     @GetMapping("/delete")
-    public String delete(@RequestParam int id) {
-        if (employeeService.delete(id)){
+    public String delete(@RequestParam int id,RedirectAttributes attributes) {
 
+        try {
+            employeeService.delete(id);
+        }catch (Exception e){
+            attributes.addFlashAttribute("msg","Xoá thất bại !");
+            return "redirect:/admin/employee";
         }
-        return "redirect:/customer/list";
+        attributes.addFlashAttribute("msg","Xoá thành công !");
+
+        return "redirect:/admin/employee";
     }
 }

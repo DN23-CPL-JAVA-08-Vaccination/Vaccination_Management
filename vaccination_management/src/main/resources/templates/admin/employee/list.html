@@ -9,6 +9,9 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
     <link th:href="@{/css/styles-admin-thanglv.css}" rel="stylesheet">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src=" http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 </head>
 <body class="sb-nav-fixed">
 <th:block th:insert="admin/nav"></th:block>
@@ -24,7 +27,17 @@
                 </ol>
                 <div class="card mb-4">
                     <div class="card-header">
-                        <button type="button" class="btn btn-outline-primary">Thêm mới +</button>
+                        <a th:href="@{/admin/employee/create}">
+                            <button type="button" class="btn btn-outline-primary">Thêm mới +</button>
+                        </a>
+                        <form  th:action="@{/admin/employee}" method="get" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 float-end">
+                            <div class="input-group">
+                                <input th:value="${searchName}" class="form-control" type="text" placeholder="Nhập tên nhân viên" name="searchName"
+                                       aria-label="Search for..." aria-describedby="btnNavbarSearch"/>
+                                <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i
+                                        class="fas fa-search"></i></button>
+                            </div>
+                        </form>
                     </div>
                     <div class="card-body">
                         <table class="table align-middle mb-0 bg-white">
@@ -45,6 +58,14 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <img
+                                                th:if="${employee.getImage() == null}"
+                                                src="https://cdn-icons-png.flaticon.com/512/6386/6386976.png"
+                                                alt="Ảnh"
+                                                style="width: 45px; height: 45px"
+                                                class="rounded-circle"
+                                        />
+                                        <img
+                                                th:if="${employee.getImage() != null}"
                                                 th:src="${employee.getImage()}"
                                                 alt="Ảnh"
                                                 style="width: 45px; height: 45px"
@@ -55,8 +76,6 @@
                                         </div>
                                     </div>
                                 </td>
-                                <!--                                <td th:text="${employee.getBirthday()}">-->
-                                <!--                                </td>-->
                                 <td th:text="${#dates.format(employee.getBirthday(), 'dd/MM/yyyy')}"></td>
                                 <th:block>
                                     <td th:if="${employee.getGender()}">Nam</td>
@@ -66,30 +85,49 @@
                                 <td th:text="${employee.getPhone()}">0123456789</td>
                                 <td th:text="${employee.getEmail()}">thangle2912@gmail.com</td>
                                 <td>
-                                    <button type="button" class="fa-solid fa-trash" data-bs-toggle="modal"
-                                            data-bs-target="#modelDelete"
-                                            th:attr="onclick=|deleteEmployee('${employee.getId()}','${employee.getName()}')|">
-                                        Xoá
-                                    </button>
-                                </td>
-                                <td>
-                                    <a th:href="@{/employee/update(id=${employee.getId()})}">
-                                        <button type="button" class="fa-solid fa-pen-to-square">
-                                            Cập nhật
-                                        </button>
+                                    <a class="btn" data-bs-toggle="modal"
+                                       data-bs-target="#modelDelete"
+                                       th:attr="onclick=|deleteEmployee('${employee.getId()}','${employee.getName()}')|">
+                                        <i class="fa-solid fa-trash"></i>
+
                                     </a>
                                 </td>
                                 <td>
-                                    <button type="button" class="fa-solid fa-circle-info" data-bs-toggle="modal"
-                                            data-bs-target="#modalShowInfor"
-                                            th:attr="onclick=|showEmployeeDetail('${employee.getName()}','${employee.getAddress()}','${#dates.format(employee.getBirthday(), 'dd/MM/yyyy')}','${employee.getGender()}','${employee.getIdCard()}'
+                                    <a  th:href="@{/admin/employee/update(id=${employee.getId()})}" class="btn ">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class=" btn" data-bs-toggle="modal"
+                                       data-bs-target="#modalShowInfor"
+                                       th:attr="onclick=|showEmployeeDetail('${employee.getName()}','${employee.getAddress()}','${#dates.format(employee.getBirthday(), 'dd/MM/yyyy')}','${employee.getGender()}','${employee.getIdCard()}'
                                                                                     ,'${employee.getPhone()}','${employee.getImage()}','${employee.getPosition()}','${employee.getEmail()}','${employee.getUsername()}')|">
-                                        Chi tiết
-                                    </button>
+                                        <i class="fa-solid fa-circle-info"></i>
+                                    </a>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
+                        <nav aria-label="Page navigation" class="mt-3">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" th:classappend="${currentPage == 0} ? disabled : ''">
+                                    <a class="page-link"
+                                       th:href="@{/admin/employee(page=${currentPage - 1}, size=${size})}">Previous</a>
+                                </li>
+                                <li class="page-item" th:classappend="${currentPage == i} ? active : ''"
+                                    th:each="i: ${#numbers.sequence(0, totalPages - 1)}">
+                                <li class="page-item" th:classappend="${currentPage == i} ? active : ''"
+                                    th:each="i: ${totalPages > 0 ? #numbers.sequence(0, totalPages - 1) : {}}">
+                                    <a class="page-link" th:href="@{/admin/employee(page=${i}, size=${size})}"
+                                       th:text="${i + 1}"></a>
+                                </li>
+                                <li class="page-item"
+                                    th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                    <a class="page-link"
+                                       th:text="Next"></a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -106,14 +144,14 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Thông tin chi tiết</h5>
             </div>
             <div class="modal-body">
-                <div class="content_add">
+                <div class="">
                     <form action="#">
                         <div class="row align-items-end">
                             <div class="row col-md-12">
                                 <div class="col">
                                     <div class="d-flex">
                                         <div class="form-group col-md-6">
-                                            <label class="info" >Tên tài khoản :</label>
+                                            <label class="info">Tên tài khoản :</label>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <span class="info-person" id="usernameDetail">thangle2912</span>
@@ -137,7 +175,7 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <img id="imageDetail" src="./avatar.jpg" class=" mx-auto d-block avatar">
+                                    <img id="imageDetail" th:src="@{/img/avata.jpg}" class=" mx-auto d-block avatar">
                                 </div>
                             </div>
                             <div class="row col-md-12">
@@ -192,7 +230,8 @@
                                     <label class="info">Địa chỉ :</label>
                                 </div>
                                 <div class="form-group col-md-9">
-                                    <span class="info-person" id="addressDetail">295 Nguyễn Tất Thành, Đà Nẵng, Việt Nam</span>
+                                    <span class="info-person"
+                                          id="addressDetail">295 Nguyễn Tất Thành, Đà Nẵng, Việt Nam</span>
                                 </div>
                             </div>
                         </div>
@@ -217,10 +256,10 @@
             <div class="modal-body">
                 Bạn có muốn sa thải: <span id="titleEmployeeDelete"></span> ?
             </div>
-            <form action="/employee/delete" method="get">
+            <form th:action="@{/admin/employee/delete}" method="get">
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                    <button type="button" class="btn btn-primary">Xác nhận</button>
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
                 </div>
                 <input hidden name="id" type="text" id="idDelete">
                 <input hidden name="action" value="delete" type="text" id="">
@@ -247,9 +286,9 @@
         document.getElementById("addressDetail").innerText = address;
         document.getElementById("birthdayDetail").innerText = birthday;
         let tempGender;
-        if (gender){
+        if (gender) {
             tempGender = 'Nam';
-        }else {
+        } else {
             tempGender = 'Nữ';
         }
         document.getElementById("genderDetail").innerText = tempGender;
@@ -262,26 +301,50 @@
 
     }
 
-    //Bắt sự kiện nhấn nút xoá nhiều
-    // document.getElementById('btn').onclick = function()
-    // {
-    //     var checkbox = document.getElementsByName('idDelete');
-    //     var result = "";
-    //     for (var i = 0; i < checkbox.length; i++){
-    //         if (checkbox[i].checked === true){
-    //             result += '.'+checkbox[i].value;
-    //         }
-    //     }
-    //     document.getElementById('idDeleteMore').value = result;
-    // };
-    // const checkboxs = document.getElementsByName('idDelete');
-    // checkboxs.addEventListener('change', (event) => {
-    //     if (event.currentTarget.checked) {
-    //         alert('checked');
-    //     } else {
-    //         alert('not checked');
-    //     }
-    // })
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+    var str = [[${msg}]];
+
+    if (str != null) {
+        if (str.includes("Cập nhật")) {
+            if (str.includes("thành công")) {
+                toastr.success(str, "Thông báo");
+            } else {
+                toastr.error(str, "Thông báo");
+            }
+        }
+        if (str.includes("Thêm mới")) {
+            if (str.includes("thành công")) {
+                toastr.success(str, "Thông báo");
+            } else {
+                toastr.error(str, "Thông báo");
+            }
+        }
+        if (str.includes("Xoá")) {
+            if (str.includes("thành công")) {
+                toastr.success(str, "Thông báo");
+            } else {
+                toastr.error(str, "Thông báo");
+            }
+        }
+    }
+
 </script>
 </body>
 </html>

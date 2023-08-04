@@ -1,7 +1,6 @@
 package com.example.vaccination_management.service;
 
-import com.example.vaccination_management.dto.EmployeeListDTO;
-import com.example.vaccination_management.dto.PatientInforDTO;
+import com.example.vaccination_management.dto.InforPatientDTO;
 
 public interface IPatientService {
 
@@ -9,5 +8,5 @@ public interface IPatientService {
      * ThangLV
      * get all information of Patient
      */
-    PatientInforDTO getInforById(int i);
+    InforPatientDTO getInforByUsername(String username);
 }

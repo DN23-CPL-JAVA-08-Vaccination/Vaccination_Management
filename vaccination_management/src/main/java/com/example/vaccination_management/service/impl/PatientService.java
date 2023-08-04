@@ -1,6 +1,6 @@
 package com.example.vaccination_management.service.impl;
 
-import com.example.vaccination_management.dto.PatientInforDTO;
+import com.example.vaccination_management.dto.InforPatientDTO;
 import com.example.vaccination_management.repository.IPatientRepository;
 import com.example.vaccination_management.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class PatientService implements IPatientService {
      * get all information of Patient
      */
     @Override
-    public PatientInforDTO getInforById(int i) {
-        return patientRepository.getInforById(i);
+    public InforPatientDTO getInforByUsername(String username) {
+        return patientRepository.getInforByUsername(username);
     }
 }
