@@ -14,12 +14,28 @@ public interface IEmployeeService {
 
     List<Employee> findAll();
 
+    /**
+     * ThangLV
+     * insert Employee, Account of Employee, AccountRole of Account
+     */
     void create(EmployeeCreateDTO employeeDTO);
 
+    /**
+     * ThangLV
+     * delete Employee By id
+     */
     void delete(int index);
 
+    /**
+     * ThangLV
+     * update Employee, Account of Employee
+     */
     void update(EmployeeCreateDTO employeeDTO);
 
+    /**
+     * ThangLV
+     * get information of Employee use Update
+     */
     EmployeeCreateDTO getInforUpdateById(int id);
 
     /**
@@ -58,7 +74,15 @@ public interface IEmployeeService {
      */
     Integer findByEmail(String email);
 
+    /**
+     * ThangLV
+     * get list employee, Page used Pagination
+     */
     List<EmployeeListDTO> getEmployeeByPage(String nameSearch, Pageable pageable);
 
+    /**
+     * ThangLV
+     * get total Employee by Name
+     */
     long getTotalEmployee(String nameSearch);
 }

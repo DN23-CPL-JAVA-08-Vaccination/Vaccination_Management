@@ -39,7 +39,7 @@ public class AccountDetailService implements UserDetailsService {
 
     /**
      * ThangLV
-     * get authorities
+     * get authorities(List Role)
      */
     public Collection<GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>)

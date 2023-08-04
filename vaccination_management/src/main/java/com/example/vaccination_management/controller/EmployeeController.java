@@ -65,8 +65,6 @@ public class EmployeeController {
     }
 
 
-
-
     /**
      * ThangLV
      * show form Create Employee
@@ -102,7 +100,10 @@ public class EmployeeController {
         return "redirect:/admin/employee";
     }
 
-
+    /**
+     * ThangLV
+     * show form update information employee
+     */
     @GetMapping("/update")
     public String showFormUpdate(@RequestParam int id, Model model) {
         EmployeeCreateDTO employeeCreateDTO = employeeService.getInforUpdateById(id);
@@ -117,6 +118,10 @@ public class EmployeeController {
         return "admin/employee/update";
     }
 
+    /**
+     * ThangLV
+     *  update information employee
+     */
     @PostMapping("/update")
     public String update(@Validated @ModelAttribute EmployeeCreateDTO employeeCreateDTO, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
         employeeCreateDTO.setCurrentEmail(this.currentEmail);
@@ -141,6 +146,10 @@ public class EmployeeController {
         return "redirect:/admin/employee";
     }
 
+    /**
+     * ThangLV
+     * delete logic information employee
+     */
     @GetMapping("/delete")
     public String delete(@RequestParam int id,RedirectAttributes attributes) {
 

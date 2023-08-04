@@ -20,6 +20,10 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
+    /**
+     * ThangLV
+     * redirect url when login success
+     */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         boolean hasUserRole = false;

@@ -69,6 +69,10 @@ public class MainController {
         return "home_patient";
     }
 
+    /**
+     * ThangLV
+     * show information of employee, admin after login
+     */
     @GetMapping("/infor-account/employee")
     public String showInforAccountEmployee(Model model) {
         String username = accountDetailService.getCurrentUserName();
@@ -77,6 +81,11 @@ public class MainController {
         return "admin/employee_infor_account";
     }
 
+
+    /**
+     * ThangLV
+     * show information of user(patient) after login
+     */
     @GetMapping("/infor-account/patient")
     public String showInforAccountPatient(Model model) {
         String username = accountDetailService.getCurrentUserName();

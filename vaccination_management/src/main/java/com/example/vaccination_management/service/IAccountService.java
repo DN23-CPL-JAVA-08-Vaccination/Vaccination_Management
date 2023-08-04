@@ -10,13 +10,13 @@ public interface IAccountService {
      * ThangLV
      * insert new Account of Patient
      */
-    void addNew(Account account);
+    void addNewOfEmployee(Account account);
 
     /**
      * ThangLV
      * insert new Account of Patient
      */
-    void update(Account account);
+    void updateAccountOfEmployee(Account account);
 
     /**
      * ThangLV
@@ -29,4 +29,12 @@ public interface IAccountService {
      * find Account by Username
      */
     Optional<Account> findAccountByUserName(String username);
+
+
+
+    /**
+     * ThangLV
+     * change password
+     */
+    void changePasswordLogin(String password, String username) ;
 }

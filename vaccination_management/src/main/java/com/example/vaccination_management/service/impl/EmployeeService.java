@@ -54,24 +54,33 @@ public class EmployeeService implements IEmployeeService {
         account.setEnableFlag(true);
 //        account.setPassword(passwordEncoder.encode(randomPassword));
         account.setPassword(passwordEncoder.encode("123"));
-        accountService.addNew(account);
+        accountService.addNewOfEmployee(account);
         Integer idAccount = accountService.findIdAccountByUserName(account.getUserName());
         accountRoleService.insertAccountRole(idAccount, 2);
         employeeRepository.createNewEmployee(employeeDTO.getAddress(), employeeDTO.getBirthday(), false, employeeDTO.isGender()
                 , employeeDTO.getIdCard(), employeeDTO.getName(), employeeDTO.getPhone(), employeeDTO.getImage(), idAccount, employeeDTO.getPosition().getId());
     }
 
+    /**
+     * ThangLV
+     * delete Employee By id
+     */
     @Override
     public void delete(int index) {
         employeeRepository.deleteEmployee(index);
     }
 
+
+    /**
+     * ThangLV
+     * update Employee, Account of Employee
+     */
     @Override
     public void update(EmployeeCreateDTO employeeDTO) {
         Account account = new Account();
         account.setUserName(employeeDTO.getIdCard());
         account.setEmail(employeeDTO.getEmail());
-        accountService.update(account);
+        accountService.updateAccountOfEmployee(account);
         employeeRepository.updateEmployee(employeeDTO.getAddress(), employeeDTO.getBirthday(), employeeDTO.isGender(), employeeDTO.getIdCard()
                 , employeeDTO.getImage(), employeeDTO.getName(), employeeDTO.getPhone(), employeeDTO.getPosition().getId(), employeeDTO.getId());
     }
@@ -175,12 +184,20 @@ public class EmployeeService implements IEmployeeService {
         return randomId;
     }
 
+    /**
+     * ThangLV
+     * get list employee, Page used Pagination
+     */
     @Override
     public List<EmployeeListDTO> getEmployeeByPage(String nameSearch,Pageable pageable) {
         Page<EmployeeListDTO> employeeListDTOPage = employeeRepository.findEmployeeList(nameSearch, pageable);
         return employeeListDTOPage.getContent();
     }
 
+    /**
+     * ThangLV
+     * get total Employee by Name
+     */
     @Override
     public long getTotalEmployee(String name) {
         return employeeRepository.getTotalEmployee(name);

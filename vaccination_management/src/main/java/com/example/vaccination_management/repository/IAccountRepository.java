@@ -16,7 +16,7 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
      * Insert new Account of Employee
      */
     @Modifying
-    @Query(value = "INSERT INTO account (email, enable_flag, password, username) VALUES (?,?,?,?)",nativeQuery = true)
+    @Query(value = "INSERT INTO account (email, enable_flag, password, username) VALUES (?,?,?,?)", nativeQuery = true)
     void insertAccount(String email, boolean enableFlag, String password, String username);
 
     /**
@@ -24,7 +24,7 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
      * Update Account of Employee
      */
     @Modifying
-    @Query(value = "UPDATE account SET email = ?1, username = ?2 WHERE (id = ?3);",nativeQuery = true)
+    @Query(value = "UPDATE account SET email = ?1, username = ?2 WHERE (id = ?3);", nativeQuery = true)
     void updateAccount(String email, String username, Integer id);
 
     /**
@@ -41,5 +41,18 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
     @Query(value = "SELECT * FROM account where username = ?1", nativeQuery = true)
     Optional<Account> findAccountByUserName(String username);
 
+    /**
+     * ThangLV
+     * get current password
+     */
+    @Query(value = "select password from account where username = ?", nativeQuery = true)
+    String getCurrentPassword(String userName);
 
+    /**
+     * ThangLV
+     * change password
+     */
+    @Modifying
+    @Query(value = "update account set password =?1 where username=?2 ", nativeQuery = true)
+    void changePassword(String password, String userName);
 }
