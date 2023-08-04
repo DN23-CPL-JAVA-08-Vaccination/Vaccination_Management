@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
-@RequestMapping("/vaccines")
+@RequestMapping("/admin/vaccines")
 @Controller
 public class VaccineController {
     @Autowired
@@ -61,7 +61,7 @@ public class VaccineController {
         vaccineService.saveVaccine(newVaccine);
         redirectAttributes.addFlashAttribute("messages", "The vaccine has been saved successfully");
 
-        return "redirect:/vaccines";
+        return "redirect:/admin/vaccines";
     }
 
     @GetMapping("/editVaccine/{id}")
@@ -84,7 +84,7 @@ public class VaccineController {
         vaccineService.updateVaccine(updatedVaccine);
         redirectAttributes.addFlashAttribute("messages", "The vaccine has been updated successfully");
 
-        return "redirect:/vaccines";
+        return "redirect:/admin/vaccines";
     }
 
     @GetMapping("/recycleVaccine/destroyVaccine/{id}")
@@ -96,7 +96,7 @@ public class VaccineController {
         }
 
         redirectAttributes.addFlashAttribute("messages", "The vaccine has been destroyed successfully");
-        return "redirect:/vaccines/recycleVaccine";
+        return "redirect:/admin/vaccines/recycleVaccine";
     }
 
     @GetMapping("/deleteVaccine/{id}")
@@ -105,7 +105,7 @@ public class VaccineController {
 
         redirectAttributes.addFlashAttribute("messages", "The vaccine has been deleted successfully");
 
-        return "redirect:/vaccines";
+        return "redirect:/admin/vaccines";
     }
 
     @GetMapping("/recycleVaccine/restoreVaccine/{id}")
@@ -114,7 +114,7 @@ public class VaccineController {
 
         redirectAttributes.addFlashAttribute("messages", "The vaccine has been restore successfully");
 
-        return "redirect:/vaccines/recycleVaccine";
+        return "redirect:/admin/vaccines/recycleVaccine";
     }
 
     @GetMapping("/{id}")

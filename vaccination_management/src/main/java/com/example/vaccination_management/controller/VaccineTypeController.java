@@ -17,7 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("vaccineTypes")
+@RequestMapping("/admin/vaccineTypes")
 public class VaccineTypeController {
     @Autowired
     private VaccineTypeService vaccineTypeService;
@@ -62,7 +62,7 @@ public class VaccineTypeController {
         vaccineTypeService.saveVaccineType(newVaccineType);
         redirectAttributes.addFlashAttribute("messages", "The vaccine type has been saved successfully");
 
-        return "redirect:/vaccineTypes";
+        return "redirect:/admin/vaccineTypes";
     }
 
     @GetMapping("/deleteVaccineType/{id}")
@@ -75,7 +75,7 @@ public class VaccineTypeController {
 
         redirectAttributes.addFlashAttribute("messages", "The vaccine type has been deleted successfully");
 
-        return "redirect:/vaccineTypes";
+        return "redirect:/admin/vaccineTypes";
     }
 
     @GetMapping("/editVaccineType/{id}")
@@ -89,7 +89,7 @@ public class VaccineTypeController {
         } catch (VaccineTypeNoFoundException e) {
             redirectAttributes.addFlashAttribute("messages", "The vaccine type has been updated successfully");
 
-            return "redirect:/vaccineTypes";
+            return "redirect:/admin/vaccineTypes";
         }
     }
 }

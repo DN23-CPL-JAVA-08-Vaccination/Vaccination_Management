@@ -22,7 +22,7 @@ public class InventoryController {
     @Autowired
     private VaccineService vaccineService;
 
-    @GetMapping("/vaccines/newInventory/{id}")
+    @GetMapping("/admin/vaccines/newInventory/{id}")
     public String showNewInventoryForm(@PathVariable("id") int vaccineID, Model model) {
         try {
             Vaccine vaccine = vaccineService.getVaccineByID(vaccineID);
@@ -36,16 +36,16 @@ public class InventoryController {
         return "Admin/Inventory/NewInventoryForm";
     }
 
-    @PostMapping("/vaccines/saveInventory")
+    @PostMapping("/admin/vaccines/saveInventory")
     public String saveInventory(Inventory inventory, RedirectAttributes redirectAttributes) {
         inventoryService.saveInventory(inventory);
 
         redirectAttributes.addFlashAttribute("messages", "The inventory has been created successfully");
 
-        return "redirect:/vaccines/" + inventory.getVaccine().getId();
+        return "redirect:/admin/vaccines/" + inventory.getVaccine().getId();
     }
 
-    @GetMapping("/vaccines/editInventory/{id}")
+    @GetMapping("/admin/vaccines/editInventory/{id}")
     public String showUpdateForm(@PathVariable("id") int inventoryID, Model model) {
         try {
             Inventory inventory = inventoryService.getInventoryByID(inventoryID);
@@ -61,16 +61,16 @@ public class InventoryController {
         return "Admin/Inventory/UpdateInventoryForm";
     }
 
-    @PostMapping("/vaccines/updateInventory")
+    @PostMapping("/admin/vaccines/updateInventory")
     public String updateInventory(Inventory updatedInventory, RedirectAttributes redirectAttributes) {
         inventoryService.updateInventory(updatedInventory);
 
         redirectAttributes.addFlashAttribute("messages", "The inventory has been updated successfully");
 
-        return "redirect:/vaccines/" + updatedInventory.getVaccine().getId();
+        return "redirect:/admin/vaccines/" + updatedInventory.getVaccine().getId();
     }
 
-    @GetMapping("/vaccines/deleteInventory/{id}")
+    @GetMapping("/admin/vaccines/deleteInventory/{id}")
     public String deleteInventory(@PathVariable("id") int inventoryID, RedirectAttributes redirectAttributes) {
         int vaccineID = 0;
         try {
@@ -84,6 +84,6 @@ public class InventoryController {
 
         redirectAttributes.addFlashAttribute("messages", "The inventory has been destroyed successfully");
 
-        return "redirect:/vaccines/" + vaccineID;
+        return "redirect:/admin/vaccines/" + vaccineID;
     }
 }

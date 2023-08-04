@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -8,7 +8,7 @@
     <meta name="author" content="" />
     <title>Detail [[${pageTitle}]]</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link href="/css/adminStyle_HuyLVN.css" rel="stylesheet" />
+    <link th:href="@{/css/adminStyle_HuyLVN.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
@@ -32,7 +32,7 @@
                 <li><a class="dropdown-item" href="#!">Settings</a></li>
                 <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#!">Logout</a></li>
+                <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
             </ul>
         </li>
     </ul>
@@ -48,11 +48,11 @@
                         Dashboard
                     </a>
                     <div class="sb-sidenav-menu-heading">Management</div>
-                    <a class="nav-link" href="/vaccineTypes">
+                    <a class="nav-link" th:href="@{/admin/vaccineTypes}">
                         <div class="sb-nav-link-icon"><i class="fa fa-heartbeat"></i></div>
                         Vaccine Type
                     </a>
-                    <a class="nav-link" href="/vaccines">
+                    <a class="nav-link" th:href="@{/admin/vaccines}">
                         <div class="sb-nav-link-icon"><i class="fa fa-heart"></i></div>
                         Vaccine
                     </a>
@@ -73,14 +73,14 @@
                 </h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item">Dashboard</li>
-                    <li class="breadcrumb-item"><a href="/vaccines">Vaccines</a></li>
+                    <li class="breadcrumb-item"><a th:href="@{/admin/vaccines}">Vaccines</a></li>
                     <li class="breadcrumb-item active">[[${pageTitle}]]</li>
                 </ol>
                 <div class="card mb-4" th:each="vaccine : ${vaccine}">
                     <div class="card-header">
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                         Detail
-                        <a th:href="@{/vaccines/newInventory/{id}(id=${vaccine.id})}"><button type="button" class="btn btn-outline-primary btn-sm" style="float: right"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
+                        <a th:href="@{/admin/vaccines/newInventory/{id}(id=${vaccine.id})}"><button type="button" class="btn btn-outline-primary btn-sm" style="float: right"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
                     </div>
                     <div th:if="${messages}" class="alert alert-success text-center">
                         [[${messages}]]
@@ -165,8 +165,8 @@
                                 <td th:text="${inventory.supplier}"></td>
                                 <td th:text="${inventory.productionDate}"></td>
                                 <td th:text="${inventory.expirationDate}"></td>
-                                <td><a th:href="@{/vaccines/editInventory/{id}(id=${inventory.id})}"><button type="button" class="btn btn-outline-success"><i class="fa fa-pencil-square" aria-hidden="true"></i></button></a></td>
-                                <td><a th:href="@{/vaccines/deleteInventory/{id}(id=${inventory.id})}"><button type="button" class="btn btn-outline-danger"><i class="fa fa-times" aria-hidden="true"></i></button></a></td>
+                                <td><a th:href="@{/admin/vaccines/editInventory/{id}(id=${inventory.id})}"><button type="button" class="btn btn-outline-success"><i class="fa fa-pencil-square" aria-hidden="true"></i></button></a></td>
+                                <td><a th:href="@{/admin/vaccines/deleteInventory/{id}(id=${inventory.id})}"><button type="button" class="btn btn-outline-danger"><i class="fa fa-times" aria-hidden="true"></i></button></a></td>
                             </tr>
                             </tbody>
                         </table>
@@ -189,8 +189,8 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="/js/adminScripts.js"></script>
+<script th:src="@{/js/adminScripts.js}"></script>
+<script th:src="@{/js/DatabaseSimple.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="/js/DatabaseSimple.js"></script>
 </body>
 </html>
