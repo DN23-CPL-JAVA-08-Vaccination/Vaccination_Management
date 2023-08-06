@@ -28,6 +28,10 @@ public class VaccineController {
     @Autowired
     private InventoryService inventoryService;
 
+    /**
+     * HuyLVN
+     * display all vaccines information on the Vaccines page
+     */
     @GetMapping("")
     public String getVaccinesDeleteFlagFalse(Model model) {
         List<Vaccine> vaccinesList = vaccineService.getVaccinesDeleteFlagFalse();
@@ -37,6 +41,10 @@ public class VaccineController {
         return "/Admin/Vaccines/VaccinesManager";
     }
 
+    /**
+     * HuyLVN
+     * display all vaccines after being temporarily deleted on the Recycle Bin page
+     */
     @GetMapping("/recycleVaccine")
     public String getVaccinesDeleteFlagTrue(Model model) {
         List<Vaccine> recycleVaccineList = vaccineService.getVaccinesDeleteFlagTrue();
@@ -46,6 +54,10 @@ public class VaccineController {
         return "/Admin/Vaccines/RecycleVaccine";
     }
 
+    /**
+     * HuyLVN
+     * go to the Add Vaccine page
+     */
     @GetMapping("/newVaccine")
     public String showNewForm(Model model, ModelMap modelMap) {
         List<VaccineType> vaccineTypeList = vaccineTypeService.getAllVaccineType();
@@ -56,6 +68,10 @@ public class VaccineController {
         return "/Admin/Vaccines/NewVaccineForm";
     }
 
+    /**
+     * HuyLVN
+     * get information from the form to save to the database
+     */
     @PostMapping("/saveVaccine")
     public String addVaccine(Vaccine newVaccine, RedirectAttributes redirectAttributes) {
         vaccineService.saveVaccine(newVaccine);
@@ -64,6 +80,10 @@ public class VaccineController {
         return "redirect:/admin/vaccines";
     }
 
+    /**
+     * HuyLVN
+     * go to the Update Vaccine page
+     */
     @GetMapping("/editVaccine/{id}")
     public String showUpdateForm(@PathVariable("id") int vaccineID, Model model, ModelMap modelMap) {
         try {
@@ -79,6 +99,10 @@ public class VaccineController {
         return "/Admin/Vaccines/UpdateVaccineForm";
     }
 
+    /**
+     * HuyLVN
+     * get information from the form to update to the database
+     */
     @PostMapping("/updateVaccine")
     public String updateVaccine(Vaccine updatedVaccine, RedirectAttributes redirectAttributes) {
         vaccineService.updateVaccine(updatedVaccine);
@@ -87,6 +111,10 @@ public class VaccineController {
         return "redirect:/admin/vaccines";
     }
 
+    /**
+     * HuyLVN
+     * remove vaccine from database in Recycle Bin page
+     */
     @GetMapping("/recycleVaccine/destroyVaccine/{id}")
     public String destroyVaccine(@PathVariable("id") int vaccineID, RedirectAttributes redirectAttributes) {
         try {
@@ -99,6 +127,10 @@ public class VaccineController {
         return "redirect:/admin/vaccines/recycleVaccine";
     }
 
+    /**
+     * HuyLVN
+     * temporary removal of vaccines in Vaccines page
+     */
     @GetMapping("/deleteVaccine/{id}")
     public String deleteVaccine(@PathVariable("id") int vaccineID, RedirectAttributes redirectAttributes) {
         vaccineService.deleteVaccine(vaccineID);
@@ -108,6 +140,10 @@ public class VaccineController {
         return "redirect:/admin/vaccines";
     }
 
+    /**
+     * HuyLVN
+     * restore vaccines in Recycle Bin page
+     */
     @GetMapping("/recycleVaccine/restoreVaccine/{id}")
     public String restoreVaccine(@PathVariable("id") int vaccineID, RedirectAttributes redirectAttributes) {
         vaccineService.restoreVaccine(vaccineID);
@@ -117,6 +153,10 @@ public class VaccineController {
         return "redirect:/admin/vaccines/recycleVaccine";
     }
 
+    /**
+     * HuyLVN
+     * detailed display of vaccine information
+     */
     @GetMapping("/{id}")
     public String vaccineDetail(@PathVariable("id") int vaccineID, Model model, ModelMap modelMap) {
         try {

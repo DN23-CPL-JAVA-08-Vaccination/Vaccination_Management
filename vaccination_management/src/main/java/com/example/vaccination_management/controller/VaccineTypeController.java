@@ -25,6 +25,10 @@ public class VaccineTypeController {
     @Autowired
     private VaccineService vaccineService;
 
+    /**
+     * HuyLVN
+     * display all vaccine types information on the Vaccine Types page
+     */
     @GetMapping("")
     public String getAllVaccineTypes(Model model) {
         List<VaccineType> vaccineTypeList = vaccineTypeService.getAllVaccineType();
@@ -34,6 +38,10 @@ public class VaccineTypeController {
         return "/Admin/VaccineType/VaccineTypeManager";
     }
 
+    /**
+     * HuyLVN
+     * display all vaccines of vaccine type information on the page
+     */
     @GetMapping("/{id}")
     public String getVaccineByVaccineType(@PathVariable("id") int vaccineTypeID, Model model) {
         try {
@@ -50,6 +58,10 @@ public class VaccineTypeController {
         return "/Admin/VaccineType/VaccinesByType";
     }
 
+    /**
+     * HuyLVN
+     * go to the Add Vaccine Type page
+     */
     @GetMapping("/newVaccineType")
     public String showNewForm(Model model) {
         model.addAttribute("newVaccineType", new VaccineType());
@@ -57,6 +69,10 @@ public class VaccineTypeController {
         return "/Admin/VaccineType/NewVaccineTypeForm";
     }
 
+    /**
+     * HuyLVN
+     * get information from the form to save to the database
+     */
     @PostMapping("/saveVaccineType")
     public String addVaccineType(VaccineType newVaccineType, RedirectAttributes redirectAttributes) {
         vaccineTypeService.saveVaccineType(newVaccineType);
@@ -65,6 +81,10 @@ public class VaccineTypeController {
         return "redirect:/admin/vaccineTypes";
     }
 
+    /**
+     * HuyLVN
+     * remove vaccine type from database
+     */
     @GetMapping("/deleteVaccineType/{id}")
     public String deleteVaccineType(@PathVariable("id") int vaccineTypeID, RedirectAttributes redirectAttributes) {
         try {
@@ -78,6 +98,10 @@ public class VaccineTypeController {
         return "redirect:/admin/vaccineTypes";
     }
 
+    /**
+     * HuyLVN
+     * go to the Update Vaccine page
+     */
     @GetMapping("/editVaccineType/{id}")
     public String showEditForm(@PathVariable("id") int vaccineTypeID, Model model, RedirectAttributes redirectAttributes) {
         try {

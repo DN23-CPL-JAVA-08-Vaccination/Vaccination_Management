@@ -28,11 +28,19 @@ public class InventoryService implements IInventoryService {
     @Autowired
     private VaccineService vaccineService;
 
+    /**
+     * HuyLVN
+     * get all information of inventories, admin after login
+     */
     @Override
     public List<Inventory> getAllInventories() {
         return iInventoryRepository.findAll();
     }
 
+    /**
+     * HuyLVN
+     * get information of inventory by ID, admin after login
+     */
     @Override
     public Inventory getInventoryByID(int inventoryID) throws InventoryNotFoundException {
         Optional<Inventory> inventory = iInventoryRepository.findById(inventoryID);
@@ -44,11 +52,19 @@ public class InventoryService implements IInventoryService {
         throw new InventoryNotFoundException("Couldn't find any inventories with ID");
     }
 
+    /**
+     * HuyLVN
+     * get all information of inventories of vaccine, admin after login
+     */
     @Override
     public List<Inventory> getInventoriesByVaccine(Vaccine vaccine) {
         return iInventoryRepository.getInventoriesByVaccine(vaccine);
     }
 
+    /**
+     * HuyLVN
+     * get the information entered from the form and create a new inventory, admin after login
+     */
     @Override
     public void saveInventory(Inventory inventory) {
         LocalDateTime createDate = LocalDateTime.now();
@@ -62,6 +78,10 @@ public class InventoryService implements IInventoryService {
         iInventoryRepository.save(inventory);
     }
 
+    /**
+     * HuyLVN
+     * update information of inventory, admin after login
+     */
     @Override
     public void updateInventory(Inventory updatedInventory) {
         LocalDateTime updateDate = LocalDateTime.now();
@@ -73,6 +93,10 @@ public class InventoryService implements IInventoryService {
         iInventoryRepository.save(updatedInventory);
     }
 
+    /**
+     * HuyLVN
+     * remove inventory from database, admin after login
+     */
     @Override
     public void deleteInventory(int inventoryID) throws InventoryNotFoundException {
         Long count = iInventoryRepository.countById(inventoryID);

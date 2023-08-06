@@ -17,11 +17,19 @@ public class VaccineTypeService implements IVaccineTypeService {
     @Autowired
     private IVaccineTypeRepository iVaccineTypeRepository;
 
+    /**
+     * HuyLVN
+     * get all information of vaccine types, admin after login
+     */
     @Override
     public List<VaccineType> getAllVaccineType() {
         return iVaccineTypeRepository.findAll();
     }
 
+    /**
+     * HuyLVN
+     * get information of vaccine type by ID, admin after login
+     */
     @Override
     public VaccineType getVaccineTypeById(int vaccineTypeID) throws VaccineTypeNoFoundException {
         Optional<VaccineType> vaccineType = iVaccineTypeRepository.findById(vaccineTypeID);
@@ -33,11 +41,19 @@ public class VaccineTypeService implements IVaccineTypeService {
         throw new VaccineTypeNoFoundException("Couldn't find any vaccine types with ID");
     }
 
+    /**
+     * HuyLVN
+     * get the information entered from the form and create a new vaccine type, admin after login
+     */
     @Override
     public void saveVaccineType(VaccineType vaccineType) {
         iVaccineTypeRepository.save(vaccineType);
     }
 
+    /**
+     * HuyLVN
+     * remove vaccine type from database, admin after login
+     */
     @Override
     public void deleteVaccineType(int vaccineTypeID) throws VaccineTypeNoFoundException {
         Long count = iVaccineTypeRepository.countById(vaccineTypeID);

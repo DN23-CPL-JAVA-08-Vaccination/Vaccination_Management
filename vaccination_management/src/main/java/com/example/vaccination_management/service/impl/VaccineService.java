@@ -22,21 +22,37 @@ public class VaccineService implements IVaccineService {
     @Autowired
     private IVaccineTypeRepository iVaccineTypeRepository;
 
+    /**
+     * HuyLVN
+     * get information of vaccines have delete flag is false, admin after login
+     */
     @Override
     public List<Vaccine> getVaccinesDeleteFlagFalse() {
         return iVaccineRepository.findByDeleteFlagFalse();
     }
 
+    /**
+     * HuyLVN
+     * get information of vaccines have delete flag is true, admin after login
+     */
     @Override
     public List<Vaccine> getVaccinesDeleteFlagTrue() {
         return iVaccineRepository.findByDeleteFlagTrue();
     }
 
+    /**
+     * HuyLVN
+     * get all information of vaccines of vaccine type, admin after login
+     */
     @Override
     public List<Vaccine> getVaccinesByVaccineType(VaccineType vaccineType) {
         return iVaccineRepository.getVaccineByVaccineType(vaccineType);
     }
 
+    /**
+     * HuyLVN
+     * get the information entered from the form and create a new vaccine, admin after login
+     */
     @Override
     public void saveVaccine(Vaccine vaccine) {
         LocalDateTime createDate = LocalDateTime.now();
@@ -51,6 +67,10 @@ public class VaccineService implements IVaccineService {
         iVaccineRepository.save(vaccine);
     }
 
+    /**
+     * HuyLVN
+     * get all information of vaccine by ID, admin after login
+     */
     @Override
     public Vaccine getVaccineByID(int vaccineID) throws VaccineNotFoundException {
         Optional<Vaccine> vaccine = iVaccineRepository.findById(vaccineID);
@@ -62,6 +82,10 @@ public class VaccineService implements IVaccineService {
         throw new VaccineNotFoundException("Couldn't find any vaccines with ID");
     }
 
+    /**
+     * HuyLVN
+     * update information of vaccine, admin after login
+     */
     @Override
     public void updateVaccine(Vaccine updatedVaccine) {
         LocalDateTime updateDate = LocalDateTime.now();
@@ -73,6 +97,10 @@ public class VaccineService implements IVaccineService {
         iVaccineRepository.save(updatedVaccine);
     }
 
+    /**
+     * HuyLVN
+     * remove vaccine from database, admin after login
+     */
     @Override
     public void destroyVaccine(int vaccineID) throws VaccineNotFoundException {
         Long count = iVaccineRepository.countById(vaccineID);
@@ -83,6 +111,10 @@ public class VaccineService implements IVaccineService {
         iVaccineRepository.deleteById(vaccineID);
     }
 
+    /**
+     * HuyLVN
+     * temporarily delete vaccine and move them to recycle bin, admin after login
+     */
     @Override
     public void deleteVaccine(int vaccineID) {
         Optional<Vaccine> vaccineOptional = iVaccineRepository.findById(vaccineID);
@@ -96,6 +128,10 @@ public class VaccineService implements IVaccineService {
         }
     }
 
+    /**
+     * HuyLVN
+     * restore vaccine from recycle bin, admin after login
+     */
     @Override
     public void restoreVaccine(int vaccineID) {
         Optional<Vaccine> vaccineOptional = iVaccineRepository.findById(vaccineID);
