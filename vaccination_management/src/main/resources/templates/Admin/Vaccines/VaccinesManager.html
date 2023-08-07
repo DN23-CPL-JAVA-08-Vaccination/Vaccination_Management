@@ -16,7 +16,7 @@
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
   <!-- Navbar Brand-->
-  <a class="navbar-brand ps-3" href="../../index.html">Vaccination</a>
+  <a class="navbar-brand ps-3" href="../../index.html">TT Tiêm chủng Đà Nẵng</a>
   <!-- Sidebar Toggle-->
   <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
   <!-- Navbar Search-->
@@ -49,10 +49,10 @@
             <div class="sb-nav-link-icon"><i class="fa fa-home"></i></div>
             Dashboard
           </a>
-          <div class="sb-sidenav-menu-heading">Management</div>
+          <div class="sb-sidenav-menu-heading">Quản lý</div>
           <a class="nav-link" th:href="@{/admin/vaccineTypes}">
             <div class="sb-nav-link-icon"><i class="fa fa-heartbeat"></i></div>
-            Vaccine Type
+            Loại Vaccine
           </a>
           <a class="nav-link" th:href="@{/admin/vaccines}">
             <div class="sb-nav-link-icon"><i class="fa fa-heart"></i></div>
@@ -62,7 +62,7 @@
       </div>
       <div class="sb-sidenav-footer">
         <div class="small">Logged in as:</div>
-        Vaccination Management
+        TT Tiêm chủng Đà Nẵng
       </div>
     </nav>
   </div>
@@ -71,11 +71,11 @@
       <div class="container-fluid px-4">
         <h1 class="mt-4">
           <i class="fa fa-heart" aria-hidden="true"></i>
-          Vaccines Management
+          Quản lý Vaccine
         </h1>
         <ol class="breadcrumb mb-4">
           <li class="breadcrumb-item">Dashboard</li>
-          <li class="breadcrumb-item">Vaccines</li>
+          <li class="breadcrumb-item active">Vaccines</li>
         </ol>
         <div class="card mb-4">
           <div class="card-header">
@@ -91,10 +91,10 @@
             <table id="datatablesSimple">
               <thead>
               <tr>
-                <th>Name</th>
-                <th>Code</th>
-                <th>Created</th>
-                <th>Updated</th>
+                <th>Tên Vaccine</th>
+                <th>Mã định danh</th>
+                <th>Ngày tạo</th>
+                <th>Ngày cập nhật</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -102,10 +102,10 @@
               </thead>
               <tfoot>
               <tr>
-                <th>Name</th>
-                <th>Code</th>
-                <th>Created</th>
-                <th>Updated</th>
+                <th>Tên Vaccine</th>
+                <th>Mã định danh</th>
+                <th>Ngày tạo</th>
+                <th>Ngày cập nhật</th>
                 <th></th>
                 <th></th>
                 <th></th>

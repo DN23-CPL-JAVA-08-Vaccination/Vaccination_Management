@@ -75,7 +75,7 @@ public class VaccineController {
     @PostMapping("/saveVaccine")
     public String addVaccine(Vaccine newVaccine, RedirectAttributes redirectAttributes) {
         vaccineService.saveVaccine(newVaccine);
-        redirectAttributes.addFlashAttribute("messages", "The vaccine has been saved successfully");
+        redirectAttributes.addFlashAttribute("messages", "The vaccine has been created successfully");
 
         return "redirect:/admin/vaccines";
     }

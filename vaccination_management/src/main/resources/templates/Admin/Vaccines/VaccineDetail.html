@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Detail [[${pageTitle}]]</title>
+    <title>Chi tiết [[${pageTitle}]]</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/adminStyle_HuyLVN.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -14,7 +14,7 @@
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    <a class="navbar-brand ps-3" href="#">Vaccination</a>
+    <a class="navbar-brand ps-3" href="#">TT Tiêm chủng Đà Nẵng</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
     <!-- Navbar Search-->
@@ -47,10 +47,10 @@
                         <div class="sb-nav-link-icon"><i class="fa fa-home"></i></div>
                         Dashboard
                     </a>
-                    <div class="sb-sidenav-menu-heading">Management</div>
+                    <div class="sb-sidenav-menu-heading">Quản lý</div>
                     <a class="nav-link" th:href="@{/admin/vaccineTypes}">
                         <div class="sb-nav-link-icon"><i class="fa fa-heartbeat"></i></div>
-                        Vaccine Type
+                        Loại Vaccine
                     </a>
                     <a class="nav-link" th:href="@{/admin/vaccines}">
                         <div class="sb-nav-link-icon"><i class="fa fa-heart"></i></div>
@@ -60,7 +60,7 @@
             </div>
             <div class="sb-sidenav-footer">
                 <div class="small">Logged in as:</div>
-                Vaccination Management
+                TT Tiêm chủng Đà Nẵng
             </div>
         </nav>
     </div>
@@ -79,7 +79,7 @@
                 <div class="card mb-4" th:each="vaccine : ${vaccine}">
                     <div class="card-header">
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
-                        Detail
+                        Chi tiết
                         <a th:href="@{/admin/vaccines/newInventory/{id}(id=${vaccine.id})}"><button type="button" class="btn btn-outline-primary btn-sm" style="float: right"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
                     </div>
                     <div th:if="${messages}" class="alert alert-success text-center">
@@ -93,42 +93,42 @@
                                 </div>
                                 <div class="col-sm-8">
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Name: </label>
+                                        <label class="col-sm-2" style="font-weight: bold">Tên Vaccine: </label>
                                         <div class="col-sm-8" th:text="${vaccine.name}"></div>
                                         <hr>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Code: </label>
+                                        <label class="col-sm-2" style="font-weight: bold">Mã định danh: </label>
                                         <div class="col-sm-8" th:text="${vaccine.code}"></div>
                                         <hr>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Description: </label>
+                                        <label class="col-sm-2" style="font-weight: bold">Mô tả: </label>
                                         <div class="col-sm-8" th:text="${vaccine.description}"></div>
                                         <hr>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Price: </label>
+                                        <label class="col-sm-2" style="font-weight: bold">Đơn giá: </label>
                                         <div class="col-sm-8" th:text="${vaccine.price}"></div>
                                         <hr>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Duration: </label>
+                                        <label class="col-sm-2" style="font-weight: bold">Thời hạn tác dụng: </label>
                                         <div class="col-sm-8" th:text="${vaccine.duration}"></div>
                                         <hr>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Dosage (ml): </label>
+                                        <label class="col-sm-2" style="font-weight: bold">Liều lượng (ml): </label>
                                         <div class="col-sm-8" th:text="${vaccine.dosage}"></div>
                                         <hr>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Created: </label>
+                                        <label class="col-sm-2" style="font-weight: bold">Ngày tạo: </label>
                                         <div class="col-sm-8" th:text="${vaccine.createDate}"></div>
                                         <hr>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Updated: </label>
+                                        <label class="col-sm-2" style="font-weight: bold">Ngày cập nhật: </label>
                                         <div class="col-sm-8" th:text="${vaccine.updateDate}"></div>
                                     </div>
                                 </div>
@@ -139,10 +139,10 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Quantity</th>
-                                <th>Supplier</th>
-                                <th>Production</th>
-                                <th>Expiration</th>
+                                <th>Số lượng</th>
+                                <th>Nhà cung cấp</th>
+                                <th>Ngày sản xuất</th>
+                                <th>Hạn sử dụng</th>
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -150,10 +150,10 @@
                             <tfoot>
                             <tr>
                                 <th>ID</th>
-                                <th>Quantity</th>
-                                <th>Supplier</th>
-                                <th>Production</th>
-                                <th>Expiration</th>
+                                <th>Số lượng</th>
+                                <th>Nhà cung cấp</th>
+                                <th>Ngày sản xuất</th>
+                                <th>Hạn sử dụng</th>
                                 <th></th>
                                 <th></th>
                             </tr>
