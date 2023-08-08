@@ -37,7 +37,7 @@ public class InventoryController {
             e.printStackTrace();
         }
 
-        return "Admin/Inventory/NewInventoryForm";
+        return "admin/Inventory/NewInventoryForm";
     }
 
     /**
@@ -70,7 +70,7 @@ public class InventoryController {
             e.printStackTrace();
         }
 
-        return "Admin/Inventory/UpdateInventoryForm";
+        return "admin/Inventory/UpdateInventoryForm";
     }
 
     /**

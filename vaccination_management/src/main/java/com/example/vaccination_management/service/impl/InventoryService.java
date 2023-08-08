@@ -3,12 +3,9 @@ package com.example.vaccination_management.service.impl;
 import com.example.vaccination_management.entity.Inventory;
 import com.example.vaccination_management.entity.Vaccine;
 import com.example.vaccination_management.exception.InventoryNotFoundException;
-import com.example.vaccination_management.exception.VaccineNotFoundException;
 import com.example.vaccination_management.repository.IInventoryRepository;
 import com.example.vaccination_management.repository.IVaccineRepository;
 import com.example.vaccination_management.service.IInventoryService;
-import com.example.vaccination_management.service.IVaccineService;
-import jdk.tools.jlink.internal.Platform;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

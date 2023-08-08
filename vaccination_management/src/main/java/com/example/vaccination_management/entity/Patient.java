@@ -16,7 +16,7 @@ public class Patient {
     private String healthInsurance;
 
     @Column(name = "gender")
-    private int gender;
+    private boolean gender;
 
     @Column(name = "address")
     private String address;
@@ -33,8 +33,8 @@ public class Patient {
     @Column(name = "guardian_phone")
     private String guardianPhone;
 
-    @Column(name = "enable_flag")
-    private boolean enableFlag;
+    @Column(name = "detele_flag")
+    private boolean deleteFlag;
 
     @OneToOne
     @JoinColumn(name = "account_id")
@@ -45,7 +45,7 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(int id, String name, String healthInsurance, int gender, String address, String phoneNumber, String birthday, String guardianName, String guardianPhone, boolean enableFlag, Account account) {
+    public Patient(int id, String name, String healthInsurance, boolean gender, String address, String phoneNumber, String birthday, String guardianName, String guardianPhone, boolean deleteFlag, Account account) {
         this.id = id;
         this.name = name;
         this.healthInsurance = healthInsurance;
@@ -55,7 +55,7 @@ public class Patient {
         this.birthday = birthday;
         this.guardianName = guardianName;
         this.guardianPhone = guardianPhone;
-        this.enableFlag = enableFlag;
+        this.deleteFlag = deleteFlag;
         this.account = account;
     }
 
@@ -83,11 +83,11 @@ public class Patient {
         this.healthInsurance = healthInsurance;
     }
 
-    public int getGender() {
+    public boolean isGender() {
         return gender;
     }
 
-    public void setGender(int gender) {
+    public void setGender(boolean gender) {
         this.gender = gender;
     }
 
@@ -131,12 +131,12 @@ public class Patient {
         this.guardianPhone = guardianPhone;
     }
 
-    public boolean isEnableFlag() {
-        return enableFlag;
+    public boolean isDeleteFlag() {
+        return deleteFlag;
     }
 
-    public void setEnableFlag(boolean enableFlag) {
-        this.enableFlag = enableFlag;
+    public void setDeleteFlag(boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
     }
 
     public Account getAccount() {

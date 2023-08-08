@@ -38,7 +38,7 @@ public class VaccineController {
 
         model.addAttribute("vaccinesList", vaccinesList);
 
-        return "/Admin/Vaccines/VaccinesManager";
+        return "/admin/Vaccines/VaccinesManager";
     }
 
     /**
@@ -51,7 +51,7 @@ public class VaccineController {
 
         model.addAttribute("recycleVaccineList", recycleVaccineList);
 
-        return "/Admin/Vaccines/RecycleVaccine";
+        return "/admin/Vaccines/RecycleVaccine";
     }
 
     /**
@@ -65,7 +65,7 @@ public class VaccineController {
         model.addAttribute("newVaccine", new Vaccine());
         modelMap.addAttribute("typeList", vaccineTypeList);
 
-        return "/Admin/Vaccines/NewVaccineForm";
+        return "/admin/Vaccines/NewVaccineForm";
     }
 
     /**
@@ -96,7 +96,7 @@ public class VaccineController {
             e.printStackTrace();
         }
 
-        return "/Admin/Vaccines/UpdateVaccineForm";
+        return "/admin/Vaccines/UpdateVaccineForm";
     }
 
     /**
@@ -172,6 +172,6 @@ public class VaccineController {
             e.printStackTrace();
         }
 
-        return "/Admin/Vaccines/VaccineDetail";
+        return "/admin/Vaccines/VaccineDetail";
     }
 }
