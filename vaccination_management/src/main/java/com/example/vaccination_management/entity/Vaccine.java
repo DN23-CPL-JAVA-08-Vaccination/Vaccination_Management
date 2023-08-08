@@ -44,6 +44,7 @@ public class Vaccine {
     @Column(name = "dosage")
     private Double dosage;
 
+
     @ManyToOne
     @JoinColumn(name = "vaccine_type_id")
     private VaccineType vaccineType;
