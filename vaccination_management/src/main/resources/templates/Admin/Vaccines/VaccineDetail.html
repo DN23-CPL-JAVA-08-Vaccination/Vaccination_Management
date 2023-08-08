@@ -8,8 +8,9 @@
     <meta name="author" content="" />
     <title>Chi tiết [[${pageTitle}]]</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-    <link th:href="@{/css/adminStyle_HuyLVN.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link th:href="@{/css/adminStyle_HuyLVN.css}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -93,42 +94,42 @@
                                 </div>
                                 <div class="col-sm-8">
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Tên Vaccine: </label>
+                                        <label class="col-sm-3" style="font-weight: bold">Tên Vaccine: </label>
                                         <div class="col-sm-8" th:text="${vaccine.name}"></div>
                                         <hr>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Mã định danh: </label>
+                                        <label class="col-sm-3" style="font-weight: bold">Mã định danh: </label>
                                         <div class="col-sm-8" th:text="${vaccine.code}"></div>
                                         <hr>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Mô tả: </label>
+                                        <label class="col-sm-3" style="font-weight: bold">Mô tả: </label>
                                         <div class="col-sm-8" th:text="${vaccine.description}"></div>
                                         <hr>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Đơn giá: </label>
+                                        <label class="col-sm-3" style="font-weight: bold">Đơn giá: </label>
                                         <div class="col-sm-8" th:text="${vaccine.price}"></div>
                                         <hr>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Thời hạn tác dụng: </label>
+                                        <label class="col-sm-3" style="font-weight: bold">Thời hạn tác dụng: </label>
                                         <div class="col-sm-8" th:text="${vaccine.duration}"></div>
                                         <hr>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Liều lượng (ml): </label>
+                                        <label class="col-sm-3" style="font-weight: bold">Liều lượng (ml): </label>
                                         <div class="col-sm-8" th:text="${vaccine.dosage}"></div>
                                         <hr>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Ngày tạo: </label>
+                                        <label class="col-sm-3" style="font-weight: bold">Ngày tạo: </label>
                                         <div class="col-sm-8" th:text="${vaccine.createDate}"></div>
                                         <hr>
                                     </div>
                                     <div class="row">
-                                        <label class="col-sm-2" style="font-weight: bold">Ngày cập nhật: </label>
+                                        <label class="col-sm-3" style="font-weight: bold">Ngày cập nhật: </label>
                                         <div class="col-sm-8" th:text="${vaccine.updateDate}"></div>
                                     </div>
                                 </div>
@@ -166,7 +167,31 @@
                                 <td th:text="${inventory.productionDate}"></td>
                                 <td th:text="${inventory.expirationDate}"></td>
                                 <td><a th:href="@{/admin/vaccines/editInventory/{id}(id=${inventory.id})}"><button type="button" class="btn btn-outline-success"><i class="fa fa-pencil-square" aria-hidden="true"></i></button></a></td>
-                                <td><a th:href="@{/admin/vaccines/deleteInventory/{id}(id=${inventory.id})}"><button type="button" class="btn btn-outline-danger"><i class="fa fa-times" aria-hidden="true"></i></button></a></td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-danger" th:data-toggle="modal" th:data-target="'#deleteModal-' + ${inventory.id}" th:data-id="${inventory.id}">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade custom-modal" th:id="'deleteModal-' + ${inventory.id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background-color: #dc3545">
+                                                    <h5 class="modal-title" id="deleteModalLabel">Xóa lô hàng?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Nếu bạn xóa lô hàng này, nó sẽ biến mất mãi mãi. Bạn có chắc chắn muốn tiếp tục không?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
+                                                    <a th:href="@{/admin/vaccines/deleteInventory/{id}(id=${inventory.id})}"><button type="button" class="btn btn-outline-danger">Xác nhận</button></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -192,5 +217,9 @@
 <script th:src="@{/js/adminScripts.js}"></script>
 <script th:src="@{/js/DatabaseSimple.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

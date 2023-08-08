@@ -8,6 +8,7 @@
     <meta name="author" content="" />
     <title>Thùng rác</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/css/adminStyle_HuyLVN.css}">
 </head>
@@ -112,8 +113,56 @@
                                 <td th:text="${vaccine.code}"></td>
                                 <td th:text="${vaccine.createDate}"></td>
                                 <td th:text="${vaccine.updateDate}"></td>
-                                <td><a th:href="@{/admin/vaccines/recycleVaccine/restoreVaccine/{id}(id=${vaccine.id})}"><button type="button" class="btn btn-outline-success"><i class="fa fa-refresh" aria-hidden="true"></i></button></a></td>
-                                <td><a th:href="@{/admin/vaccines/recycleVaccine/destroyVaccine/{id}(id=${vaccine.id})}"><button type="button" class="btn btn-outline-danger"><i class="fa fa-times" aria-hidden="true"></i></button></a></td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-success" th:data-toggle="modal" th:data-target="'#restoreModal-' + ${vaccine.id}" th:data-id="${vaccine.id}">
+                                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade custom-modal" th:id="'restoreModal-' + ${vaccine.id}" tabindex="-1" role="dialog" aria-labelledby="restoreModalLabel">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background-color: #198754">
+                                                    <h5 class="modal-title" id="restoreModalLabel">Khôi phục Vaccine?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Nếu bạn khôi phục vaccine này, nó sẽ được chuyển tới trang quản lý Vaccine. Bạn có chắc chắn muốn tiếp tục không?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
+                                                    <a th:href="@{/admin/vaccines/recycleVaccine/restoreVaccine/{id}(id=${vaccine.id})}"><button type="button" class="btn btn-outline-success">Xác nhận</button></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-danger" th:data-toggle="modal" th:data-target="'#destroyModal-' + ${vaccine.id}" th:data-id="${vaccine.id}">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade custom-modal" th:id="'destroyModal-' + ${vaccine.id}" tabindex="-1" role="dialog" aria-labelledby="destroyModalLabel">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background-color: #dc3545">
+                                                    <h5 class="modal-title" id="destroyModalLabel">Xóa Vaccine?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Nếu bạn xóa vaccine này, nó sẽ biến mất mãi mãi. Bạn có chắc chắn muốn tiếp tục không?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
+                                                    <a th:href="@{/admin/vaccines/recycleVaccine/destroyVaccine/{id}(id=${vaccine.id})}"><button type="button" class="btn btn-outline-danger">Xác nhận</button></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -139,5 +188,9 @@
 <script th:src="@{/js/adminScripts.js}"></script>
 <script th:src="@{/js/DatabaseSimple.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

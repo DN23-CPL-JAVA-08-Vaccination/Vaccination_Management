@@ -10,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link th:href="@{/css/adminStyle_HuyLVN.css}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -110,7 +111,32 @@
                                 <td th:text="${vaccineType.name}"></td>
                                 <td><a th:href="@{/admin/vaccineTypes/{id}(id=${vaccineType.id})}"><button type="button" class="btn btn-outline-info"><i class="fa fa-info-circle" aria-hidden="true"></i></button></a></td>
                                 <td><a th:href="@{/admin/vaccineTypes/editVaccineType/{id}(id=${vaccineType.id})}"><button type="button" class="btn btn-outline-success"><i class="fa fa-pencil-square" aria-hidden="true"></i></button></a></td>
-                                <td><a th:href="@{/admin/vaccineTypes/deleteVaccineType/{id}(id=${vaccineType.id})}"><button type="button" class="btn btn-outline-danger"><i class="fa fa-times" aria-hidden="true"></i></button></a></td>
+                                <td>
+
+                                    <button type="button" class="btn btn-outline-danger" th:data-toggle="modal" th:data-target="'#deleteModal-' + ${vaccineType.id}" th:data-id="${vaccineType.id}">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade custom-modal" th:id="'deleteModal-' + ${vaccineType.id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background-color: #dc3545">
+                                                    <h5 class="modal-title" id="deleteModalLabel">Xóa loại Vaccine?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Nếu bạn xóa loại vaccine này, nó sẽ biến mất mãi mãi. Bạn có chắc chắn muốn tiếp tục không?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
+                                                    <a th:href="@{/admin/vaccineTypes/deleteVaccineType/{id}(id=${vaccineType.id})}"><button type="button" class="btn btn-outline-danger">Xác nhận</button></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -137,5 +163,8 @@
 <script th:src="@{/js/DatabaseSimple.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

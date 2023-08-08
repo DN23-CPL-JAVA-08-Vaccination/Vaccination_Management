@@ -10,6 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/adminStyle_HuyLVN.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -88,12 +89,53 @@
                                 <div class="form-group row" style="padding: 5px">
                                     <label class="col-sm-4 col-form-label">Tên loại Vaccine: </label>
                                     <div class="col-sm-8">
-                                        <input type="text" th:field="*{name}" class="form-control" placeholder="Name of Vaccine Type"/>
+                                        <input type="text" th:field="*{name}" class="form-control" placeholder="Name of Vaccine Type" required/>
                                     </div>
                                 </div>
                                 <div class="text-center" style="padding-top: 20px">
-                                    <button type="submit" class="btn btn-success">Thêm</button>
-                                    <button type="button" class="btn btn-danger" onclick="cancelForm()">Thoát</button>
+                                    <!--                                    <button type="submit" class="btn btn-outline-primary">Thêm</button>-->
+                                    <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#createModal">Thêm</button>
+                                    <!-- Modal -->
+                                    <div class="modal fade custom-modal" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background-color: #007bff">
+                                                    <h5 class="modal-title" id="createModalLabel">Thêm loại Vaccine?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" style="text-align: left">
+                                                    <p>Bạn phải đảm bảo mọi thông tin đã được nhập đầy đủ. Nếu bạn thêm loại vaccine, thông tin được nhập sẽ lưu vào CSDL. Bạn có chắc chắn muốn tiếp tục không?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-success" data-dismiss="modal">Trở lại</button>
+                                                    <button type="submit" class="btn btn-outline-primary">Xác nhận</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#exitModal">Thoát</button>
+                                    <div class="modal fade custom-modal" id="exitModal" tabindex="-1" role="dialog" aria-labelledby="exitModalLabel">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background-color: #6c757d">
+                                                    <h5 class="modal-title" id="exitModalLabel">Thoát?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body" style="text-align: left">
+                                                    <p>Nếu bạn thoát khỏi quá trình tạo loại vaccine, mọi thông tin được nhập sẽ bị hủy. Bạn có chắc chắn muốn tiếp tục không?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-success" data-dismiss="modal">Trở lại</button>
+                                                    <button type="button" class="btn btn-outline-secondary"  onclick="cancelForm()">Xác nhận</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -124,5 +166,9 @@
         window.location = "[[@{/admin/vaccineTypes}]]"
     }
 </script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
