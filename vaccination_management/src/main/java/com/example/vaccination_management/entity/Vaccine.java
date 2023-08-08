@@ -1,6 +1,7 @@
 package com.example.vaccination_management.entity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "vaccine")
@@ -24,10 +25,10 @@ public class Vaccine {
     private boolean enableFlag;
 
     @Column(name = "create_date", columnDefinition = "Datetime" )
-    private boolean createDate;
+    private LocalDateTime createDate;
 
     @Column(name = "update_date", columnDefinition = "Datetime" )
-    private boolean updateDate;
+    private LocalDateTime updateDate;
 
     @Column(name = "price")
     private Double price;
@@ -42,7 +43,7 @@ public class Vaccine {
     public Vaccine() {
     }
 
-    public Vaccine(int id, String name, String code, String description, boolean enableFlag, boolean createDate, boolean updateDate, double price, int duration, VaccineType vaccineType) {
+    public Vaccine(int id, String name, String code, String description, boolean enableFlag, LocalDateTime createDate, LocalDateTime updateDate, double price, int duration, VaccineType vaccineType) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -95,20 +96,29 @@ public class Vaccine {
         this.enableFlag = enableFlag;
     }
 
-    public boolean isCreateDate() {
+    public LocalDateTime isCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(boolean createDate) {
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
-    public boolean isUpdateDate() {
+    public LocalDateTime getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(boolean updateDate) {
+    public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public double getPrice() {

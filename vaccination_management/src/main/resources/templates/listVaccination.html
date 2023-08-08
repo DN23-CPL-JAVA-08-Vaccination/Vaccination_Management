@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title>Tables - SB Admin</title>
+  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+  <link th:href="@{/css/style.css}" rel="stylesheet" />
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+<body class="sb-nav-fixed">
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+  <!-- Navbar Brand-->
+  <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+  <!-- Sidebar Toggle-->
+  <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+  <!-- Navbar Search-->
+  <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+    <div class="input-group">
+      <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+      <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+    </div>
+  </form>
+  <!-- Navbar-->
+
+</nav>
+<div id="layoutSidenav">
+  <div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+      <div class="sb-sidenav-menu">
+        <div class="nav">
+
+<!--          <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">-->
+<!--            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>-->
+<!--            Pages-->
+<!--            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>-->
+<!--          </a>-->
+<!--          <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">-->
+<!--            <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">-->
+<!--              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">-->
+<!--                Authentication-->
+<!--                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>-->
+<!--              </a>-->
+<!--              <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">-->
+<!--                <nav class="sb-sidenav-menu-nested nav">-->
+<!--                  <a class="nav-link" href="login.html">Login</a>-->
+<!--                  <a class="nav-link" href="register.html">Register</a>-->
+<!--                  <a class="nav-link" href="password.html">Forgot Password</a>-->
+<!--                </nav>-->
+<!--              </div>-->
+<!--              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">-->
+<!--                Error-->
+<!--                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>-->
+<!--              </a>-->
+<!--              <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">-->
+<!--                <nav class="sb-sidenav-menu-nested nav">-->
+<!--                  <a class="nav-link" href="401.html">401 Page</a>-->
+<!--                  <a class="nav-link" href="404.html">404 Page</a>-->
+<!--                  <a class="nav-link" href="500.html">500 Page</a>-->
+<!--                </nav>-->
+<!--              </div>-->
+<!--            </nav>-->
+<!--          </div>-->
+          <div class="sb-sidenav-menu-heading"></div>
+          <a class="nav-link" href="listVaccination">
+            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+            Vaccination
+          </a>
+          <a class="nav-link" href="Status">
+            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+            Status
+          </a>
+        </div>
+      </div>
+      <div  class="sb-sidenav-footer">
+        <div class="small">Logged in as:</div>
+        Start Bootstrap
+      </div>
+    </nav>
+  </div>
+  <div id="layoutSidenav_content">
+    <main>
+      <div class="container-fluid px-4">
+<!--        <h1 class="mt-4">-->
+<!--          Status</h1>-->
+<!--        <ol class="breadcrumb mb-4">-->
+<!--          <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>-->
+<!--          <li class="breadcrumb-item active">-->
+<!--            Status</li>-->
+<!--        </ol>-->
+        <div  class="card mb-4">
+
+        </div>
+
+        <div>    <p  style=";
+            align-items: center;
+            justify-content: center;
+            /*height: 100vh;*/
+            margin: 0;padding: 10px;
+            text-align: center"><span th:utext="${message}"></span>
+
+        </p></div>
+          <div >    <p  style=";
+            align-items: center;
+            justify-content: center;
+            /*height: 100vh;*/
+            margin: 0;padding: 10px;
+            text-align: center">
+              <span th:utext="${messageEmail}"></span>
+          </p></div>
+
+        <div class="card mb-4">
+
+
+          <div class="card-body">
+           <table id="datatablesSimple">
+              <thead>
+              <tr>
+                <th>STT</th>
+                <th>Vaccine</th>
+                <th>Loại Vaccination</th>
+                <th> Địa chỉ</th>
+                <th>start time</th>
+                <th>end time</th>
+
+                <th>Status </th>
+                <th>Medical record details</th>
+              </tr>
+              </thead>
+              <tfoot>
+              <tr>
+                <th>STT</th>
+                <th>Vaccine</th>
+
+                <th>Loại Vaccination</th>
+                <th>Địa chỉ</th>
+                <th>start time</th>
+                <th>end time</th>
+                <th>Status </th>
+                <th>Medical record details</th>
+
+              </tr>
+              </tfoot>
+              <tbody>
+
+              <tr th:each="vaccination : ${listVaccination}">
+                <td th:text="${vaccination.id}"></td>
+                <td th:text="${vaccination.vaccine.name}"></td>
+                <td th:text="${vaccination.vaccinationType.name}"></td>
+
+                <td th:text="${vaccination.location.name}"></td>
+                <td th:text="${vaccination.startTime}"></td>
+                <td th:text="${vaccination.endTime}"></td>
+                <td>
+
+                  <a th:href="@{/AddVaccination}"
+                  > <i class="fa-solid fa-plus"></i></a>
+
+                  <a                th:href="@{/deleteNotification/{id}(id=${vaccination.id})}"
+                  ><i class="fa-solid fa-trash"></i></a>
+                  <i class="fa-light fa-pen-to-square"></i>
+                </td>
+                <td>
+                  <a th:href="@{/endMailAddress/{id}(id=${vaccination.id})}">
+                    SendEmail
+                  </a>
+
+<!--                  <li><a th:href="@{/deleteNotification/{vaccinationAddress}(vaccinationAddress=${vaccination.id})}">Địa chỉ 1</a></li>-->
+
+                </td>
+<!--                <td >    <a class="btn btn-outline-primary" style="margin-left: 10%" th:href="@{/Update_Status/{id}(id=${vaccinationHT.id})}" >Chi tiết</a> </td>-->
+
+              </tr>
+
+              </tbody>
+
+            </table>
+              <nav aria-label="Page navigation" class="mt-3">
+                  <ul class="pagination justify-content-center">
+                      <li class="page-item" th:classappend="${currentPage == 0} ? disabled : ''">
+                          <a class="page-link" th:href="@{listVaccination(page=${currentPage - 1}, size=${size})}">Previous</a>
+                      </li>
+                      <!--                            <li class="page-item" th:classappend="${currentPage == i} ? active : ''" th:each="i: ${#numbers.sequence(0, totalPages - 1)}">-->
+                      <li class="page-item" th:classappend="${currentPage == i} ? active : ''" th:each="i: ${totalPages > 0 ? #numbers.sequence(0, totalPages - 1) : {}}">
+                          <a class="page-link" th:href="@{listVaccination(page=${i}, size=${size})}" th:text="${i + 1}"></a>
+                      </li>
+                      <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                          <a class="page-link" th:href="@{listVaccination(page=${currentPage + 1}, size=${size})}" th:text="Next"></a>
+                      </li>
+                  </ul>
+              </nav>
+          </div>
+        </div>
+      </div>
+    </main>
+
+
+    <footer class="py-4 bg-light mt-auto">
+      <div class="container-fluid px-4">
+        <div class="d-flex align-items-center justify-content-between small">
+          <!--          <div class="text-muted">Copyright &copy; Your Website 2023</div>-->
+          <!--          <div>-->
+          <!--            <a href="#">Privacy Policy</a>-->
+          <!--            &middot;-->
+          <!--            <a href="#">Terms &amp; Conditions</a>-->
+          <!--          </div>-->
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+
+
+<script th:src="@{/js/scripts.js}"></script>
+<script th:src="@{/js/datatables-simple-demo.js}"></script>
+
+<!--<script>-->
+<!--  function showConfirmation() {-->
+<!--    if (confirm("Are you sure you want to delete this account?")) {-->
+<!--      // Nếu người dùng đồng ý, chuyển hướng đến trang "email_sent.html"-->
+<!--      window.location.href = '@{/deleteNotification/{id}(id=${vaccination.id})}';-->
+<!--    }-->
+<!--   -->
+<!--  }-->
+<!--</script>-->
+</body>
+</html>

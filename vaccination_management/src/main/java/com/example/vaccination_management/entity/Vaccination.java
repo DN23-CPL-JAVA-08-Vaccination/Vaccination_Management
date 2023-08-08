@@ -24,7 +24,7 @@ public class Vaccination {
     private boolean enableFlag;
 
     @Column(name = "duration")
-    private int duration;
+    private Integer duration;
 
     @Column(name = "times")
     private int times;
