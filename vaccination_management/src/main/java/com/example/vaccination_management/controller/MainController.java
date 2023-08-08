@@ -93,8 +93,4 @@ public class MainController {
         model.addAttribute("patientDTO", inforPatientDTO);
         return "patient_infor_account";
     }
-
-
-
-
 }

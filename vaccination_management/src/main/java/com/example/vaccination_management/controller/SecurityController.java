@@ -6,6 +6,7 @@ import com.example.vaccination_management.service.IAccountRoleService;
 import com.example.vaccination_management.service.IAccountService;
 import com.example.vaccination_management.validation.ChangePasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Collection;
 
 @Controller
 public class SecurityController {
@@ -75,9 +78,27 @@ public class SecurityController {
         boolean checkPassword = accountRoleService.checkPassword(accountDTO.getCurrentPassword(), accountDTO.getUsername());
 
         if (checkPassword) {
-            accountService.changePasswordLogin(passwordEncoder.encode(accountDTO.getCurrentPassword()), accountDTO.getUsername());
+            accountService.changePasswordLogin(passwordEncoder.encode(accountDTO.getNewPassword()), accountDTO.getUsername());
             attributes.addFlashAttribute("msg", "Đổi mật khẩu thành công !");
-            return "redirect:/infor-account";
+
+            Collection<GrantedAuthority> authorities = accountDetailService.getAuthorities();
+            String role = "";
+            for (GrantedAuthority authority : authorities) {
+                role = authority.getAuthority();
+            }
+
+            if (role.equals("ROLE_ADMIN")) {
+
+                return "redirect:/admin";
+            }
+            if (role.equals("ROLE_EMPLOYEE")) {
+
+                return "redirect:/patient";
+            }
+            if (role.equals("ROLE_USER")) {
+                return "redirect:/";
+            }
+            return "home_patient";
         }
         model.addAttribute("msg", "Mật khẩu không đúng !");
         return "security/change_password";

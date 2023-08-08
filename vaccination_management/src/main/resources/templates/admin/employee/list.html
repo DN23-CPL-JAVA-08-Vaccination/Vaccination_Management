@@ -30,9 +30,11 @@
                         <a th:href="@{/admin/employee/create}">
                             <button type="button" class="btn btn-outline-primary">Thêm mới +</button>
                         </a>
-                        <form  th:action="@{/admin/employee}" method="get" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 float-end">
+                        <form th:action="@{/admin/employee}" method="get"
+                              class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 float-end">
                             <div class="input-group">
-                                <input th:value="${searchName}" class="form-control" type="text" placeholder="Nhập tên nhân viên" name="searchName"
+                                <input th:value="${searchName}" class="form-control" type="text"
+                                       placeholder="Nhập tên nhân viên" name="searchName"
                                        aria-label="Search for..." aria-describedby="btnNavbarSearch"/>
                                 <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i
                                         class="fas fa-search"></i></button>
@@ -93,7 +95,7 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a  th:href="@{/admin/employee/update(id=${employee.getId()})}" class="btn ">
+                                    <a th:href="@{/admin/employee/update(id=${employee.getId()})}" class="btn ">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </a>
                                 </td>
@@ -341,6 +343,13 @@
                 toastr.success(str, "Thông báo");
             } else {
                 toastr.error(str, "Thông báo");
+            }
+        }
+        if (str.includes("Đổi mật khẩu")) {
+            if (str.includes("thành công")) {
+                toastr.success(str, "Thông báo");
+            } else {
+                toastr.error("Đổi mật khẩu thất bại !", "Thông báo");
             }
         }
     }

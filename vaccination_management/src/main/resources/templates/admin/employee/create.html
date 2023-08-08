@@ -31,7 +31,8 @@
                         <h5>Thêm mới Bác sĩ</h5>
                     </div>
                     <div class="card-body">
-                        <form class="row g-3" th:object="${employeeCreateDTO}" th:action="@{/admin/employee/create}" method="post">
+                        <form class="row g-3" th:object="${employeeCreateDTO}" th:action="@{/admin/employee/create}"
+                              method="post">
                             <div class="row" hidden>
                                 <div class="mb-3">
                                     <label for="id" class="form-label">Mã bác sĩ</label>
