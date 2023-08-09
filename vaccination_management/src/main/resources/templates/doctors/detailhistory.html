@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Tables - SB Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/adminStyle.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/custom-css.css}">
+
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+</head>
+<body class="sb-nav-fixed">
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+    <!-- Navbar Brand-->
+    <a class="navbar-brand ps-3" th:href="${'/'}">VM Doctor</a>
+    <!-- Sidebar Toggle-->
+    <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+            class="fas fa-bars"></i></button>
+    <!-- Navbar Search-->
+    <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        <div class="input-group">
+            <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
+                   aria-describedby="btnNavbarSearch"/>
+            <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+        </div>
+    </form>
+    <!-- Navbar-->
+    <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+               aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><a class="dropdown-item" href="#">Activity Log</a></li>
+                <li>
+                    <hr class="dropdown-divider"/>
+                </li>
+                <li><a class="dropdown-item" href="#">Logout</a></li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+<div id="layoutSidenav">
+    <div id="layoutSidenav_nav">
+        <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+            <div class="sb-sidenav-menu">
+                <div class="nav">
+                    <div class="sb-sidenav-menu-heading">Core</div>
+                    <a class="nav-link" th:href="@{/}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        Dashboard
+                    </a>
+
+                    <div class="sb-sidenav-menu-heading">Addons</div>
+                    <a class="nav-link" th:href="@{../vaccination}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        Vacciantion Schedule
+                    </a>
+                    <a class="nav-link" th:href="@{../history}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        History Vaccination
+                    </a>
+                    <a class="nav-link" th:href="@{../event}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        Vaccination Event
+                    </a>
+                    <a class="nav-link" th:href="@{../vaccineType}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        Vaccine Type
+                    </a>
+                    <a class="nav-link" th:href="@{../vaccine}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        Vaccine
+                    </a>
+                    <a class="nav-link" th:href="@{../patient}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        Patient
+                    </a>
+                </div>
+            </div>
+            <div class="sb-sidenav-footer">
+                <div class="small">Logged in as:</div>
+                Doctor account
+            </div>
+        </nav>
+    </div>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+
+                <div class="card-body d-flex justify-content-center mt-5 ">
+                    <form action="" method="post" class=" w-75" th:object="${vaccinationObject} ">
+                        <table class="table table-bordered  rounded shadow-lg">
+                            <thead>
+                            <tr class="bg-dark text-white">
+                                <th colspan="2"> Details</th>
+                            </tr>
+                            </thead>
+                            <tr>
+                                <td class="col-md-3 p-3">ID</td>
+
+                                <td class="col-md-4  p-3">
+                                    <input
+                                            type="text"
+                                            class="form-control border-0 bg-white"
+                                            name="id"
+                                            disabled
+                                            id="id"
+                                            th:value="${vaccinationdetail?.getId()}"
+                                            th:field="*{id}"
+                                    >
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td class="col-md-3 p-3">Patient Name</td>
+                                <td class="col-md-4 p-3"    >
+                                    <input
+                                            type="text"
+                                            class="form-control border-0 bg-white"
+                                            name="patientName"
+                                            id="patientName"
+                                            th:value="${vaccinationdetail?.getPatientName()}"
+                                            th:field="*{patientName}"
+                                            readonly
+
+                                    >
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="col-md-3 p-3">Patient Birthday</td>
+                                <td class="col-md-4 p-3">
+                                    <input
+                                            type="text"
+                                            class="form-control border-0 bg-white"
+                                            name="patientBirth"
+                                            id="patientBirth"
+                                            th:value="${vaccinationdetail?.getBirthFormat()}"
+                                            th:field="*{patientBirth}"
+                                            readonly
+                                    >
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="col-md-3 p-3">Vaccination</td>
+                                <td class="col-md-4 p-3">
+                                    <input
+                                            type="text"
+                                            class="form-control border-0 bg-white"
+                                            name="vaccinationDesc"
+                                            id="vaccinationDesc"
+                                            th:value="${vaccinationdetail?.getVaccinationDesc()}"
+                                            th:field="*{vaccinationDesc}"
+                                            readonly
+                                    >
+                                </td>
+
+                            </tr>
+                            <tr>
+                                <td class="col-md-3 p-3">Vaccine Name</td>
+                                <td class="col-md-4 p-3">
+                                    <input
+                                            type="text"
+                                            class="form-control border-0 bg-white"
+                                            name="vaccineName"
+                                            id="vaccineName"
+                                            th:value="${vaccinationdetail?.getVaccineName()}"
+                                            th:field="*{vaccineName}"
+                                            readonly
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-3 p-3">Dosage</td>
+
+                                <td class="col-md-4 p-3 ">
+                                    <input
+                                            type="text"
+                                            class="form-control border-0 bg-white"
+                                            name="dosage"
+                                            id="dosage"
+                                            th:value="${vaccinationdetail?.getDosage()}"
+                                            th:field="*{dosage}"
+                                            readonly
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-3 p-3">Duration</td>
+                                <td class="col-md-4 p-3">
+                                    <input
+                                            type="text"
+                                            class="form-control border-0 bg-white"
+
+                                            name="duration"
+                                            id="duration"
+                                            th:value="${vaccinationdetail?.getDuration()}"
+                                            th:field="*{duration}"
+                                            readonly
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-3 p-3">Vaccination Times</td>
+
+                                <td class="col-md-4 p-3">
+                                    <input
+                                            type="text"
+                                            class="form-control border-0 bg-white"
+                                            name="vaccinationTimes"
+                                            id="vaccinationTimes"
+                                            th:value="${vaccinationdetail?.getVaccinationTimes()}"
+                                            th:field="*{vaccinationTimes}"
+                                            readonly
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-3 p-3">Start Time</td>
+
+                                <td class="col-md-4 p-3" >
+                                    <input
+
+                                            type="text"
+                                            class="form-control border-0 bg-white"
+                                            name="regisTime"
+                                            id="regisTime"
+                                            th:value="${vaccinationdetail?.getRegisTimeFormatted()}"
+                                            th:field="*{regisTime}"
+                                            readonly
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-3 p-3">Employee Name</td>
+                                <td class="col-md-4 p-3">
+                                    <input
+                                            type="text"
+                                            class="form-control border-0 bg-white"
+                                            name="employeeName"
+                                            id="employeeName"
+                                            th:value="${vaccinationdetail?.getEmployeeName()}"
+                                            th:field="*{employeeName}"
+                                            readonly
+                                    >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-3 p-3">Employee Phone</td>
+                                <td class="col-md-4 p-3">
+                                    <input
+                                            type="text"
+                                            class="form-control border-0 bg-white"
+                                            name="employeePhone"
+                                            id="employeePhone"
+                                            th:value="${vaccinationdetail?.getEmployeePhone()}"
+                                            th:field="*{employeePhone}"
+                                            readonly
+                                    >
+                                </td>
+
+                            <tr>
+                                <td class="col-md-3 p-3">Guardian Name</td>
+                                <td class="col-md-4 p-3">
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            name="guardianName"
+                                            id="guardianName"
+                                            th:value="${vaccinationdetail?.getGuardianName()}"
+                                            th:attr="required=${vaccinationdetail?.getAgePatient() < 15}"
+                                            th:field="*{guardianName}"
+                                    >
+                                    <span style="color: red;" th:if="${#fields.hasErrors('guardianName')}"
+                                          th:errors="*{guardianName}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-3 p-3">Guardian Phone</td>
+                                <td class="col-md-4 p-3">
+                                    <input
+                                            type="text"
+                                            class="form-control"
+                                            name="guardianPhone"
+                                            id="guardianPhone"
+                                            th:value="${vaccinationdetail?.getGuardianPhone()}"
+                                            th:attr="required=${vaccinationdetail?.getAgePatient() < 15}"
+                                            th:field="*{guardianPhone}"
+                                    >
+
+
+                                    <span style="color: red;" th:if="${#fields.hasErrors('guardianPhone')}"
+                                          th:errors="*{guardianPhone}"></span>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-3 p-3">Patient's condition</td>
+                                <td class="col-md-4 p-3">
+                                <textarea class="form-control"
+                                          name="preStatus"
+                                          placeholder="Leave a comment here"
+                                          id="preStatus"
+                                          required
+                                          th:field="*{preStatus}"
+                                >
+                                </textarea>
+                                    <span style="color: red;" th:if="${#fields.hasErrors('preStatus')}"
+                                          th:errors="*{preStatus}"></span>
+
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-3 p-3">Status</td>
+                                <td class="col-md-4 p-3">
+                                    <select class="form-select"
+                                            th:field="*{status}"
+                                    >
+                                        <option th:value="1">
+                                            Chưa tiêm
+                                        </option>
+                                        <option th:selected="${vaccinationdetail?.getStatus() == '2' }" th:value="2">
+                                            Đã tiêm
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-3 p-3">Time</td>
+                                <td class="col-md-4 p-3">
+                                    <input
+                                            type="text"
+                                            class="form-control border-0 bg-white"
+                                            name="endTime"
+                                            id="endTime"
+                                            th:value="${vaccinationdetail?.getLastTimeFormatted()}"
+                                            th:field="*{lastTime}"
+                                            readonly
+
+                                    >
+                                </td>
+                            </tr>
+                            <input
+                                    type="text"
+                                    hidden
+                                    class="form-control"
+                                    name="agePatient"
+                                    id="agePatient"
+                                    th:value="${vaccinationdetail?.getAgePatient()}"
+                                    th:field="*{agePatient}"
+                            >
+                            <tr>
+                                <td colspan="2">
+                                    <div th:if="${vaccinationdetail?.getStatus() == 1 || errorsCheck == true} ">
+                                        <button type="submit" class="btn btn-success float-end m-2 p-2 w-25">Update
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+
+
+
+
+        </main>
+        <footer class="py-4 bg-light mt-auto">
+            <div class="container-fluid px-4">
+                <div class="d-flex align-items-center justify-content-between small">
+                    <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                    <div>
+                        <a href="#">Privacy Policy</a>
+                        &middot;
+                        <a href="#">Terms &amp; Conditions</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+
+<script>
+
+    function validateForm() {
+        const guardianPhone = document.getElementById("guardianPhone").value;
+        const regex = /^(0|\+84)(3[2-9]|5[6|8|9]|7[0|6-9]|8[1-5|8]|9[0-4|6-9])[0-9]{7}$/;
+        const phoneError = document.getElementById("phoneError");
+        if (!regex.test(guardianPhone)) {
+            phoneError.style.display = "block";
+            return false;
+        }
+        phoneError.style.display = "none";
+        return true;
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="/js/scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+<script src="/js/datatables-simple-demo.js"></script>
+</body>
+</html>
