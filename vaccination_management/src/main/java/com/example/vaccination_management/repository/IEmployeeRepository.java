@@ -31,6 +31,10 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query(value = SELECT_EMPLOYEE_LIST, countQuery = SELECT_EMPLOYEE_LIST, nativeQuery = true)
     Page<EmployeeListDTO> findEmployeeList(String name, Pageable pageable);
 
+    /**
+     * ThangLV
+     * get count total of List Employee By Name
+     */
     String GET_COUNT_EMPLOYEE = "select count(e.id) as count from employee e \n" +
             "            join position p on p.id = e.position_id\n" +
             "            join account a on a.id = e.account_id\n" +
