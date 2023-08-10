@@ -8,11 +8,14 @@ import com.example.vaccination_management.repository.IVaccineTypeRepository;
 import com.example.vaccination_management.service.IVaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+
+import com.example.vaccination_management.dto.IVaccineDTO;
 
 @Service
 public class VaccineService implements IVaccineService {
@@ -143,5 +146,42 @@ public class VaccineService implements IVaccineService {
 
             iVaccineRepository.save(vaccine);
         }
+    }
+    /**
+     * QuangVT
+     * get all vaccine
+     */
+    @Override
+    public Page<IVaccineDTO> findAllVaccine(Pageable pageable) {
+        return iVaccineRepository.getAllVaccine(pageable);
+    }
+
+    /**
+     * QuangVT
+     * search  vaccine
+     */
+    @Override
+    public Page<IVaccineDTO> searchVaccine(Pageable pageable, String strSearch) {
+        return iVaccineRepository.searchVaccine(strSearch ,pageable);
+    }
+
+    /**
+     * QuangVT
+     * get vaccine by type
+     */
+    @Override
+    public Page<IVaccineDTO> getVaccineByType(Pageable pageable, Integer type) {
+        return iVaccineRepository.getVaccineByType(pageable,type);
+    }
+
+
+    @Override
+    public long count() {
+        return iVaccineRepository.count();
+    }
+
+    @Override
+    public <S extends Vaccine> S save(S entity) {
+        return iVaccineRepository.save(entity);
     }
 }

@@ -4,35 +4,45 @@ import com.example.vaccination_management.entity.Inventory;
 import com.example.vaccination_management.entity.Vaccine;
 import com.example.vaccination_management.entity.VaccineType;
 import com.example.vaccination_management.exception.VaccineNotFoundException;
+import com.example.vaccination_management.service.IVaccineTypeService;
 import com.example.vaccination_management.service.impl.InventoryService;
-import com.example.vaccination_management.service.impl.VaccineService;
-import com.example.vaccination_management.service.impl.VaccineTypeService;
+import com.example.vaccination_management.dto.IVaccineDTO;
+import com.example.vaccination_management.service.IVaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+
 
 import java.util.List;
 
-@RequestMapping("/admin/vaccines")
+@RequestMapping("/")
 @Controller
 public class VaccineController {
     @Autowired
-    private VaccineService vaccineService;
+    private IVaccineService vaccineService;
 
     @Autowired
-    private VaccineTypeService vaccineTypeService;
+    private IVaccineTypeService vaccineTypeService;
 
     @Autowired
     private InventoryService inventoryService;
+
+
 
     /**
      * HuyLVN
      * display all vaccines information on the Vaccines page
      */
-    @GetMapping("")
+    @GetMapping("/admin/vaccines")
     public String getVaccinesDeleteFlagFalse(Model model) {
         List<Vaccine> vaccinesList = vaccineService.getVaccinesDeleteFlagFalse();
 
@@ -45,7 +55,7 @@ public class VaccineController {
      * HuyLVN
      * display all vaccines after being temporarily deleted on the Recycle Bin page
      */
-    @GetMapping("/recycleVaccine")
+    @GetMapping("/admin/vaccines/recycleVaccine")
     public String getVaccinesDeleteFlagTrue(Model model) {
         List<Vaccine> recycleVaccineList = vaccineService.getVaccinesDeleteFlagTrue();
 
@@ -58,7 +68,7 @@ public class VaccineController {
      * HuyLVN
      * go to the Add Vaccine page
      */
-    @GetMapping("/newVaccine")
+    @GetMapping("/admin/vaccines/newVaccine")
     public String showNewForm(Model model, ModelMap modelMap) {
         List<VaccineType> vaccineTypeList = vaccineTypeService.getAllVaccineType();
 
@@ -72,7 +82,7 @@ public class VaccineController {
      * HuyLVN
      * get information from the form to save to the database
      */
-    @PostMapping("/saveVaccine")
+    @PostMapping("/admin/vaccines/saveVaccine")
     public String addVaccine(Vaccine newVaccine, RedirectAttributes redirectAttributes) {
         vaccineService.saveVaccine(newVaccine);
         redirectAttributes.addFlashAttribute("messages", "The vaccine has been created successfully");
@@ -84,7 +94,7 @@ public class VaccineController {
      * HuyLVN
      * go to the Update Vaccine page
      */
-    @GetMapping("/editVaccine/{id}")
+    @GetMapping("/admin/vaccines/editVaccine/{id}")
     public String showUpdateForm(@PathVariable("id") int vaccineID, Model model, ModelMap modelMap) {
         try {
             List<VaccineType> vaccineTypeList = vaccineTypeService.getAllVaccineType();
@@ -103,7 +113,7 @@ public class VaccineController {
      * HuyLVN
      * get information from the form to update to the database
      */
-    @PostMapping("/updateVaccine")
+    @PostMapping("/admin/vaccines/updateVaccine")
     public String updateVaccine(Vaccine updatedVaccine, RedirectAttributes redirectAttributes) {
         vaccineService.updateVaccine(updatedVaccine);
         redirectAttributes.addFlashAttribute("messages", "The vaccine has been updated successfully");
@@ -115,7 +125,7 @@ public class VaccineController {
      * HuyLVN
      * remove vaccine from database in Recycle Bin page
      */
-    @GetMapping("/recycleVaccine/destroyVaccine/{id}")
+    @GetMapping("/admin/vaccines/recycleVaccine/destroyVaccine/{id}")
     public String destroyVaccine(@PathVariable("id") int vaccineID, RedirectAttributes redirectAttributes) {
         try {
             vaccineService.destroyVaccine(vaccineID);
@@ -131,7 +141,7 @@ public class VaccineController {
      * HuyLVN
      * temporary removal of vaccines in Vaccines page
      */
-    @GetMapping("/deleteVaccine/{id}")
+    @GetMapping("/admin/vaccines/deleteVaccine/{id}")
     public String deleteVaccine(@PathVariable("id") int vaccineID, RedirectAttributes redirectAttributes) {
         vaccineService.deleteVaccine(vaccineID);
 
@@ -144,7 +154,7 @@ public class VaccineController {
      * HuyLVN
      * restore vaccines in Recycle Bin page
      */
-    @GetMapping("/recycleVaccine/restoreVaccine/{id}")
+    @GetMapping("/admin/vaccines/recycleVaccine/restoreVaccine/{id}")
     public String restoreVaccine(@PathVariable("id") int vaccineID, RedirectAttributes redirectAttributes) {
         vaccineService.restoreVaccine(vaccineID);
 
@@ -157,7 +167,7 @@ public class VaccineController {
      * HuyLVN
      * detailed display of vaccine information
      */
-    @GetMapping("/{id}")
+    @GetMapping("/admin/vaccines/{id}")
     public String vaccineDetail(@PathVariable("id") int vaccineID, Model model, ModelMap modelMap) {
         try {
             Vaccine vaccine = vaccineService.getVaccineByID(vaccineID);
@@ -174,4 +184,18 @@ public class VaccineController {
 
         return "/admin/Vaccines/VaccineDetail";
     }
+
+
+    /**
+     * QuangVT
+     * get information of vaccine
+     */
+    @GetMapping("/doctor/vaccine")
+    public String getAll(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size , @RequestParam(defaultValue = "", required = false) String strSearch) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<IVaccineDTO>  vaccinePage = vaccineService.searchVaccine(pageable,'%' +strSearch + '%');
+        model.addAttribute("vaccineList", vaccinePage);
+        return "doctors/vaccine";
+    }
+
 }

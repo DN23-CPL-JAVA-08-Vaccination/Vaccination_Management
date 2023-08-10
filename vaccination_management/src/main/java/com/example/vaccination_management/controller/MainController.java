@@ -1,21 +1,29 @@
 package com.example.vaccination_management.controller;
 
 
+import com.example.vaccination_management.dto.IVaccinationHistoryDTO;
 import com.example.vaccination_management.dto.InfoEmployeeAccountDTO;
 import com.example.vaccination_management.dto.InforEmployeeDTO;
 import com.example.vaccination_management.dto.InforPatientDTO;
 import com.example.vaccination_management.security.AccountDetailService;
 import com.example.vaccination_management.service.IEmployeeService;
 import com.example.vaccination_management.service.IPatientService;
+import com.example.vaccination_management.service.IVaccinationHistoryService;
+import com.example.vaccination_management.service.IVaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -29,6 +37,15 @@ public class MainController {
     @Autowired
     IPatientService patientService;
 
+    @Autowired
+    IVaccinationHistoryService iVaccinationHistoryService;
+    @Autowired
+    IVaccineService iVaccineService;
+    private String getDefaultYear() {
+        return String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+    }
+
+
     @GetMapping("/")
     public ModelAndView showMain() {
         ModelAndView modelAndView = new ModelAndView("index");
@@ -41,10 +58,27 @@ public class MainController {
         return modelAndView;
     }
 
-    @GetMapping("/patient")
-    public ModelAndView homePatientPage() {
-        ModelAndView modelAndView = new ModelAndView("home_patient");
-        return modelAndView;
+    /**
+     * QuangVT
+     * get information for dashboard
+     */
+    @GetMapping("/doctor")
+    public String home(Model model, @RequestParam(defaultValue = "") String year) {
+        LocalDate today = LocalDate.now();
+        model.addAttribute("today", today);
+
+        IVaccinationHistoryDTO ivacci = iVaccinationHistoryService.countVaccination();
+        model.addAttribute("countVacc", ivacci);
+        long count = iVaccineService.count();
+        if (year.isEmpty()) {
+            year = getDefaultYear();
+        }
+        List<Integer> listChart = iVaccinationHistoryService.getDataForChart(year);
+
+        model.addAttribute("chartList", listChart);
+        model.addAttribute("countVaccine", count);
+
+        return "doctors/homedoctor";
     }
 
     /**
@@ -92,5 +126,15 @@ public class MainController {
         InforPatientDTO inforPatientDTO = patientService.getInforByUsername(username);
         model.addAttribute("patientDTO", inforPatientDTO);
         return "patient_infor_account";
+    }
+
+    /**
+     * QuangVT
+     * get information of datachart by year
+     */
+    @GetMapping("/chart-data")
+    @ResponseBody
+    public List<Integer> getChartData(@RequestParam(defaultValue = "") String year) {
+        return iVaccinationHistoryService.getDataForChart(year);
     }
 }
