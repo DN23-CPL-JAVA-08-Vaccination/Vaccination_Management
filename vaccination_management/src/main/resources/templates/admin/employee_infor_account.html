@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Thông tin cá nhân</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/styles-admin-thanglv.css}" rel="stylesheet">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src=" http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+    <style>
+        .card {
+            border: none !important;
+        }
+    </style>
+</head>
+<body class="sb-nav-fixed">
+<th:block th:insert="admin/nav"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="admin/sidenav"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Bác sĩ</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/admin}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Thông tin tài khoản cá nhân</li>
+                </ol>
+                <div class="card mb-4">
+                    <div class="content_add col-xl-10 ">
+                        <h2 class="title">THÔNG TIN TÀI KHOẢN</h2>
+                        <form action="#">
+                            <div class="row align-items-end">
+                                <div class="row col-md-12">
+                                    <div class="col">
+                                        <div class="d-flex">
+                                            <div class="form-group col-md-6">
+                                                <label class="info">Tên tài khoản :</label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <span class="info-person" th:text="${employeeDTO.getUsername()}">thangle2912</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="form-group col-md-6">
+                                                <label class="info">Họ và tên :</label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <span class="info-person" th:text="${employeeDTO.getName()}">Lê Văn Thắng</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="form-group col-md-6">
+                                                <label class="form-label info">Ngày sinh : </label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <span class="info-person"
+                                                      th:text="${#dates.format(employeeDTO.getBirthday(), 'dd/MM/yyyy')}">29/12/2000</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <img th:if="${employeeDTO.getImage() == '' || employeeDTO.getImage() == null}"
+                                             src="https://cdn-icons-png.flaticon.com/512/6596/6596121.png"
+                                             class=" mx-auto d-block avatar" alt="Ảnh"/>
+                                        <img th:if="${employeeDTO.getImage() != null }"
+                                             th:src="${employeeDTO.getImage()}"
+                                             class=" mx-auto d-block avatar" alt="Ảnh"/>
+                                    </div>
+                                </div>
+                                <div class="row col-md-12">
+                                    <div class="col">
+                                        <div class="d-flex">
+                                            <div class="form-group col-md-6">
+                                                <label class="info">Số điện thoại :</label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <span class="info-person"
+                                                      th:text="${employeeDTO.getPhone()}">0915823742</span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="form-group col-md-6">
+                                                <label class="info">CMND/CCCD :</label>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <span class="info-person" th:text="${employeeDTO.getIdCard()}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="d-flex">
+                                            <div class="form-group col-md-5">
+                                                <label class="info">Vị trí :</label>
+                                            </div>
+                                            <div class="form-group col-md-7">
+                                                <span class="info-person"
+                                                      th:text="${employeeDTO.getPositionName()}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex">
+                                            <div class="form-group col-md-5">
+                                                <label class="form-label info">Giới tính : </label>
+                                            </div>
+                                            <div class="form-group col-md-7">
+                                                <span class="info-person" th:if="${employeeDTO.getGender()}">Nam</span>
+                                                <span class="info-person" th:if="${!employeeDTO.getGender()}">Nữ</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-12 d-flex padding-none">
+                                    <div class="form-group col-md-3">
+                                        <label class="info">Email :</label>
+                                    </div>
+                                    <div class="form-group col-md-9">
+                                        <span class="info-person" th:text="${employeeDTO.getEmail()}">thangle2912@gmail.com</span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12 d-flex padding-none">
+                                    <div class="form-group col-md-3">
+                                        <label class="info">Địa chỉ :</label>
+                                    </div>
+                                    <div class="form-group col-md-9">
+                                        <span class="info-person" th:text="${employeeDTO.getAddress()}">295 Nguyễn Tất Thành, Đà Nẵng, Việt Nam</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="">
+                                <div style="display : flex;justify-content : space-evenly">
+                                    <div>
+                                        <a type="button" class="btn btn-info btn-padding-10">Cập nhật thông tin</a>
+                                    </div>
+                                    <div>
+                                        <a href="change_password.html" type="button"
+                                           class="btn btn-warning btn-padding-10">Thay đổi mật khẩu</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <th:block th:insert="admin/footer_admin"></th:block>
+    </div>
+</div>
+
+<script th:src="@{/js/scripts.js}"></script>
+<script th:src="@{/js/datatables-simple-demo.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+
+<script th:inline="javascript">
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+    var str = [[${msg}]];
+
+    if (str != null) {
+        if (str.includes("Đổi mật khẩu thành công")) {
+            toastr.success(str, "Thông báo");
+        }
+
+    }
+</script>
+</body>
+</html>

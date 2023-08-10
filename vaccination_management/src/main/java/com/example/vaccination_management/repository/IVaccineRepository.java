@@ -2,15 +2,44 @@ package com.example.vaccination_management.repository;
 
 import com.example.vaccination_management.dto.IVaccineDTO;
 import com.example.vaccination_management.entity.Vaccine;
+
+import com.example.vaccination_management.entity.VaccineType;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.List;
+
 public interface IVaccineRepository extends JpaRepository<Vaccine, Integer> {
+    /**
+     * HuyLVN
+     * query vaccines information of the same type of vaccine from the database
+     */
+    List<Vaccine> getVaccineByVaccineType(VaccineType vaccineType);
+
+    /**
+     * HuyLVN
+     * query the vaccine information that has the deleteFlag field as false from the database
+     */
+    List<Vaccine> findByDeleteFlagFalse();
+
+    /**
+     * HuyLVN
+     * query the vaccine information that has the deleteFlag field as true from the database
+     */
+    List<Vaccine> findByDeleteFlagTrue();
+
+    /**
+     * HuyLVN
+     * count the number of occurrences of ID in the database
+     */
+    Long countById(int vaccineID);
+
     /**
      * QuangVT
      * get all vaccine
@@ -26,6 +55,7 @@ public interface IVaccineRepository extends JpaRepository<Vaccine, Integer> {
             nativeQuery = true
     )
     Page<IVaccineDTO> getAllVaccine(Pageable pageable);
+
     /**
      * QuangVT
      * get vaccine by type
@@ -40,7 +70,8 @@ public interface IVaccineRepository extends JpaRepository<Vaccine, Integer> {
             countQuery = "SELECT COUNT(*) FROM vaccination_manager.vaccine vac WHERE vac.delete_flag = 0 AND vac.vaccine_type_id = :type",
             nativeQuery = true
     )
-    Page<IVaccineDTO> getVaccineByType(Pageable pageable,@Param("type") Integer type);
+    Page<IVaccineDTO> getVaccineByType(Pageable pageable, @Param("type") Integer type);
+
     /**
      * QuangVT
      * search vaccine
@@ -55,5 +86,5 @@ public interface IVaccineRepository extends JpaRepository<Vaccine, Integer> {
             countQuery = "SELECT COUNT(*) FROM vaccination_manager.vaccine vac WHERE vac.delete_flag = 0 AND (vac.name LIKE ?1 OR vac.code LIKE ?1 )",
             nativeQuery = true
     )
-    Page<IVaccineDTO> searchVaccine( String strSearch,Pageable pageable);
+    Page<IVaccineDTO> searchVaccine(String strSearch, Pageable pageable);
 }

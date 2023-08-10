@@ -27,36 +27,36 @@ public class HomeController {
         return String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
     }
 
-    /**
-     * QuangVT
-     * get information for dashboard
-     */
-    @GetMapping("/")
-    public String home(Model model, @RequestParam(defaultValue = "") String year) {
-        LocalDate today = LocalDate.now();
-        model.addAttribute("today", today);
-
-        IVaccinationHistoryDTO ivacci = iVaccinationHistoryService.countVaccination();
-        model.addAttribute("countVacc", ivacci);
-        long count = iVaccineService.count();
-        if (year.isEmpty()) {
-            year = getDefaultYear();
-        }
-        List<Integer> listChart = iVaccinationHistoryService.getDataForChart(year);
-
-        model.addAttribute("chartList", listChart);
-        model.addAttribute("countVaccine", count);
-
-        return "doctors/homedoctor";
-    }
-
-    /**
-     * QuangVT
-     * get information of datachart by year
-     */
-    @GetMapping("/chart-data")
-    @ResponseBody
-    public List<Integer> getChartData(@RequestParam(defaultValue = "") String year) {
-        return iVaccinationHistoryService.getDataForChart(year);
-    }
+//    /**
+//     * QuangVT
+//     * get information for dashboard
+//     */
+//    @GetMapping("/")
+//    public String home(Model model, @RequestParam(defaultValue = "") String year) {
+//        LocalDate today = LocalDate.now();
+//        model.addAttribute("today", today);
+//
+//        IVaccinationHistoryDTO ivacci = iVaccinationHistoryService.countVaccination();
+//        model.addAttribute("countVacc", ivacci);
+//        long count = iVaccineService.count();
+//        if (year.isEmpty()) {
+//            year = getDefaultYear();
+//        }
+//        List<Integer> listChart = iVaccinationHistoryService.getDataForChart(year);
+//
+//        model.addAttribute("chartList", listChart);
+//        model.addAttribute("countVaccine", count);
+//
+//        return "doctors/homedoctor";
+//    }
+//
+//    /**
+//     * QuangVT
+//     * get information of datachart by year
+//     */
+//    @GetMapping("/chart-data")
+//    @ResponseBody
+//    public List<Integer> getChartData(@RequestParam(defaultValue = "") String year) {
+//        return iVaccinationHistoryService.getDataForChart(year);
+//    }
 }

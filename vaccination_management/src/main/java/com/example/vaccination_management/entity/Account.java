@@ -27,7 +27,7 @@ public class Account {
     @Column(name = "enable_flag")
     private boolean enableFlag;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<AccountRole> accountRoles;
 
     public Account() {

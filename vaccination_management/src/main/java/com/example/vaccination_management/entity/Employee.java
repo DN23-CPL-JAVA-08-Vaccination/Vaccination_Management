@@ -46,7 +46,7 @@ public class Employee {
     public Employee() {
     }
 
-    public Employee(int id, String name, boolean gender, String address, String phoneNumber, String birthday, boolean deleteFlag, String idCard, Account account, Position position) {
+    public Employee(int id, String name, boolean gender, String address, String phoneNumber, String birthday, boolean deleteFlag, String idCard, String image, Account account, Position position) {
         this.id = id;
         this.name = name;
         this.gender = gender;
@@ -55,6 +55,7 @@ public class Employee {
         this.birthday = birthday;
         this.deleteFlag = deleteFlag;
         this.idCard = idCard;
+        this.image = image;
         this.account = account;
         this.position = position;
     }

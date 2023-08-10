@@ -4,6 +4,7 @@ window.addEventListener('DOMContentLoaded', event => {
 
     const datatablesSimple = document.getElementById('datatablesSimple');
     if (datatablesSimple) {
+
         let options = {
             perPage: 10,
 

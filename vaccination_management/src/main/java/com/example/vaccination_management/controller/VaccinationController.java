@@ -24,7 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-@RequestMapping("")
+@RequestMapping("/")
 @Controller
 public class VaccinationController {
     @Autowired
@@ -133,6 +133,7 @@ public class VaccinationController {
         model.addAttribute("vaccinationList", vaccinations);
         return "doctors/vaccinationevent";
     }
+
     @GetMapping("/doctor/event/view")
     public String getEventDetails(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "", required = false) String strSearch) {
 

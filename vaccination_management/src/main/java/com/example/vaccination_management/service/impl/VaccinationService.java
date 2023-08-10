@@ -17,8 +17,4 @@ public class VaccinationService implements IVaccinationService {
     public Page<IVaccinationDTO> getAllVaccination(String strSearch, Pageable pageable) {
         return iVaccinationRepository.getVaccinations(strSearch,pageable);
     }
-    /**
-     * QuangVT
-     * search  vaccine
-     */
 }

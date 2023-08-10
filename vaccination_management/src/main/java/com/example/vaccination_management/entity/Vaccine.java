@@ -44,12 +44,14 @@ public class Vaccine {
     @Column(name = "dosage")
     private Double dosage;
 
+
     @ManyToOne
     @JoinColumn(name = "vaccine_type_id")
     private VaccineType vaccineType;
 
     public Vaccine() {
     }
+
 
     public Vaccine(int id, String name, String code, String description, boolean deleteFlag, String createDate, String updateDate, Double price, String duration, String age, String image, Double dosage, VaccineType vaccineType) {
         this.id = id;
@@ -66,6 +68,7 @@ public class Vaccine {
         this.dosage = dosage;
         this.vaccineType = vaccineType;
     }
+
 
     public int getId() {
         return id;

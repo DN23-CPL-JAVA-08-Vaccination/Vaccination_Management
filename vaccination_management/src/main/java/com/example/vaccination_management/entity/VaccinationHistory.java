@@ -35,10 +35,10 @@ public class VaccinationHistory {
     @Column(name = "guardian_phone")
     private String guardianPhone;
 
-
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
+
 
     @ManyToOne
     @JoinColumn(name = "vaccination_id")

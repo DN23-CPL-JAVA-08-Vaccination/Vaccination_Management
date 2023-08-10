@@ -5,10 +5,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
-@Repository
+
 public interface IVaccineTypeRepository extends JpaRepository<VaccineType, Integer> {
+    /**
+     * HuyLVN
+     * count the number of occurrences of ID in the database
+     */
+    Long countById(int vaccineTypeID);
+
     /**
      * QuangVT
      * get all vaccine type
@@ -22,7 +27,5 @@ public interface IVaccineTypeRepository extends JpaRepository<VaccineType, Integ
             nativeQuery = true
     )
     Page<VaccineType> getAllVaccineType(String strSearch, Pageable pageable);
-
-
 
 }

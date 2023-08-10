@@ -15,10 +15,6 @@ public interface IVaccinationHistoryService {
 
     IVaccinationHistoryDTO countVaccination();
 
-
-
-
-
     Page<IVaccinationHistoryDTO> getHistoryVaccination(String strSearch, Pageable pageable);
 
     IVaccinationHistoryDTO getVaccinationHistoryByID(Integer id);
@@ -29,10 +25,7 @@ public interface IVaccinationHistoryService {
 
     VaccinationHistory getById(Integer integer);
 
-
-
     List<VaccinationHistory> findAll(Sort sort);
-
 
     <S extends VaccinationHistory> S save(S entity);
 }
