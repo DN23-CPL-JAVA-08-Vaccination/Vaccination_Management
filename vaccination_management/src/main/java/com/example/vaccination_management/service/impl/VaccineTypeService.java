@@ -1,6 +1,5 @@
 package com.example.vaccination_management.service.impl;
 
-
 import com.example.vaccination_management.entity.VaccineType;
 import com.example.vaccination_management.exception.VaccineTypeNoFoundException;
 import com.example.vaccination_management.repository.IVaccineTypeRepository;
@@ -8,15 +7,18 @@ import com.example.vaccination_management.service.IVaccineTypeService;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 import java.util.Optional;
 
 
 @Service
 public class VaccineTypeService implements IVaccineTypeService {
+
     @Autowired
     private IVaccineTypeRepository iVaccineTypeRepository;
 
@@ -26,6 +28,15 @@ public class VaccineTypeService implements IVaccineTypeService {
      */
     @Override
     public List<VaccineType> getAllVaccineType() {
+        return iVaccineTypeRepository.findAll();
+    }
+
+    /**
+     * LoanHTP
+     * Retrieves a list of all available vaccine types.
+     */
+    @Override
+    public List<VaccineType> showVaccineType() {
         return iVaccineTypeRepository.findAll();
     }
 
@@ -66,17 +77,28 @@ public class VaccineTypeService implements IVaccineTypeService {
         }
         iVaccineTypeRepository.deleteById(vaccineTypeID);
     }
+
     /**
      * QuangVT
      * get all vaccine type
      */
     @Override
     public Page<VaccineType> findAllVaccine(String strSearch, Pageable pageable) {
-        return iVaccineTypeRepository.getAllVaccineType(strSearch,pageable);
+        return iVaccineTypeRepository.getAllVaccineType(strSearch, pageable);
     }
+
     @Override
     public <S extends VaccineType> Page<S> findAll(Example<S> example, Pageable pageable) {
         return iVaccineTypeRepository.findAll(example, pageable);
+    }
+
+    /**
+     * LoanHTP
+     * Retrieves a vaccine type record based on the provided ID.
+     */
+    @Override
+    public VaccineType findVaccineTypeById(int id) {
+        return iVaccineTypeRepository.findById(id).orElse(null);
 
     }
 }

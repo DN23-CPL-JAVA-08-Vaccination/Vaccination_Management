@@ -1,5 +1,6 @@
 package com.example.vaccination_management.repository;
 
+import com.example.vaccination_management.entity.VaccinationType;
 import com.example.vaccination_management.entity.VaccineType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 
 
 public interface IVaccineTypeRepository extends JpaRepository<VaccineType, Integer> {
+
     /**
      * HuyLVN
      * count the number of occurrences of ID in the database

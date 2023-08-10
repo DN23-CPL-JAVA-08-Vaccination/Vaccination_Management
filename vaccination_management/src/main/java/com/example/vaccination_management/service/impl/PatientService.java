@@ -10,6 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+
+import java.util.List;
+
+
 @Service
 public class PatientService implements IPatientService {
 
@@ -24,12 +28,33 @@ public class PatientService implements IPatientService {
     public InforPatientDTO getInforByUsername(String username) {
         return iPatientRepository.getInforByUsername(username);
     }
+
     @Override
     public Page<IPatientDTO> getPatients(Pageable pageable, String strSearch) {
-        return iPatientRepository.getPatients(strSearch,pageable);
+        return iPatientRepository.getPatients(strSearch, pageable);
     }
+
     @Override
-    public Patient getPatientById(Integer id){
+    public Patient getPatientById(Integer id) {
         return iPatientRepository.getById(id);
+    }
+
+    /**
+     * LoanHTP
+     * Retrieves a patient's information based on the provided patient ID.
+     */
+    @Override
+    public Patient findPatientById(int id) {
+        return iPatientRepository.findPatientById(id);
+    }
+
+    /**
+     * LoanHTP
+     * Retrieves a list of patients to display.
+     */
+    @Override
+    public List<Patient> showPatient() {
+        return iPatientRepository.findAll();
+
     }
 }

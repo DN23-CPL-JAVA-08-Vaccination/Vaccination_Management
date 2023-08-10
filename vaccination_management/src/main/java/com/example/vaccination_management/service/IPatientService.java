@@ -6,6 +6,8 @@ import com.example.vaccination_management.entity.Patient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface IPatientService {
 
     /**
@@ -18,5 +20,17 @@ public interface IPatientService {
 
 
     Patient getPatientById(Integer id);
+
+    /**
+     * LoanHTP
+     * Retrieves a patient's information based on the provided patient ID.
+     */
+    Patient findPatientById(int id);
+
+    /**
+     * LoanHTP
+     * Retrieves a list of patients to display.
+     */
+    List<Patient> showPatient();
 
 }

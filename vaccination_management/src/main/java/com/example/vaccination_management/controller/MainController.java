@@ -47,9 +47,10 @@ public class MainController {
 
 
     @GetMapping("/")
-    public ModelAndView showMain() {
-        ModelAndView modelAndView = new ModelAndView("index");
-        return modelAndView;
+    public String showMain() {
+//        ModelAndView modelAndView = new ModelAndView("index");
+//        return modelAndView;
+        return "redirect:/vaccine/list-vaccine";
     }
 
     @GetMapping("/admin")

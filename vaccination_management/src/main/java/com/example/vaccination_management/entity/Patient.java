@@ -45,6 +45,7 @@ public class Patient {
     public Patient() {
     }
 
+
     public Patient(int id, String name, String healthInsurance, boolean gender, String address, String phoneNumber, String birthday, String guardianName, String guardianPhone, boolean deleteFlag, Account account) {
         this.id = id;
         this.name = name;

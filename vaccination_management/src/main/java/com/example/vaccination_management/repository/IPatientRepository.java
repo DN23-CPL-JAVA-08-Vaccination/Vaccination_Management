@@ -34,10 +34,16 @@ public interface IPatientRepository extends JpaRepository<Patient, Integer> {
     String SELECT_PATIENT_BY_ID = "select p.id, p.name, p.address, p.birthday, p.gender, p.health_insurance as healthInsurance, p.phone, p.guardian_name as guardianName, p.guardian_phone as guardianPhone, a.email, a.username from patient  p\n" +
             "            join account a on a.id = p.account_id\n" +
             "            where  p.detele_flag = 0 and a.username = ?";
+
     @Query(value = SELECT_PATIENT_BY_ID, countQuery = SELECT_PATIENT_BY_ID, nativeQuery = true)
     InforPatientDTO getInforByUsername(String username);
 
     @Override
     Patient getById(Integer integer);
 
+    /**
+     * LoanHTP
+     * Retrieves a patient's information based on the provided patient ID.
+     */
+    Patient findPatientById(int id);
 }

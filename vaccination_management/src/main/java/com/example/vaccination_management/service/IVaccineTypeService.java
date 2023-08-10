@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface IVaccineTypeService {
+
     /**
      * HuyLVN
      * get all information of vaccine types, admin after login
@@ -36,5 +37,17 @@ public interface IVaccineTypeService {
     Page<VaccineType> findAllVaccine(String strSearch, Pageable pageable);
 
     <S extends VaccineType> Page<S> findAll(Example<S> example, Pageable pageable);
+
+    /**
+     * LoanHTP
+     * Retrieves a list of vaccine types to display.
+     */
+    List<VaccineType> showVaccineType();
+
+    /**
+     * LoanHTP
+     * Retrieves a list of vaccine types to display.
+     */
+    VaccineType findVaccineTypeById(int id);
 
 }

@@ -44,7 +44,7 @@ public class PatientController {
         model.addAttribute("patientID",id);
         model.addAttribute("patient",patient);
         model.addAttribute("vaccinationList", list);
-        return "doctors/detailPatient";
+        return "doctors/detailpatient";
     }
 
 }
