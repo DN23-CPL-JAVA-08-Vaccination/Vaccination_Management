@@ -20,14 +20,17 @@ public class Vaccination {
     @Column(name = "end_time", columnDefinition = "Datetime" )
     private String endTime;
 
-    @Column(name = "enable_flag")
-    private boolean enableFlag;
+    @Column(name = "delete_flag")
+    private boolean deleteFlag;
 
     @Column(name = "duration")
-    private int duration;
+    private String duration;
 
     @Column(name = "times")
     private int times;
+
+    @Column(name = "description")
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "location_id")
@@ -44,14 +47,15 @@ public class Vaccination {
     public Vaccination() {
     }
 
-    public Vaccination(int id, String date, String startTime, String endTime, boolean enableFlag, int duration, int times, Location location, VaccinationType vaccinationType, Vaccine vaccine) {
+        public Vaccination(int id, String date, String startTime, String endTime, String description, boolean deleteFlag, String duration, int times, Location location, VaccinationType vaccinationType, Vaccine vaccine) {
         this.id = id;
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.enableFlag = enableFlag;
+        this.deleteFlag = deleteFlag;
         this.duration = duration;
         this.times = times;
+        this.description = description;
         this.location = location;
         this.vaccinationType = vaccinationType;
         this.vaccine = vaccine;
@@ -89,19 +93,19 @@ public class Vaccination {
         this.endTime = endTime;
     }
 
-    public boolean isEnableFlag() {
-        return enableFlag;
+    public boolean isDeleteFlag() {
+        return deleteFlag;
     }
 
-    public void setEnableFlag(boolean enableFlag) {
-        this.enableFlag = enableFlag;
+    public void setDeleteFlag(boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
     }
 
-    public int getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
@@ -111,6 +115,14 @@ public class Vaccination {
 
     public void setTimes(int times) {
         this.times = times;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Location getLocation() {
