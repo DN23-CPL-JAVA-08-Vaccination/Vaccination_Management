@@ -17,9 +17,14 @@ import java.time.format.DateTimeParseException;
 public class EditPatientValidator implements Validator {
     @Autowired
     private IPatientService iPatient;
+    String regex = "^(032|033|034|035|036|037|038|039|070|079|077|076|078|083|084|085|081|082|05[0-9]|056|058|059)\\d{7}$";
 
 
 
+    /**
+       * TLINH
+       * check the data entered in the form edit patient
+     */
     @Override
     public boolean supports(Class<?> clazz) {
         return PatientDTO.class.equals(clazz);
@@ -42,53 +47,53 @@ public class EditPatientValidator implements Validator {
         }
 
         if (patientDTO.getBirthday() == null) {
-            errors.rejectValue("birthday", "BirthdayRequired", "Birthday is required!");
+            errors.rejectValue("birthday", "BirthdayRequired", "Ngày sinh không được để trống!");
         } else if (patientDTO.getBirthday() != null && patientDTO.getBirthday().isAfter(currentDate)){
-            errors.rejectValue("birthday", "InvalidDate", "Birthday cannot be in the future.!!");
+            errors.rejectValue("birthday", "InvalidDate", "Ngày sinh không đúng định dạng!!");
         }else if (patientDTO.getBirthday().getYear() < 1900) {
-            errors.rejectValue("birthday", "InvalidYear", "Birthday cannot be earlier than 1900.!!");
+            errors.rejectValue("birthday", "InvalidYear", "Năm sinh không được nhỏ hơn 1900.!!");
         }
 
 
         if (patientDTO.getAddress()==null||patientDTO.getAddress().trim().isEmpty()){
-            errors.rejectValue("address", "AddressRequired", "Address is Required");
+            errors.rejectValue("address", "AddressRequired", "Địa chỉ là bắt buộc");
         }else {
             if (!patientDTO.getAddress().matches("^[a-zA-Z\\p{L}0-9 ]+$")) {
-                errors.rejectValue("address", "InvalidCharacters", "Address must not contain special characters!");
+                errors.rejectValue("address", "InvalidCharacters", "Nhập sai địa chỉ!");
             }else if (patientDTO.getAddress().length()<6){
-                errors.rejectValue("address", "Invalid", "Invalid address!!");
+                errors.rejectValue("address", "Invalid", "Địa chỉ không được ít hơn 6 kí tự!!");
             }
         }
         if (patientDTO.getGender()==null){
-            errors.rejectValue("gender", "GenderRequire", "Gender is Required");
+            errors.rejectValue("gender", "GenderRequire", "Giới tính là trường bắt buộc");
         }
 
         if (patientDTO.getPhone()==null||patientDTO.getPhone().trim().isEmpty()){
-            errors.rejectValue("phone", "PhoneRequire", "Phone is Require");
+            errors.rejectValue("phone", "PhoneRequire", "Số điện thoại là bắt buộc");
         } else {
-            if (!patientDTO.getPhone().matches("^[0-9]{10}$")){
-                errors.rejectValue("phone", "PhoneFormat", "Incorrect phone number!!");
+            if (!patientDTO.getPhone().matches(regex)){
+                errors.rejectValue("phone", "PhoneFormat", "Số điện thoại sai!!");
             }
         }
 
         if (patientDTO.getEmail()==null||patientDTO.getEmail().trim().isEmpty()){
-            errors.rejectValue("email","EmailRequire", "Email is Require!!");
+            errors.rejectValue("email","EmailRequire", "Email là trường bắt buộc!!");
         }else {
             if (!patientDTO.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")){
-                errors.rejectValue("email", "EmailFormat", "Email is not correct!!");
+                errors.rejectValue("email", "EmailFormat", "Nhập email không đúng!!");
             }
         }
         if (patientDTO.getGuardianName()!=null && !patientDTO.getGuardianName().trim().isEmpty()) {
             if (!patientDTO.getGuardianName().matches("^[a-zA-Z\\p{L} ]+$")) {
-                errors.rejectValue("guardianName", "GuardianName", "Name cannot contain characters and numbers!!");
+                errors.rejectValue("guardianName", "GuardianName", "Nhập đầy đủ họ và tên!!");
             } else if (patientDTO.getGuardianName().length() < 6) {
-                errors.rejectValue("guardianName", "Guardian", "Name must be more than 6 characters!");
+                errors.rejectValue("guardianName", "Guardian", "Không được ít hơn 6 kí tự!");
             }
         }
 
         if (patientDTO.getGuardianPhone()!=null && !patientDTO.getGuardianPhone().trim().isEmpty()){
-            if (!patientDTO.getGuardianPhone().matches("^[0-9]{10}$")){
-                errors.rejectValue("guardianPhone", "GuardianPhone", "Incorrect phone number!!");
+            if (!patientDTO.getGuardianPhone().matches(regex)){
+                errors.rejectValue("guardianPhone", "GuardianPhone", "Số điện thoại không đúng!!");
             }
         }
     }

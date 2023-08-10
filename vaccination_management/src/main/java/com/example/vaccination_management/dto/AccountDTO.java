@@ -5,12 +5,22 @@ import lombok.*;
 
 public class AccountDTO {
     private Integer id;
-    private String username;
-    private String verificationCode;
-
-    private String password;
     private String email;
     private Boolean enableFlag;
+    private String password;
+    private String username;
+    private String verificationCode;
+    private String rePassword;
+
+    public String getRePassword() {
+        return rePassword;
+    }
+
+    public void setRePassword(String rePassword) {
+        this.rePassword = rePassword;
+    }
+
+
 
     public AccountDTO() {
     }

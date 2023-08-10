@@ -25,6 +25,7 @@
   <link th:href="@{/patient/assets/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
   <link th:href="@{/patient/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
   <link th:href="@{/patient/assets/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 
 
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -161,17 +162,22 @@
                                           <input  name="name" type="text" class="form-control" placeholder="Họ và tên *" th:field="*{name}"/>
                                           <p class="errors" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
                                       </div>
-                                      <div class="form-group">
-                                          <input name="healthInsurance" type="text" class="form-control" placeholder="Mã BHYT *" th:field="*{healthInsurance}"/>
-                                          <p class="errors" th:if="${#fields.hasErrors('healthInsurance')}" th:errors="*{healthInsurance}"></p>
-                                      </div>
+
                                       <div class="form-group">
                                           <input name="address" type="text" class="form-control" placeholder="Địa chỉ  *" th:field="*{address}"/>
                                           <p class="errors" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
                                       </div>
-                                      <div class="form-group"> Birthday:
-                                          <input name="birthday" id="birthday" type="date" class="form-control" placeholder="Ngày sinh  *" th:field="*{birthday} " onchange="showGuardianFields()"/>
-                                          <p class="errors" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></p>
+                                      <div class="form-group">
+                                              <label for="typeId">Quận: </label>
+                                              <select class="form-select" id="typeId" name="typeId" th:field="*{location}">
+                                                  <option th:each="item:${listLocation}" th:value="${item.name}" th:text="${item.name}">-->Chọn quận<--</option>
+                                              </select>
+<!--                                              <input name="birthday" id="Location" type="date" class="form-control" placeholder="Ngày sinh  *" th:field="*{birthday} " onchange="showGuardianFields()"/>-->
+<!--                                          <p class="errors" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></p>-->
+                                      </div>
+                                      <div class="form-group">
+                                          <input name="email" type="email" class="form-control"  placeholder="Email  *" th:field="*{email}" />
+                                          <p class="errors" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
                                       </div>
                                       <div class="form-group">
                                           <div class="maxl">
@@ -189,19 +195,19 @@
 
                                   </div>
                                   <div class="col-md-6">
-
+                                      <div class="form-group">
+                                          <input name="healthInsurance" type="text" class="form-control" placeholder="Mã BHYT *" th:field="*{healthInsurance}"/>
+                                          <p class="errors" th:if="${#fields.hasErrors('healthInsurance')}" th:errors="*{healthInsurance}"></p>
+                                      </div>
                                       <div class="form-group">
                                           <input name="phone" type="text" class="form-control" placeholder="Số điện thoại  *" th:field="*{phone}">
                                           <p class="errors" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
                                       </div>
-                                      <div class="form-group">
-                                         <input name="email" type="email" class="form-control"  placeholder="Email  *" th:field="*{email}" />
-                                          <p class="errors" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
-                                        </div>
-<!--                                      <select id="options" onchange="showInputs()">-->
-<!--                                          <option value="">Over 16 years old</option>-->
-<!--                                          <option value="option1">Under 16 years old</option>-->
-<!--                                      </select>-->
+
+                                      <div class="form-group"> Birthday:
+                                          <input name="birthday" id="birthday" type="date" class="form-control" placeholder="Ngày sinh  *" th:field="*{birthday} " onchange="showGuardianFields()"/>
+                                          <p class="errors" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></p>
+                                      </div>
 
                                       <div id="inputContainer" style="display: none;">
                                           <div id="option1Inputs" style="display: none;">
@@ -268,10 +274,28 @@
                                           // Gọi hàm hiển thị trường người đại diện khi tải trang
                                           showGuardianFields();
                                       </script>
-                                      </script>
-                                      <input type="submit" class="btnRegister"  value="Gửi yêu cầu"/>
-                                  </div>
+                                      <input type="button" class="btnRegister" th:data-toggle="modal" th:data-target="'#yeuCauModal'"  value="Gửi yêu cầu"/>
+                                      <div class="modal fade custom-modal" id="yeuCauModal" tabindex="-1" role="dialog" aria-labelledby="yeuCauModal">
+                                          <div class="modal-dialog modal-dialog-centered" role="document">
+                                              <div class="modal-content">
+                                                  <div class="modal-header" style="background-color: #6082F6">
+                                                      <h5 class="modal-title" id="deleteModalLabel">Yêu cầu tài khoản?</h5>
+                                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                          <span aria-hidden="true">&times;</span>
+                                                      </button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                      <p>Bạn có muốn gửi yêu cầu tài khoản tiêm chủng?</p>
+                                                  </div>
+                                                  <div class="modal-footer">
+                                                      <button type="submit" class="btn btn-outline-primary">Xác nhận</button>
+                                                      <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
 
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
                           </div>
                       </form>
                       </div>
@@ -370,7 +394,9 @@
   <script th:src="@{/patient/assets/vendor/glightbox/js/glightbox.min.js}"></script>
   <script th:src="@{/patient/assets/vendor/swiper/swiper-bundle.min.js}"></script>
   <script th:src="@{/patient/assets/vendor/php-email-form/validate.js}"></script>
-
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <!-- Template Main JS File -->
   <script th:src="@{/patient/assets/js/main.js}"></script>
 

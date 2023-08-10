@@ -1,15 +1,23 @@
 package com.example.vaccination_management.controller;
 
+import com.example.vaccination_management.dto.IAccountDetailDTO;
 import com.example.vaccination_management.dto.PatientDTO;
+import com.example.vaccination_management.entity.Location;
 import com.example.vaccination_management.entity.Patient;
 import com.example.vaccination_management.service.IAccountService;
+import com.example.vaccination_management.service.IEmailService;
+import com.example.vaccination_management.service.ILocationService;
 import com.example.vaccination_management.service.IPatientService;
 import com.example.vaccination_management.validation.EditPatientValidator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,8 +29,10 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/patient")
@@ -36,18 +46,38 @@ public class PatientController {
     @Autowired
     EditPatientValidator editPatientValidator;
 
+    @Autowired
+    IEmailService iEmail;
+
+    @Autowired
+    ILocationService iLocation;
+
+
+    /**
+     * TLINH
+     * view form requires account
+     */
     @GetMapping("/requires_account")
     public String viewFormRequires(ModelMap model, HttpServletRequest request){
         String message=request.getParameter("message");
+        List<Location> listLocation=iLocation.findAll();
+        model.addAttribute("listLocation", listLocation);
         model.addAttribute("message",message);
         model.addAttribute("patient", new PatientDTO());
         return "Patient/requires_account";
     }
 
+
+    /**
+     * TLINH
+     * Insert information patient
+     */
     @PostMapping("/insert_patient")
     public String insertPatient(@ModelAttribute("patientDTO") PatientDTO patientDTO,
                                 RedirectAttributes redirectAttributes){
+        String addressNew=patientDTO.getAddress()+", Quận "+patientDTO.getLocation();
         patientDTO.setDeleteFlag(false);
+        patientDTO.setAddress(addressNew);
         patientDTO.setAccount(iAccount.findLatestAccountId());
       iPatient.insertPatient(patientDTO.getName(),patientDTO.getGender(),patientDTO.getPhone(),patientDTO.getAddress(),patientDTO.getBirthday(),patientDTO.getHealthInsurance(),patientDTO.getGuardianName(),
               patientDTO.getGuardianPhone(),patientDTO.getDeleteFlag(),patientDTO.getAccount());
@@ -56,7 +86,10 @@ public class PatientController {
     }
 
 
-
+    /**
+     * TLINH
+     * View detail patient
+     */
     @GetMapping("/detail/{id}")
     public String patientDetail(Model model,
                                 @PathVariable("id") Integer id){
@@ -67,12 +100,11 @@ public class PatientController {
         Patient patient=op.get();
         BeanUtils.copyProperties(patient,patientDTO);
         patientDTO.setPhone(patient.getPhoneNumber());
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        patientDTO.setBirthday(LocalDate.parse(patient.getBirthday()));
+
+//        patientDTO.setBirthday(LocalDate.parse(patient.getBirthday()));
         // Lấy giá trị Date từ đối tượng Patient (đối tượng java.util.Date)
-        Date birthdayDate = Date.valueOf(patient.getBirthday());
-        // Định dạng Date thành chuỗi
-        String formattedDate = formatter.format(birthdayDate);
-        patientDTO.setFormBirthday(formattedDate);
+
 
 //         Tính toán độ tuổi
         LocalDate birthday = LocalDate.parse(patient.getBirthday());
@@ -94,9 +126,14 @@ public class PatientController {
         model.addAttribute("patient", patientDTO);
         model.addAttribute("age", age);
         model.addAttribute("ageUnit", ageUnit);
-        return "Admin/patient_detail";
+        return "Admin/Patient/patient_detail";
     }
 
+
+    /**
+     * TLINH
+     * view form edit by id patient
+     */
     @GetMapping("/form_edit/{id}")
     public ModelAndView viewFormEdit(ModelMap model,
                                      @PathVariable("id") Integer id){
@@ -109,85 +146,144 @@ public class PatientController {
         patientDTO.setEmail(email);
         patientDTO.setBirthday(LocalDate.parse(entity.getBirthday()));
         model.addAttribute("patient",patientDTO);
-        return new ModelAndView("Admin/patient_edit",model);
+        return new ModelAndView("Admin/Patient/patient_edit",model);
 //        để đơn giản hóa việc truyền dữ liệu từ Controller đến view và  dễ dàng hiển thị các trang HTML động với dữ liệu từ phía Server.
     }
 
 
+
+    /**
+     * TLINH
+     * save edited patient information
+     */
     @GetMapping("/save")
     public ModelAndView save(ModelMap model,
                              @Valid @ModelAttribute("patient") PatientDTO patientDTO, BindingResult result){
         editPatientValidator.validate(patientDTO, result);
         if (result.hasErrors()){
-            return new ModelAndView("Admin/patient_edit");
+            return new ModelAndView("Admin/Patient/patient_edit");
         }
         iPatient.upPatient(patientDTO.getName(), patientDTO.getBirthday(),patientDTO.getAddress(),patientDTO.getGender(),patientDTO.getPhone(),patientDTO.getGuardianName(),patientDTO.getGuardianPhone(),patientDTO.getId());
-        model.addAttribute("messageSuccess","Chỉnh sửa thông tin bệnh nhân thành công!!!");
+        model.addAttribute("msg","Cập nhật thông tin bệnh nhân thành công!!!");
         return new ModelAndView("redirect:/patient/view_patient", model);
     }
+
+
+    /**
+     * TLINH
+     * view patient information is stored
+     */
     @GetMapping("/view_patient_disable")
-    public String viewPatientDisable(Model model){
-        List<Patient> patientList=iPatient.fillAllByAccountIDisNull();
+    public String viewPatientDisable(Model model, HttpServletRequest request,
+                                     @RequestParam(required = false, defaultValue = "") String username,
+                                     @RequestParam(value = "page", defaultValue = "0") int page,
+                                     @RequestParam(value = "size", defaultValue = "4") int size){
+        String msg=request.getParameter("msg");
+        Pageable pageable= PageRequest.of(page,size, Sort.by("health_insurance").descending());
+        List<Patient> patientList=iPatient.getPatientByPageAccountNull(username,username,username,pageable);
+        long totalPatient=iPatient.getTotalPatientAccountNull(username,username,username);
+        int totalPage= (int) Math.ceil((double) totalPatient/size);
+        String searchAction = "view_patient_disable";
+
+
+        model.addAttribute("totalPages", totalPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("searchName", username);
+        model.addAttribute("actionFlag",searchAction);
+        model.addAttribute("msg",msg);
         model.addAttribute("patientList",patientList);
-        return "Admin/patient";
+        return "Admin/Patient/patient";
     }
 
+
+    /**
+     * TLINH
+     * view patient information
+     */
     @GetMapping("/view_patient")
-    public String view(Model model, HttpServletRequest request){
-        String messageSuccess=request.getParameter("messageSuccess");
-        String messageError=request.getParameter("messageError");
-        List<Patient> patientList=iPatient.findAllByDeleteFlag(false);
-        model.addAttribute("messageSuccess",messageSuccess);
-        model.addAttribute("messageError",messageError);
+    public String view(Model model, HttpServletRequest request,
+                       @RequestParam(required = false, defaultValue = "") String username,
+                       @RequestParam(value = "page", defaultValue = "0") int page,
+                       @RequestParam(value = "size", defaultValue = "4") int size){
+        String msg=request.getParameter("msg");
+        Pageable pageable= PageRequest.of(page,size, Sort.by("health_insurance").descending());
+        List<Patient> patientList=iPatient.getPatientByPage(username,username,username,false,pageable);
+        long totalPatient=iPatient.getTotalPatient(username,username,username,false);
+        int totalPage= (int) Math.ceil((double) totalPatient/size);
+        String searchAction = "view_patient";
+
+
+        model.addAttribute("totalPages", totalPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("searchName", username);
+        model.addAttribute("actionFlag",searchAction);
+        model.addAttribute("msg",msg);
         model.addAttribute("patientList",patientList);
-        return "Admin/patient";
+        return "Admin/Patient/patient";
     }
 
+
+    /**
+     * TLINH
+     * view patient information is delete flag
+     */
     @GetMapping("/view_patientDelete")
-    public String viewDelete(Model model){
-        List<Patient> patientList=iPatient.findAllByDeleteFlag(true);
+    public String viewDelete(Model model, HttpServletRequest request,
+                             @RequestParam(required = false, defaultValue = "") String username,
+                             @RequestParam(value = "page", defaultValue = "0") int page,
+                             @RequestParam(value = "size", defaultValue = "4") int size){
+        String msg=request.getParameter("msg");
+        Pageable pageable= PageRequest.of(page,size, Sort.by("health_insurance").descending());
+        List<Patient> patientList=iPatient.getPatientByPage(username,username,username,true,pageable);
+        long totalPatient=iPatient.getTotalPatient(username,username,username,true);
+        int totalPage= (int) Math.ceil((double) totalPatient/size);
+        String searchAction = "view_patientDelete";
+
+
+        model.addAttribute("totalPages", totalPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("searchName", username);
+        model.addAttribute("actionFlag",searchAction);
+        model.addAttribute("msg",msg);
         model.addAttribute("patientList",patientList);
-        return "Admin/patient";
+        return "Admin/Patient/patient";
     }
 
+
+    /**
+     * TLINH
+     * Delete flag / restore patient by id
+     */
     @GetMapping("/delete_flag/{id}/{deleteFlag}")
     public ModelAndView deleteFlag(@PathVariable("id") Integer id,
                              @PathVariable("deleteFlag") Boolean deleteFlag){
-        Optional<Patient> patient=iPatient.findById(id);
+        Optional<Patient> patient= iPatient.findById(id);
+        IAccountDetailDTO detailDTO=iAccount.findAccountById(patient.get().getAccount().getId());
         ModelAndView modelAndView = new ModelAndView("redirect:/patient/view_patient");
         iPatient.updateDeleteFlagById(deleteFlag,id);
         if (deleteFlag){
             iAccount.updateEnableFlagById(false,patient.get().getAccount().getId());
-            modelAndView.addObject("messageSuccess", "Xóa thông tin bệnh nhân thành công!!");
+            Boolean isEmail = iEmail.SendEmailDeactivate(detailDTO);
+            modelAndView.addObject("msg", "Xóa thông tin bệnh nhân thành công!!");
         }else {
-            modelAndView.addObject("messageSuccess", "Khôi phục thông tin bệnh nhân thành công!!");
+            modelAndView.addObject("msg", "Khôi phục thông tin bệnh nhân thành công!!");
         }
         return modelAndView;
     }
 
-//    @GetMapping("/delete_account/{id}")
-//    public ModelAndView deleteAccount(ModelMap model,
-//                                      @PathVariable("id") Integer id){
-//        iAccount.deleteById(id);
-//        model.addAttribute("messageSuccess","Xóa tài khoản thành công!!");
-//        return new ModelAndView("redirect:/account/view_account",model);
-//    }
-
+    /**
+     * TLINH
+     * Storage patient by id
+     */
     @GetMapping("/storage/{id}")
     public ModelAndView storage(@PathVariable("id") Integer id){
         ModelAndView modelAndView=new ModelAndView("redirect:/patient/view_patient");
         Optional<Patient> patient=iPatient.findById(id);
         iAccount.deleteById(patient.get().getAccount().getId());
         LocalDate currentDate=LocalDate.now();
-        modelAndView.addObject("messageSuccess","Lưu trữ thông tin bệnh nhân thành công");
-        modelAndView.addObject("currentDate",currentDate);
+        modelAndView.addObject("msg","Lưu trữ thông tin bệnh nhân thành công");
         return modelAndView;
     }
-
-
-
-
-
 
 
 }

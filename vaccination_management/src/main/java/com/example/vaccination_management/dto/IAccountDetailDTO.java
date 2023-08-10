@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public interface IAccountDetailDTO {
     Integer getId();
-    String getAccountVerificationCode();
+    String getPatientHealthInsurance();
     String getPassword();
     String getEmail();
     String getPatientName();

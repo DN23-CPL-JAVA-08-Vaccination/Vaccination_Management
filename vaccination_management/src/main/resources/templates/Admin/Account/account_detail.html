@@ -19,7 +19,7 @@
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
   <!-- Navbar Brand-->
-  <a class="navbar-brand ps-3" th:href="@{Admin/index.html}">Start Bootstrap</a>
+  <a class="navbar-brand ps-3" th:href="@{../index.html}">Start Bootstrap</a>
   <!-- Sidebar Toggle-->
   <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
   <!-- Navbar Search-->
@@ -48,7 +48,7 @@
       <div class="sb-sidenav-menu">
         <div class="nav">
           <div class="sb-sidenav-menu-heading">Core</div>
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="../index.html">
             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
             Dashboard
           </a>
@@ -75,16 +75,7 @@
         <div class="container">
           <div class="row" >
             <div class="receipt-main col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
-              <div class="container">
-                <div class="row">
-                  <div class="col-10">
-                    <h2 class="mb-0">Thông tin bệnh nhân</h2>
-                  </div>
-                  <div class="col-2">
-                    <a th:href="@{/patient/view_patient}" class="btn-close float-end"></a>
-                  </div>
-                </div>
-              </div>
+              <h2>Thông tin bệnh nhân: <span th:text="${account.patientName}"></span></h2>
               <br>
               <div>
                 <table class="table table-bordered">
@@ -95,50 +86,59 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <form>
+
                   <tr>
                     <td>ID : </td>
-                    <td th:text="${patient.id}"> </td>
+                    <td th:text="${account.id}"> </td>
                   </tr>
                   <tr>
-                    <td>Họ và tên : </td>
-                    <td th:text="${patient.name}"> </td>
-                  </tr>
-                    <tr>
-                      <td >Tuổi :  </td>
-                      <td><span th:text="${age}"></span> <span th:text="${ageUnit}"></span></td>
-                    </tr>
-                  <tr>
-                    <td>Ngày sinh : </td>
-                    <td th:text="${patient.formBirthday}"> </td>
+                    <td class="text-right">Số BHYT: </td>
+                    <td class="text-right" th:text="${account.patientHealthInsurance}"> </td>
+                  </tr> <tr>
+                    <td class="text-right">Mật khẩu : </td>
+                    <td class="text-right" th:text="${account.password}"> </td>
+                  </tr> <tr>
+                    <td class="text-right">Email : </td>
+                    <td class="text-right" th:text="${account.email}"></td>
                   </tr>
                   <tr>
-                    <td>Giới tính : </td>
-                    <td th:if="${patient.gender}">Nam</td>
-                    <td th:if="${!patient.gender}">Nữ</td>
+                    <td >Họ và tên : </td>
+                    <td th:text="${account.patientName}"></td>
                   </tr>
                   <tr>
-                    <td>Số điện thoại : </td>
-                    <td th:text="${patient.phone}"> </td>
+                    <td >Giới tính : </td>
+                    <td th:if="${account.gender}">Nam</td>
+                    <td th:if="${!account.gender}">Nữ</td>
                   </tr>
                   <tr>
-                    <td>Địa chỉ : </td>
-                    <td th:text="${patient.address}"> </td>
+                    <td >Tuổi :  </td>
+                    <td><span th:text="${age}"></span> <span th:text="${ageUnit}"></span></td>
                   </tr>
                   <tr>
-                    <td >Số BHYT :  </td>
-                    <td th:text="${patient.healthInsurance}"> </td>
+                    <td >Ngày sinh :  </td>
+                    <td th:text="${birthday}"></td>
                   </tr>
-                  <tr th:if="${patient.guardianName != null and patient.guardianName != ''}">
+                  <tr>
+                    <td >Số điện thoại : </td>
+                    <td th:text="${account.phone}"></td>
+                  </tr>
+                  <tr>
+                    <td >Địa chỉ : </td>
+                    <td th:text="${account.address}"></td>
+                  </tr>
+                  <tr th:if="${account.patientGuardianName != null and account.patientGuardianName != ''}">
                     <td >Tên người giám hộ : </td>
-                    <td th:text="${patient.guardianName}"></td>
+                    <td th:text="${account.patientGuardianName}"></td>
                   </tr>
-                  <tr th:if="${patient.guardianPhone != null and patient.guardianPhone != ''}">
+                  <tr th:if="${account.patientGuardianPhone != null and account.patientGuardianPhone != ''}">
                     <td >Số điện thoại người giám hộ : </td>
-                    <td th:text="${patient.guardianPhone}"></td>
+                    <td th:text="${account.patientGuardianPhone}"></td>
                   </tr>
-
-                  </form>
+                  <tr>
+                    <td class="text-right"><h2><strong>Trạng thái : </strong></h2></td>
+                    <td class="text-left" th:if="${account.accountEnableFlag}"><h2><strong><i class="far fa-circle-check" style="color: green;"></i> Kích hoạt</strong></h2></td>
+                    <td class="text-left" th:if="${!account.accountEnableFlag}"><h2><strong><i class="far fa-exclamation-circle" style="color: red;"></i> Chưa kích hoạt</strong></h2></td>
+                  </tr>
                   </tbody>
                 </table>
               </div>
@@ -152,8 +152,7 @@
                   </div>
                   <br>
                   <div style="text-align: center">
-                    <a th:if="${patient.account != null}" th:href="@{'/patient/form_edit/'+${patient.id}}" type="button" class="btn btn-outline-danger btn-sm">Edit</a>
-                    <a th:href="@{/patient/view_patient}" type="button" class="btn btn-outline-dark btn-sm">Thoát</a>
+                    <a th:href="@{/account/view_account}" type="button" class="btn btn-outline-dark btn-sm">Thoát</a>
                   </div>
                 </div>
               </div>

@@ -90,3 +90,6 @@ input {
     outline: none; /* Loại bỏ đường viền khi focus */
     /* Thêm các kiểu khác nếu cần */
 }
+.search{
+    padding-top: 15px;
+}
