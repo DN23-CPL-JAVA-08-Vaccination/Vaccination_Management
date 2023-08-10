@@ -54,7 +54,11 @@ html, body {
     text-align: -webkit-center;
     padding-top: 80px;
 }
-
+.required-filed {
+    color: #ff0000;
+    font-size: larger;
+    font-weight: 400
+}
 .content_add {
     background-color: #e8f4fc;
     padding: 48px;

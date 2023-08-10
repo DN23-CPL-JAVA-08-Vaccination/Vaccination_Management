@@ -24,7 +24,7 @@
             <h2 class="title">Đăng nhập</h2>
             <form th:action="@{/j_spring_security_check}" method="post">
                 <section class="caixa__input">
-                    <label for="username">Tài khoản </label>
+                    <label for="username">Tên đăng nhập<span class="required-filed">(*)</span></label>
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" id="username" name="username"
                                placeholder="Nhấn vào để nhập" value="">
@@ -32,7 +32,7 @@
                     <!--                    <p style="color: #ff0033">Tên đăng nhập không được trống</p>-->
                 </section>
                 <section class="caixa__input">
-                    <label for="newPassword">Mật khẩu </label>
+                    <label for="newPassword">Mật khẩu<span class="required-filed">(*)</span> </label>
                     <div class="input-group mb-3">
                         <input type="password" class="form-control" id="newPasswordInput" name="password"
                                placeholder="Nhấn vào để nhập" value="">
