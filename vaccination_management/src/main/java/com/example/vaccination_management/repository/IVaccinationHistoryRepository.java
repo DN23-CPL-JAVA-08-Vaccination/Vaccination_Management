@@ -23,9 +23,9 @@ public interface IVaccinationHistoryRepository extends JpaRepository<Vaccination
                     "JOIN patient pa ON his.patient_id = pa.id " +
                     "JOIN vaccination vac ON his.vaccination_id = vac.id " +
                     "JOIN vaccine ON vac.vaccine_id = vaccine.id " +
-                    "WHERE his.vaccination_status_id = 1 AND his.delete_flag = 0  AND  DATE(his.start_time) = CURDATE() AND (pa.name LIKE ?1 OR pa.birthday LIKE ?1) " +
+                    "WHERE his.vaccination_status_id = 3 AND his.delete_flag = 0  AND  DATE(his.start_time) = CURDATE() AND (pa.name LIKE ?1 OR pa.birthday LIKE ?1) " +
                     "ORDER BY his.id ASC ",
-            countQuery = "SELECT COUNT(*) FROM vaccination_manager.vaccination_history his JOIN patient pa ON his.patient_id = pa.id WHERE  his.vaccination_status_id = 1 AND his.delete_flag = 0  AND  DATE(his.start_time) = CURDATE() AND (pa.name LIKE ?1 OR pa.birthday )",
+            countQuery = "SELECT COUNT(*) FROM vaccination_manager.vaccination_history his JOIN patient pa ON his.patient_id = pa.id WHERE  his.vaccination_status_id = 3 AND his.delete_flag = 0  AND  DATE(his.start_time) = CURDATE() AND (pa.name LIKE ?1 OR pa.birthday )",
             nativeQuery = true
     )
     Page<IVaccinationHistoryDTO> getVaccinationSchedule( String strSearch, Pageable pageable);
@@ -39,9 +39,9 @@ public interface IVaccinationHistoryRepository extends JpaRepository<Vaccination
                     "JOIN patient pa ON his.patient_id = pa.id " +
                     "JOIN vaccination vac ON his.vaccination_id = vac.id " +
                     "JOIN vaccine ON vac.vaccine_id = vaccine.id " +
-                    "WHERE his.vaccination_status_id = 2 AND his.delete_flag = 0 AND (pa.name LIKE ?1 OR pa.birthday LIKE ?1) " +
+                    "WHERE his.vaccination_status_id = 4 AND his.delete_flag = 0 AND (pa.name LIKE ?1 OR pa.birthday LIKE ?1) " +
                     "ORDER BY his.end_time DESC ",
-            countQuery = "SELECT COUNT(*) FROM vaccination_manager.vaccination_history his JOIN patient pa ON his.patient_id = pa.id WHERE his.vaccination_status_id = 2 AND his.delete_flag = 0 AND (pa.name LIKE ?1 OR pa.birthday LIKE ?1 )",
+            countQuery = "SELECT COUNT(*) FROM vaccination_manager.vaccination_history his JOIN patient pa ON his.patient_id = pa.id WHERE his.vaccination_status_id = 4 AND his.delete_flag = 0 AND (pa.name LIKE ?1 OR pa.birthday LIKE ?1 )",
             nativeQuery = true
     )
     Page<IVaccinationHistoryDTO> getHistoryVaccination(String strSearch,Pageable pageable);
@@ -71,7 +71,7 @@ public interface IVaccinationHistoryRepository extends JpaRepository<Vaccination
     @Query(
             value = "SELECT \n" +
                     "    COUNT(*) AS allSchedule, \n" +
-                    "    SUM(CASE WHEN his.vaccination_status_id= 2 THEN 1 ELSE 0 END) AS completeSchedule \n" +
+                    "    SUM(CASE WHEN his.vaccination_status_id= 4 THEN 1 ELSE 0 END) AS completeSchedule \n" +
                     "FROM vaccination_history his \n" +
                     "WHERE DATE(his.start_time) = CURDATE() ;",
             nativeQuery = true
@@ -100,7 +100,7 @@ public interface IVaccinationHistoryRepository extends JpaRepository<Vaccination
                     ") AS months\n" +
                     "LEFT JOIN vaccination_history ON  MONTH(vaccination_history.end_time) = months.month\n" +
                     "AND YEAR(vaccination_history.end_time) = :year \n" +
-                    "AND vaccination_history.vaccination_status_id = 2\n" +
+                    "AND vaccination_history.vaccination_status_id = 4\n" +
                     "GROUP BY  months.month;",
             nativeQuery = true
     )

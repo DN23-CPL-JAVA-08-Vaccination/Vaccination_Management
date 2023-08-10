@@ -324,10 +324,10 @@
                                     <select class="form-select"
                                             th:field="*{status}"
                                     >
-                                        <option th:value="1">
+                                        <option th:value="3">
                                             Chưa tiêm
                                         </option>
-                                        <option th:selected="${vaccinationdetail?.getStatus() == '2' }" th:value="2">
+                                        <option th:selected="${vaccinationdetail?.getStatus() == '4' }" th:value="4">
                                             Đã tiêm
                                         </option>
                                     </select>
@@ -359,7 +359,7 @@
                             >
                             <tr>
                                 <td colspan="2">
-                                    <div th:if="${vaccinationdetail?.getStatus() == 1 || errorsCheck == true} ">
+                                    <div th:if="${vaccinationdetail?.getStatus() == 3 || errorsCheck == true} ">
                                         <button type="submit" class="btn btn-success float-end m-2 p-2 w-25">Update
                                         </button>
                                     </div>
