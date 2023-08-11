@@ -7,10 +7,13 @@ import com.example.vaccination_management.exception.VaccineNotFoundException;
 import com.example.vaccination_management.service.impl.InventoryService;
 import com.example.vaccination_management.service.impl.VaccineService;
 import com.example.vaccination_management.service.impl.VaccineTypeService;
+import com.example.vaccination_management.validation.VaccineValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -27,6 +30,9 @@ public class VaccineController {
 
     @Autowired
     private InventoryService inventoryService;
+
+    @Autowired
+    private VaccineValidator vaccineValidator;
 
     /**
      * HuyLVN
@@ -72,11 +78,23 @@ public class VaccineController {
      * HuyLVN
      * get information from the form to save to the database
      */
-    @PostMapping("/saveVaccine")
-    public String addVaccine(Vaccine newVaccine, RedirectAttributes redirectAttributes) {
-        vaccineService.saveVaccine(newVaccine);
-        redirectAttributes.addFlashAttribute("messages", "The vaccine has been created successfully");
+    @PostMapping("/newVaccine")
+    public String addVaccine(@Validated @ModelAttribute("newVaccine") Vaccine newVaccine, Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        vaccineValidator.validate(newVaccine, bindingResult);
 
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("typeList", vaccineTypeService.getAllVaccineType());
+            return "/admin/Vaccines/NewVaccineForm";
+        }
+
+        try {
+            vaccineService.saveVaccine(newVaccine);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("messages", "Thêm vaccine mới thất bại!");
+            return "redirect:/admin/vaccines";
+        }
+
+        redirectAttributes.addFlashAttribute("messages", "Thêm vaccine thành công!");
         return "redirect:/admin/vaccines";
     }
 
@@ -103,11 +121,23 @@ public class VaccineController {
      * HuyLVN
      * get information from the form to update to the database
      */
-    @PostMapping("/updateVaccine")
-    public String updateVaccine(Vaccine updatedVaccine, RedirectAttributes redirectAttributes) {
-        vaccineService.updateVaccine(updatedVaccine);
-        redirectAttributes.addFlashAttribute("messages", "The vaccine has been updated successfully");
+    @PostMapping("/editVaccine")
+    public String updateVaccine(@Validated @ModelAttribute("updateVaccine") Vaccine updatedVaccine, Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        vaccineValidator.validate(updatedVaccine, bindingResult);
 
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("typeList", vaccineTypeService.getAllVaccineType());
+            return "/admin/Vaccines/UpdateVaccineForm";
+        }
+
+        try {
+            vaccineService.updateVaccine(updatedVaccine);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("messages", "Cập nhật vaccine thất bại!");
+            return "redirect:/admin/vaccines";
+        }
+
+        redirectAttributes.addFlashAttribute("messages", "Cập nhật vaccine thành công");
         return "redirect:/admin/vaccines";
     }
 

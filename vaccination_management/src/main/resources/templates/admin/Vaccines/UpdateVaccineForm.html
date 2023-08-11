@@ -35,21 +35,27 @@
                     </div>
 
                     <div class="card-body">
-                        <form th:action="@{/admin/vaccines/updateVaccine}" method="post" th:object="${updateVaccine}" style="max-width: 1000px; margin: 0 auto; border-radius: 25%">
+                        <form th:action="@{/admin/vaccines/editVaccine}" method="post" th:object="${updateVaccine}" style="max-width: 1000px; margin: 0 auto; border-radius: 25%">
                             <input type="hidden" th:field="*{id}">
                             <input type="hidden" th:field="*{createDate}">
                             <input type="hidden" th:field="*{deleteFlag}">
                             <div class="border border-secondary rounded p-3">
                                 <div class="form-group row" style="padding: 5px">
-                                    <label class="col-sm-4 col-form-label">Tên Vaccine: </label>
+                                    <label class="col-sm-4 col-form-label">Tên Vaccine<span
+                                            class="required-field">(*)</span>: </label>
                                     <div class="col-sm-8">
-                                        <input type="text" th:field="*{name}" class="form-control" placeholder="Tên Vaccine" required/>
+                                        <input type="text" th:field="*{name}" class="form-control" placeholder="Tên Vaccine"/>
+                                        <span style="color: red" th:if="${#fields.hasErrors('name')}"
+                                              th:errors="*{name}"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row" style="padding: 5px">
-                                    <label class="col-sm-4 col-form-label">Mã định danh: </label>
+                                    <label class="col-sm-4 col-form-label">Mã định danh<span
+                                            class="required-field">(*)</span>: </label>
                                     <div class="col-sm-8">
-                                        <input type="text" th:field="*{code}" class="form-control" placeholder="Mã định danh" required/>
+                                        <input type="text" th:field="*{code}" class="form-control" placeholder="Mã định danh"/>
+                                        <span style="color: red" th:if="${#fields.hasErrors('code')}"
+                                              th:errors="*{code}"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row" style="padding: 5px">
@@ -59,33 +65,45 @@
                                     </div>
                                 </div>
                                 <div class="form-group row" style="padding: 5px">
-                                    <label class="col-sm-4 col-form-label">Đơn giá: </label>
+                                    <label class="col-sm-4 col-form-label">Đơn giá (VNĐ)<span
+                                            class="required-field">(*)</span>: </label>
                                     <div class="col-sm-8">
-                                        <input type="number" th:field="*{price}" class="form-control" required/>
+                                        <input type="number" th:field="*{price}" class="form-control"/>
+                                        <span style="color: red" th:if="${#fields.hasErrors('price')}"
+                                              th:errors="*{price}"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row" style="padding: 5px">
-                                    <label class="col-sm-4 col-form-label">Thời hạn : </label>
+                                    <label class="col-sm-4 col-form-label">Thời hạn<span
+                                            class="required-field">(*)</span>: </label>
                                     <div class="col-sm-8">
-                                        <input type="text" th:field="*{duration}" class="form-control" placeholder="Thời hạn tác dụng của Vaccine" required/>
+                                        <input type="text" th:field="*{duration}" class="form-control" placeholder="Thời hạn tác dụng của Vaccine"/>
+                                        <span style="color: red" th:if="${#fields.hasErrors('duration')}"
+                                              th:errors="*{duration}"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row" style="padding: 5px">
-                                    <label class="col-sm-4 col-form-label">Liều lượng (ml): </label>
+                                    <label class="col-sm-4 col-form-label">Liều lượng (ml)<span
+                                            class="required-field">(*)</span>: </label>
                                     <div class="col-sm-8">
-                                        <input type="text" th:field="*{dosage}" class="form-control" required/>
+                                        <input type="text" th:field="*{dosage}" class="form-control" placeholder="Liều lượng của Vaccine">
+                                        <span style="color: red" th:if="${#fields.hasErrors('dosage')}"
+                                              th:errors="*{dosage}"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row" style="padding: 5px">
                                     <label class="col-sm-4 col-form-label">Hình ảnh: </label>
                                     <div class="col-sm-8">
-                                        <input type="text" th:field="*{image}" class="form-control" placeholder="Link Image" required/>
+                                        <input type="text" th:field="*{image}" class="form-control" placeholder="Link Image"/>
                                     </div>
                                 </div>
                                 <div class="form-group row" style="padding: 5px">
-                                    <label class="col-sm-4 col-form-label">Độ tuổi phù hợp: </label>
+                                    <label class="col-sm-4 col-form-label">Độ tuổi phù hợp<span
+                                            class="required-field">(*)</span>: </label>
                                     <div class="col-sm-8">
-                                        <input type="text" th:field="*{age}" class="form-control" placeholder="Độ tuổi phù hợp" required/>
+                                        <input type="text" th:field="*{age}" class="form-control" placeholder="Độ tuổi phù hợp"/>
+                                        <span style="color: red" th:if="${#fields.hasErrors('age')}"
+                                              th:errors="*{age}"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row" style="padding: 5px">
@@ -100,27 +118,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center" style="padding-top: 20px">
-                                    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#updateModal">Cập nhật</button>
-                                    <!-- Modal -->
-                                    <div class="modal fade custom-modal" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header" style="background-color: #28a745">
-                                                    <h5 class="modal-title" id="updateModalLabel">Cập nhật thông tin Vaccine?</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body" style="text-align: left">
-                                                    <p>Bạn phải đảm bảo mọi thông tin đã được nhập đầy đủ. Nếu bạn cập nhật vaccine, thông tin được nhập sẽ thay đổi trong CSDL. Bạn có chắc chắn muốn tiếp tục không?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Trở lại</button>
-                                                    <button type="submit" class="btn btn-outline-success">Xác nhận</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <button class="btn btn-outline-success">Cập nhật</button>
 
                                     <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#exitModal">Thoát</button>
                                     <div class="modal fade custom-modal" id="exitModal" tabindex="-1" role="dialog" aria-labelledby="exitModalLabel">
@@ -133,10 +131,10 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body" style="text-align: left">
-                                                    <p>Nếu bạn thoát khỏi quá trình cập nhật vaccine, mọi thông tin được nhập sẽ bị hủy. Bạn có chắc chắn muốn tiếp tục không?</p>
+                                                    <p>Nếu bạn thoát khỏi quá trình tạo vaccine, mọi thông tin được nhập sẽ bị hủy. Bạn có chắc chắn muốn tiếp tục không?</p>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Trở lại</button>
+                                                    <button type="button" class="btn btn-outline-success" data-dismiss="modal">Trở lại</button>
                                                     <button type="button" class="btn btn-outline-secondary"  onclick="cancelForm()">Xác nhận</button>
                                                 </div>
                                             </div>

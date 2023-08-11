@@ -8,6 +8,7 @@
     <meta name="author" content="" />
     <title>Chi tiết [[${pageTitle}]]</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link th:href="@{/css/adminStyle_HuyLVN.css}" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -38,51 +39,50 @@
                         [[${messages}]]
                     </div>
                     <div class="card-body">
-                        <div class="container" style="border: #343a40">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <img th:src="${vaccine.image}" class="img-fluid" style="height: 100%">
+                        <div class="row">
+                            <div class="col-md-4" >
+                                <img th:src="${vaccine.image}" class="img-fluid" style="height: 100%;">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Tên Vaccine: </label>
+                                    <div class="col-sm-8" th:text="${vaccine.name}"></div>
+                                    <hr>
                                 </div>
-                                <div class="col-sm-8">
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Tên Vaccine: </label>
-                                        <div class="col-sm-8" th:text="${vaccine.name}"></div>
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Mã định danh: </label>
-                                        <div class="col-sm-8" th:text="${vaccine.code}"></div>
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Mô tả: </label>
-                                        <div class="col-sm-8" th:text="${vaccine.description}"></div>
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Đơn giá: </label>
-                                        <div class="col-sm-8" th:text="${vaccine.price}"></div>
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Thời hạn tác dụng: </label>
-                                        <div class="col-sm-8" th:text="${vaccine.duration}"></div>
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Liều lượng (ml): </label>
-                                        <div class="col-sm-8" th:text="${vaccine.dosage}"></div>
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Ngày tạo: </label>
-                                        <div class="col-sm-8" th:text="${vaccine.createDate}"></div>
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Ngày cập nhật: </label>
-                                        <div class="col-sm-8" th:text="${vaccine.updateDate}"></div>
-                                    </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Mã định danh: </label>
+                                    <div class="col-sm-8" th:text="${vaccine.code}"></div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Mô tả: </label>
+                                    <div class="col-sm-8" th:text="${vaccine.description}"></div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Đơn giá (VNĐ): </label>
+                                    <div class="col-sm-8" th:text="${vaccine.price}"></div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Thời hạn tác dụng: </label>
+                                    <div class="col-sm-8" th:text="${vaccine.duration}"></div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Liều lượng (ml): </label>
+                                    <div class="col-sm-8" th:text="${vaccine.dosage}"></div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Ngày tạo: </label>
+                                    <div class="col-sm-8" th:text="${vaccine.createDate}"></div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Ngày cập nhật: </label>
+                                    <div class="col-sm-8" th:text="${vaccine.updateDate}"></div>
+                                    <hr>
                                 </div>
                             </div>
                         </div>
@@ -157,6 +157,8 @@
 <script th:src="@{/js/adminScripts.js}"></script>
 <script th:src="@{/js/DatabaseSimple.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

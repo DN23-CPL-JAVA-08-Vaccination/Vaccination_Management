@@ -75,7 +75,7 @@
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item">Dashboard</li>
                     <li class="breadcrumb-item"><a th:href="@{/admin/vaccines}">Vaccines</a></li>
-                    <li class="breadcrumb-item"><a th:href="@{/admin/vaccines/{id}(id=${vaccineID})}"></a>[[${pageTitle}]]</li>
+                    <li class="breadcrumb-item"><a th:href="@{/admin/vaccines/{id}(id=${updateInventory.vaccine.id})}">[[${pageTitle}]]</a></li>
                     <li class="breadcrumb-item active">Cập nhật</li>
                 </ol>
                 <div class="card mb-4">
@@ -90,51 +90,43 @@
                             <input type="hidden" th:field="*{vaccine}">
                             <div class="border border-secondary rounded p-3">
                                 <div class="form-group row" style="padding: 5px">
-                                    <label class="col-sm-4 col-form-label">Số lượng: </label>
+                                    <label class="col-sm-4 col-form-label">Số lượng<span
+                                            class="required-field">(*)</span>: </label>
                                     <div class="col-sm-8">
-                                        <input type="text" th:field="*{quantity}" class="form-control" placeholder="Số lượng" required/>
+                                        <input type="number" th:field="*{quantity}" class="form-control" placeholder="Số lượng"/>
+                                        <span style="color: red" th:if="${#fields.hasErrors('quantity')}"
+                                              th:errors="*{quantity}"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row" style="padding: 5px">
-                                    <label class="col-sm-4 col-form-label">Nhà cung cấp: </label>
+                                    <label class="col-sm-4 col-form-label">Nhà cung cấp<span
+                                            class="required-field">(*)</span>: </label>
                                     <div class="col-sm-8">
-                                        <input type="text" th:field="*{supplier}" class="form-control" placeholder="Nhà cung cấp" required/>
+                                        <input type="text" th:field="*{supplier}" class="form-control" placeholder="Nhà cung cấp"/>
+                                        <span style="color: red" th:if="${#fields.hasErrors('supplier')}"
+                                              th:errors="*{supplier}"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row" style="padding: 5px">
-                                    <label class="col-sm-4 col-form-label">Ngày sản xuất: </label>
+                                    <label class="col-sm-4 col-form-label">Ngày sản xuất<span
+                                            class="required-field">(*)</span>: </label>
                                     <div class="col-sm-8">
-                                        <input type="date" th:field="*{productionDate}" class="form-control"  th:value="${#dates.format(productionDate, 'yyyy-MM-dd')}" required/>
+                                        <input type="date" th:field="*{productionDate}" class="form-control"  th:value="${#dates.format(productionDate, 'yyyy-MM-dd')}"/>
+                                        <span style="color: red" th:if="${#fields.hasErrors('productionDate')}"
+                                              th:errors="*{productionDate}"></span>
                                     </div>
                                 </div>
                                 <div class="form-group row" style="padding: 5px">
-                                    <label class="col-sm-4 col-form-label">Expiration: </label>
+                                    <label class="col-sm-4 col-form-label">Hạn sử dụng<span
+                                            class="required-field">(*)</span>: </label>
                                     <div class="col-sm-8">
-                                        <input type="date" th:field="*{expirationDate}" class="form-control"  th:value="${#dates.format(expirationDate, 'yyyy-MM-dd')}" required/>
+                                        <input type="date" th:field="*{expirationDate}" class="form-control"  th:value="${#dates.format(expirationDate, 'yyyy-MM-dd')}"/>
+                                        <span style="color: red" th:if="${#fields.hasErrors('expirationDate')}"
+                                              th:errors="*{expirationDate}"></span>
                                     </div>
                                 </div>
                                 <div class="text-center" style="padding-top: 20px">
-                                    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#updateModal">Cập nhật</button>
-                                    <!-- Modal -->
-                                    <div class="modal fade custom-modal" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header" style="background-color: #28a745">
-                                                    <h5 class="modal-title" id="updateModalLabel">Cập nhật thông tin lô Vaccine?</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body" style="text-align: left">
-                                                    <p>Bạn phải đảm bảo mọi thông tin đã được nhập đầy đủ. Nếu bạn cập nhật lô vaccine, thông tin được nhập sẽ thay đổi trong CSDL. Bạn có chắc chắn muốn tiếp tục không?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Trở lại</button>
-                                                    <button type="submit" class="btn btn-outline-success">Xác nhận</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <button class="btn btn-outline-primary">Thêm</button>
 
                                     <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#exitModal">Thoát</button>
                                     <div class="modal fade custom-modal" id="exitModal" tabindex="-1" role="dialog" aria-labelledby="exitModalLabel">
@@ -147,10 +139,10 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body" style="text-align: left">
-                                                    <p>Nếu bạn thoát khỏi quá trình cập nhật lô vaccine, mọi thông tin được nhập sẽ bị hủy. Bạn có chắc chắn muốn tiếp tục không?</p>
+                                                    <p>Nếu bạn thoát khỏi quá trình tạo lô vaccine, mọi thông tin được nhập sẽ bị hủy. Bạn có chắc chắn muốn tiếp tục không?</p>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Trở lại</button>
+                                                    <button type="button" class="btn btn-outline-success" data-dismiss="modal">Trở lại</button>
                                                     <button type="button" class="btn btn-outline-secondary"  onclick="cancelForm()">Xác nhận</button>
                                                 </div>
                                             </div>
