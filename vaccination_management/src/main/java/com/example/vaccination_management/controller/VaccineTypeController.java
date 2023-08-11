@@ -5,6 +5,9 @@ import com.example.vaccination_management.entity.VaccineType;
 import com.example.vaccination_management.exception.VaccineTypeNoFoundException;
 import com.example.vaccination_management.service.impl.VaccineService;
 import com.example.vaccination_management.service.impl.VaccineTypeService;
+import com.example.vaccination_management.dto.IVaccineDTO;
+import com.example.vaccination_management.service.IVaccineService;
+import com.example.vaccination_management.service.IVaccineTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,24 +15,33 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/vaccineTypes")
+@RequestMapping("/")
 public class VaccineTypeController {
-    @Autowired
-    private VaccineTypeService vaccineTypeService;
 
     @Autowired
-    private VaccineService vaccineService;
+    private IVaccineTypeService vaccineTypeService;
+
+    @Autowired
+    private IVaccineService vaccineService;
+
 
     /**
      * HuyLVN
      * display all vaccine types information on the Vaccine Types page
      */
-    @GetMapping("")
+    @GetMapping("/admin/vaccineTypes")
     public String getAllVaccineTypes(Model model) {
         List<VaccineType> vaccineTypeList = vaccineTypeService.getAllVaccineType();
 
@@ -42,7 +54,7 @@ public class VaccineTypeController {
      * HuyLVN
      * display all vaccines of vaccine type information on the page
      */
-    @GetMapping("/{id}")
+    @GetMapping("/admin/vaccineTypes/{id}")
     public String getVaccineByVaccineType(@PathVariable("id") int vaccineTypeID, Model model) {
         try {
             VaccineType vaccineType = vaccineTypeService.getVaccineTypeById(vaccineTypeID);
@@ -62,7 +74,7 @@ public class VaccineTypeController {
      * HuyLVN
      * go to the Add Vaccine Type page
      */
-    @GetMapping("/newVaccineType")
+    @GetMapping("/admin/vaccineTypes/newVaccineType")
     public String showNewForm(Model model) {
         model.addAttribute("newVaccineType", new VaccineType());
 
@@ -73,7 +85,7 @@ public class VaccineTypeController {
      * HuyLVN
      * get information from the form to save to the database
      */
-    @PostMapping("/saveVaccineType")
+    @PostMapping("/admin/vaccineTypes/saveVaccineType")
     public String addVaccineType(VaccineType newVaccineType, RedirectAttributes redirectAttributes) {
         vaccineTypeService.saveVaccineType(newVaccineType);
         redirectAttributes.addFlashAttribute("messages", "The vaccine type has been saved successfully");
@@ -85,7 +97,7 @@ public class VaccineTypeController {
      * HuyLVN
      * remove vaccine type from database
      */
-    @GetMapping("/deleteVaccineType/{id}")
+    @GetMapping("/admin/vaccineTypes/deleteVaccineType/{id}")
     public String deleteVaccineType(@PathVariable("id") int vaccineTypeID, RedirectAttributes redirectAttributes) {
         try {
             vaccineTypeService.deleteVaccineType(vaccineTypeID);
@@ -102,7 +114,7 @@ public class VaccineTypeController {
      * HuyLVN
      * go to the Update Vaccine page
      */
-    @GetMapping("/editVaccineType/{id}")
+    @GetMapping("/admin/vaccineTypes/editVaccineType/{id}")
     public String showEditForm(@PathVariable("id") int vaccineTypeID, Model model, RedirectAttributes redirectAttributes) {
         try {
             VaccineType vaccineType = vaccineTypeService.getVaccineTypeById(vaccineTypeID);
@@ -115,5 +127,29 @@ public class VaccineTypeController {
 
             return "redirect:/admin/vaccineTypes";
         }
+    }
+
+    /**
+     * QuangVT
+     * get information of vaccine type
+     */
+    @GetMapping("/doctor/vaccineType")
+    public String schedule(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size, @RequestParam(defaultValue = "", required = false) String strSearch) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<VaccineType> vaccineTypePage = vaccineTypeService.findAllVaccine('%' + strSearch + '%', pageable);
+        model.addAttribute("vaccineTypeList", vaccineTypePage);
+        return "doctors/vaccineType";
+    }
+
+    /**
+     * QuangVT
+     * get information of vaccine by type
+     */
+    @GetMapping("/doctor/vaccineByType")
+    public String getByType(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "4") int size, @RequestParam Integer type) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<IVaccineDTO> vaccinePage = vaccineService.getVaccineByType(pageable, type);
+        model.addAttribute("vaccineList", vaccinePage);
+        return "doctors/vaccine";
     }
 }

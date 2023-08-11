@@ -67,7 +67,8 @@
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin}" class="dropdown-item">Dashboard</a></li>
-                            <li><a class="dropdown-item" th:href="@{/infor-account}">Thông tin cá nhân</a></li>
+<!--                            <li><a class="dropdown-item" th:href="@{/infor-account}">Thông tin cá nhân</a></li>-->
+                            <li><a class="dropdown-item" th:href="@{/vaccination-history/patient}">Thông tin cá nhân</a></li>
                             <li><a class="dropdown-item" th:href="@{/change-password}">Đổi mật khẩu</a></li>
                             <li><a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a></li>
                         </ul>

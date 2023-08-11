@@ -9,10 +9,10 @@
 <th:block th:fragment=”sidenav”>
     <div id="layoutSidenav_nav">
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-            <div class="sb-sidenav-menu">
+            <div sec:authorize="hasRole('ROLE_ADMIN')" class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Core</div>
-                    <a class="nav-link" href="index.html">
+                    <a class="nav-link" th:href="@{/admin}">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
@@ -91,6 +91,41 @@
                     <a class="nav-link" href="tables.html">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                         Tables
+                    </a>
+                </div>
+            </div>
+            <div sec:authorize="hasRole('ROLE_EMPLOYEE')" class="sb-sidenav-menu">
+                <div class="nav">
+                    <div class="sb-sidenav-menu-heading">Core</div>
+                    <a class="nav-link" th:href="@{/doctor}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        Dashboard
+                    </a>
+
+                    <div class="sb-sidenav-menu-heading">Addons</div>
+                    <a class="nav-link" th:href="@{/doctor/vaccination}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        Vacciantion Schedule
+                    </a>
+                    <a class="nav-link" th:href="@{/doctor/history}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        History Vaccination
+                    </a>
+                    <a class="nav-link" th:href="@{/doctor/event}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        Vaccination Event
+                    </a>
+                    <a class="nav-link" th:href="@{/doctor/vaccineType}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        Vaccine Type
+                    </a>
+                    <a class="nav-link" th:href="@{/doctor/vaccine}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        Vaccine
+                    </a>
+                    <a class="nav-link" th:href="@{/doctor/patient}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        Patient
                     </a>
                 </div>
             </div>

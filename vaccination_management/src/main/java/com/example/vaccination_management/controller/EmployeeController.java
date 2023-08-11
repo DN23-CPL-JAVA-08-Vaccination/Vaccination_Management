@@ -57,6 +57,7 @@ public class EmployeeController {
         long totalEmployee = employeeService.getTotalEmployee('%' + searchName + '%');
         int totalPages = (int) Math.ceil((double) totalEmployee / size);
 
+
         model.addAttribute("employeeListDTOS", employeeListDTOS);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("searchName", searchName);

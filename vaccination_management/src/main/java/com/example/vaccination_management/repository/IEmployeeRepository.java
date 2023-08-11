@@ -1,13 +1,12 @@
 package com.example.vaccination_management.repository;
 
-
 import com.example.vaccination_management.dto.EmployeeListDTO;
 import com.example.vaccination_management.dto.InfoEmployeeAccountDTO;
 import com.example.vaccination_management.dto.InforEmployeeDTO;
 import com.example.vaccination_management.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -114,7 +113,6 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Integer> {
     @Modifying
     @Query(value = " UPDATE employee SET delete_flag = 1 WHERE (id = ?);", nativeQuery = true)
     void deleteEmployee(Integer id);
-
 
 
 }
