@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/","/img/**", "/css/**", "/vendor/**", "/js/**","/assets/demo/**","/login/**").permitAll()
-                .antMatchers("/vaccine/**","/vaccination/list-vaccination/**").permitAll()
+                .antMatchers("/vaccine/**","/vaccination/list-vaccination/**","/account/**","/patient/**").permitAll()
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
                 .antMatchers("/doctor/**").access("hasRole('ROLE_EMPLOYEE')")
                 .antMatchers("/infor-account/**","/change-password","/vaccination/form-vaccination/**","/vaccination/form-vaccination/**").access("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN', 'ROLE_USER')")

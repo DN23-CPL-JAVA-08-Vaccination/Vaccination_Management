@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -54,6 +55,9 @@ public class AccountController {
     @Autowired
     private CheckPasswordForgot checkPasswordForgot;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
     @Autowired
@@ -75,7 +79,7 @@ public class AccountController {
             return "Patient/requires_account";
         }
             String password = generatePassword(8);
-            patientDTO.setPassword(password);
+            patientDTO.setPassword(passwordEncoder.encode(password));
             patientDTO.setEnableFlag(false);
             iAccount.insertAccount(patientDTO.getHealthInsurance(), patientDTO.getPassword(), patientDTO.getEmail(), patientDTO.getEnableFlag());
 
@@ -267,7 +271,7 @@ public class AccountController {
             return new ModelAndView("user/ForgotPassword/form_forgot_password");
         }
         ModelAndView modelAndView=new ModelAndView("user/ForgotPassword/confirm");
-        iAccount.rePasswordByVerificationCode(account.getPassword(),account.getVerificationCode());
+        iAccount.rePasswordByVerificationCode(passwordEncoder.encode(account.getPassword()),account.getVerificationCode());
         modelAndView.addObject("messageSuccess","Đổi mật khẩu thành công");
         return modelAndView;
     }
