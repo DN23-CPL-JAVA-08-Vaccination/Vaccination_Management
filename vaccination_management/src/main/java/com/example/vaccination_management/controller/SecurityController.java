@@ -1,6 +1,9 @@
 package com.example.vaccination_management.controller;
 
+
 import com.example.vaccination_management.dto.ChangeAccountDTO;
+import com.example.vaccination_management.dto.LoginDTO;
+
 import com.example.vaccination_management.security.AccountDetailService;
 import com.example.vaccination_management.service.IAccountRoleService;
 import com.example.vaccination_management.service.IAccountService;
@@ -15,9 +18,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.Collection;
 
 @Controller
@@ -105,4 +110,12 @@ public class SecurityController {
 
     }
 
+
+    @RequestMapping("/login/error")
+    public String loginError(Model model, @Valid LoginDTO loginDTO, BindingResult result) {
+        System.out.println("error");
+        System.out.println(loginDTO.getUsername());
+        model.addAttribute("msg", "Đằng nhập thất bại");
+        return "security/login";
+    }
 }
