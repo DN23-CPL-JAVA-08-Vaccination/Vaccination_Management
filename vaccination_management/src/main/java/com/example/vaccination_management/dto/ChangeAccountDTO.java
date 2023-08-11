@@ -1,16 +1,16 @@
 package com.example.vaccination_management.dto;
 
-public class AccountDTO {
+public class ChangeAccountDTO {
     private int id;
     private String username;
     private String currentPassword;
     private String newPassword;
     private String confirmPassword;
 
-    public AccountDTO() {
+    public ChangeAccountDTO() {
     }
 
-    public AccountDTO(int id, String username, String currentPassword, String newPassword, String confirmPassword) {
+    public ChangeAccountDTO(int id, String username, String currentPassword, String newPassword, String confirmPassword) {
         this.id = id;
         this.username = username;
         this.currentPassword = currentPassword;

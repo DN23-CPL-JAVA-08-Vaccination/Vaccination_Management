@@ -1,6 +1,6 @@
 package com.example.vaccination_management.controller;
 
-import com.example.vaccination_management.dto.AccountDTO;
+import com.example.vaccination_management.dto.ChangeAccountDTO;
 import com.example.vaccination_management.security.AccountDetailService;
 import com.example.vaccination_management.service.IAccountRoleService;
 import com.example.vaccination_management.service.IAccountService;
@@ -57,7 +57,7 @@ public class SecurityController {
     @GetMapping("/change-password")
     public ModelAndView showFormChangePassword() {
         ModelAndView modelAndView = new ModelAndView("security/change_password");
-        modelAndView.addObject("accountDTO", new AccountDTO());
+        modelAndView.addObject("changeAccountDTO", new ChangeAccountDTO());
         return modelAndView;
     }
 
@@ -66,19 +66,19 @@ public class SecurityController {
      * change password
      */
     @PostMapping("/change-password")
-    public String save(@Validated @ModelAttribute AccountDTO accountDTO, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
+    public String save(@Validated @ModelAttribute ChangeAccountDTO changeAccountDTO, BindingResult bindingResult, Model model, RedirectAttributes attributes) {
 
-        changePasswordValidator.validate(accountDTO, bindingResult);
+        changePasswordValidator.validate(changeAccountDTO, bindingResult);
         String username = accountDetailService.getCurrentUserName();
-        accountDTO.setUsername(username);
+        changeAccountDTO.setUsername(username);
         if (bindingResult.hasErrors()) {
             model.addAttribute("msg", "Vui lòng nhập đúng các trường !");
             return "security/change_password";
         }
-        boolean checkPassword = accountRoleService.checkPassword(accountDTO.getCurrentPassword(), accountDTO.getUsername());
+        boolean checkPassword = accountRoleService.checkPassword(changeAccountDTO.getCurrentPassword(), changeAccountDTO.getUsername());
 
         if (checkPassword) {
-            accountService.changePasswordLogin(passwordEncoder.encode(accountDTO.getNewPassword()), accountDTO.getUsername());
+            accountService.changePasswordLogin(passwordEncoder.encode(changeAccountDTO.getNewPassword()), changeAccountDTO.getUsername());
             attributes.addFlashAttribute("msg", "Đổi mật khẩu thành công !");
 
             Collection<GrantedAuthority> authorities = accountDetailService.getAuthorities();
@@ -93,7 +93,7 @@ public class SecurityController {
             }
             if (role.equals("ROLE_EMPLOYEE")) {
 
-                return "redirect:/patient";
+                return "redirect:/doctor";
             }
             if (role.equals("ROLE_USER")) {
                 return "redirect:/";
