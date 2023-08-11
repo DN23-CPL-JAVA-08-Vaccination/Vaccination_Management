@@ -20,7 +20,7 @@
 <body class="sb-nav-fixed">
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
   <!-- Navbar Brand-->
-  <a class="navbar-brand ps-3" th:href="@{Admin/index.html}">Start Bootstrap</a>
+  <a class="navbar-brand ps-3" th:href="@{../index.html}">Start Bootstrap</a>
   <!-- Sidebar Toggle-->
   <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
   <!-- Navbar Search-->
@@ -99,48 +99,60 @@
                     </thead>
                     <tbody>
                     <form>
-                    <tr>
-                      <td>ID : </td>
-                      <td><input th:field="*{id}"  id="id" class="form-input" type="text" readonly>(*) </td>
-                    </tr>
+
                     <tr>
                       <td>Họ và tên : </td>
-                      <td><input th:field="*{name}"  id="name" class="form-input" type="text"  ><span style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span> </td>
+                      <td><input th:field="*{name}"  id="name" class="form-input" type="text"  > </br>
+                        <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                      </td>
 
                     </tr>
 
                     <tr>
                       <td>Ngày sinh : </td>
-                      <td><input th:field="*{birthday}"  id="birthday" class="form-input" type="date" onchange="showGuardianFields()"  > <span  style="color: red" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></span> </td>
+                      <td><input th:field="*{birthday}"  id="birthday" class="form-input" type="date" onchange="showGuardianFields()"  >
+                        <p  style="color: red" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></p>
+                      </td>
 
                     </tr>
                     <tr>
                       <td>Giới tính : </td>
                       <td>
                         <span>
+                           <span style="margin-right: 10px;"></span>
                             <input class="form-check-input" type="radio" value="true" name="gender" id="Male"
                                    th:checked="${patient.gender == true}" th:text="Nam">
-                                  <span style="margin-right: 10px;"></span>
+                                  <span style="margin-right: 30px;"></span>
                                   <input class="form-check-input" type="radio" value="false" name="gender" id="Female"
                                      th:checked="${patient.gender == false}" th:text="Nữ">
-                        <span  style="color: red" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></span>
+                          </br>
+                        <p  style="color: red" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></p>
                         </span>
                       </td>
 
                     </tr>
                     <tr>
                       <td>Số điện thoại : </td>
-                      <td><input th:field="*{phone}"  id="phone" class="form-input" type="text"  > <span  style="color: red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span> </td>
+                      <td><input th:field="*{phone}"  id="phone" class="form-input" type="text"  >
+                        </br>
+                        <p style="color: red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+                      </td>
 
                     </tr>
                     <tr>
                       <td>Địa chỉ : </td>
-                      <td><input th:field="*{address}"  id="address" class="form-input" type="text"  > <span  style="color: red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span> </td>
+                      <td><input th:field="*{address}"  id="address" class="form-input" type="text"  >
+                        </br>
+                        <p  style="color: red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+                      </td>
 
                     </tr>
                       <tr>
                         <td>Email : </td>
-                        <td><input th:field="*{email}"  id="email" class="form-input" type="text"  > <span  style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span></td>
+                        <td><input th:field="*{email}"  id="email" class="form-input" type="text"  >
+                          </br>
+                          <p  style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                        </td>
 
                       </tr>
                     <tr>
@@ -149,12 +161,18 @@
                     </tr>
                     <tr  id="inputContainer" style="display: none;">
                       <td >Tên người giám hộ : </td>
-                      <td><input th:field="*{guardianName}"  id="input1" class="form-input" type="text"  ><span  style="color: red" th:if="${#fields.hasErrors('guardianName')}" th:errors="*{guardianName}"></span></td>
+                      <td><input th:field="*{guardianName}"  id="input1" class="form-input" type="text"  >
+                        </br>
+                        <p  style="color: red" th:if="${#fields.hasErrors('guardianName')}" th:errors="*{guardianName}"></p>
+                      </td>
 
                     </tr>
                     <tr id="option1Inputs" style="display: none;">
                       <td >Số điện thoại người giám hộ : </td>
-                      <td><input th:field="*{guardianPhone}"  id="input2" class="form-input" type="text"  ><span  style="color: red" th:if="${#fields.hasErrors('guardianPhone')}" th:errors="*{guardianPhone}"></span></td>
+                      <td><input th:field="*{guardianPhone}"  id="input2" class="form-input" type="text"  >
+                        </br>
+                        <p  style="color: red" th:if="${#fields.hasErrors('guardianPhone')}" th:errors="*{guardianPhone}"></p>
+                      </td>
 
                     </tr>
                     </form>
@@ -197,7 +215,7 @@
                   <div class="receipt-header receipt-header-mid receipt-footer">
                     <div class="container">
                         <div class="text-center">
-                          <p style="font-size: 15px; color: rgba(186,192,196,0.89)">Rows that contain (*) cannot be changed</p>
+                          <p style="font-size: 15px; color: rgba(186,192,196,0.89)">Những trường có (*) là không thay đổi được</p>
                           <button  type="button" class="btn btn-outline-success btn-sm" th:data-toggle="modal" th:data-target="'#editModal'">Lưu</button>
                           <button type="button" class="btn btn-outline-dark btn-sm" th:data-toggle="modal" th:data-target="'#cancelModal'">Thoát</button>
                       </div>

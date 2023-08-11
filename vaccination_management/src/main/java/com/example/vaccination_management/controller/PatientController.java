@@ -64,7 +64,7 @@ public class PatientController {
         model.addAttribute("listLocation", listLocation);
         model.addAttribute("message",message);
         model.addAttribute("patient", new PatientDTO());
-        return "Patient/requires_account";
+        return "user/requires_account";
     }
 
 
@@ -75,7 +75,7 @@ public class PatientController {
     @PostMapping("/insert_patient")
     public String insertPatient(@ModelAttribute("patientDTO") PatientDTO patientDTO,
                                 RedirectAttributes redirectAttributes){
-        String addressNew=patientDTO.getAddress()+", Quận "+patientDTO.getLocation();
+        String addressNew=patientDTO.getAddress()+" Quận "+patientDTO.getLocation();
         patientDTO.setDeleteFlag(false);
         patientDTO.setAddress(addressNew);
         patientDTO.setAccount(iAccount.findLatestAccountId());
@@ -102,8 +102,6 @@ public class PatientController {
         patientDTO.setPhone(patient.getPhoneNumber());
         patientDTO.setBirthday(LocalDate.parse(patient.getBirthday()));
 
-//        patientDTO.setBirthday(LocalDate.parse(patient.getBirthday()));
-        // Lấy giá trị Date từ đối tượng Patient (đối tượng java.util.Date)
 
 
 //         Tính toán độ tuổi
@@ -126,7 +124,7 @@ public class PatientController {
         model.addAttribute("patient", patientDTO);
         model.addAttribute("age", age);
         model.addAttribute("ageUnit", ageUnit);
-        return "Admin/Patient/patient_detail";
+        return "admin/Patient/patient_detail";
     }
 
 
@@ -146,7 +144,7 @@ public class PatientController {
         patientDTO.setEmail(email);
         patientDTO.setBirthday(LocalDate.parse(entity.getBirthday()));
         model.addAttribute("patient",patientDTO);
-        return new ModelAndView("Admin/Patient/patient_edit",model);
+        return new ModelAndView("admin/Patient/patient_edit",model);
 //        để đơn giản hóa việc truyền dữ liệu từ Controller đến view và  dễ dàng hiển thị các trang HTML động với dữ liệu từ phía Server.
     }
 
@@ -161,7 +159,7 @@ public class PatientController {
                              @Valid @ModelAttribute("patient") PatientDTO patientDTO, BindingResult result){
         editPatientValidator.validate(patientDTO, result);
         if (result.hasErrors()){
-            return new ModelAndView("Admin/Patient/patient_edit");
+            return new ModelAndView("admin/Patient/patient_edit");
         }
         iPatient.upPatient(patientDTO.getName(), patientDTO.getBirthday(),patientDTO.getAddress(),patientDTO.getGender(),patientDTO.getPhone(),patientDTO.getGuardianName(),patientDTO.getGuardianPhone(),patientDTO.getId());
         model.addAttribute("msg","Cập nhật thông tin bệnh nhân thành công!!!");
@@ -192,7 +190,7 @@ public class PatientController {
         model.addAttribute("actionFlag",searchAction);
         model.addAttribute("msg",msg);
         model.addAttribute("patientList",patientList);
-        return "Admin/Patient/patient";
+        return "admin/Patient/patient";
     }
 
 
@@ -219,7 +217,7 @@ public class PatientController {
         model.addAttribute("actionFlag",searchAction);
         model.addAttribute("msg",msg);
         model.addAttribute("patientList",patientList);
-        return "Admin/Patient/patient";
+        return "admin/Patient/patient";
     }
 
 
@@ -246,7 +244,7 @@ public class PatientController {
         model.addAttribute("actionFlag",searchAction);
         model.addAttribute("msg",msg);
         model.addAttribute("patientList",patientList);
-        return "Admin/Patient/patient";
+        return "admin/Patient/patient";
     }
 
 

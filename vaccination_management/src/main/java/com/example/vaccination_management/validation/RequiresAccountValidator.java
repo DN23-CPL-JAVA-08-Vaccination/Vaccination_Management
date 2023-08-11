@@ -6,12 +6,10 @@ import com.example.vaccination_management.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.time.Period;
+
 
 @Component
 public class RequiresAccountValidator implements Validator {
@@ -36,9 +34,9 @@ public class RequiresAccountValidator implements Validator {
         LocalDate currentDate = LocalDate.now();
         PatientDTO patientDTO = (PatientDTO) target;
         if (patientDTO.getName() == null || patientDTO.getName().trim().isEmpty()) {
-            errors.rejectValue("name", "NameRequired", "Tên không được để trống!!!");
+            errors.rejectValue("name", "NameRequired", "Không được để trống!!!");
         } else if (!patientDTO.getName().matches("^[a-zA-Z\\p{L} ]+$")) {
-            errors.rejectValue("name", "InvalidCharacters", "Tên khng được chứa các kí tự đặc biệt và số!!!");
+            errors.rejectValue("name", "InvalidCharacters", "Tên không được chứa các kí tự đặc biệt và số!!!");
         } else if (patientDTO.getName().length() < 6) {
             errors.rejectValue("name", "NameNotLength", "Tên không được ít hơn 6 kí tự!!!");
         }else if (patientDTO.getName().split(" ").length < 2) {
@@ -61,6 +59,10 @@ public class RequiresAccountValidator implements Validator {
             }else if (iPatient.finByHealthInsurance(patientDTO.getHealthInsurance())>0){
                 errors.rejectValue("healthInsurance", "already", "BHYT đã tồn tại");
             }
+        }
+
+        if (patientDTO.getLocation() == null || patientDTO.getLocation().trim().isEmpty()){
+            errors.rejectValue("location", "required","Không được để trống !!!");
         }
 
         if (patientDTO.getAddress()==null||patientDTO.getAddress().trim().isEmpty()){
@@ -91,17 +93,25 @@ public class RequiresAccountValidator implements Validator {
                 errors.rejectValue("email", "EmailFormat", "Email không đúng!!");
             }
         }
-        if (patientDTO.getGuardianName()!=null && !patientDTO.getGuardianName().trim().isEmpty()) {
-            if (!patientDTO.getGuardianName().matches("^[a-zA-Z\\p{L} ]+$")) {
-                errors.rejectValue("guardianName", "GuardianName", "Nhập đầy đủ họ tên!!");
-            } else if (patientDTO.getGuardianName().length() < 6) {
-                errors.rejectValue("guardianName", "Guardian", "Tên không ít hơn 6 kí tự!");
-            }
-        }
-
-        if (patientDTO.getGuardianPhone()!=null && !patientDTO.getGuardianPhone().trim().isEmpty()){
-            if (!patientDTO.getGuardianPhone().matches(regex)){
-                errors.rejectValue("guardianPhone", "GuardianPhone", "Số điện thoại không đúng!!");
+        if (patientDTO.getBirthday() != null){
+            Period agePeriod = Period.between(patientDTO.getBirthday(),currentDate);
+            if (agePeriod.getYears()<16) {
+                if (patientDTO.getGuardianName() == null || patientDTO.getGuardianName().trim().isEmpty()){
+                    errors.rejectValue("guardianName", "GuardianNameb", "Không được để trống!!");
+                }else {
+                    if (!patientDTO.getGuardianName().matches("^[a-zA-Z\\p{L} ]+$")) {
+                        errors.rejectValue("guardianName", "GuardianName", "Nhập đầy đủ họ tên!!");
+                    } else if (patientDTO.getGuardianName().length() < 6) {
+                        errors.rejectValue("guardianName", "Guardian", "Tên không ít hơn 6 kí tự!");
+                    }
+                }
+                if (patientDTO.getGuardianPhone() == null || patientDTO.getGuardianPhone().trim().isEmpty()) {
+                    errors.rejectValue("guardianPhone", "GuardianPhoneb", "Không được để trống!!");
+                }else{
+                    if (!patientDTO.getGuardianPhone().matches(regex)) {
+                        errors.rejectValue("guardianPhone", "GuardianPhone", "Số điện thoại không đúng!!");
+                    }
+                }
             }
         }
     }

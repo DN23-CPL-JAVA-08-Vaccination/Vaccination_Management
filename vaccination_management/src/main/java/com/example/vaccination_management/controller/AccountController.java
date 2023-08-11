@@ -74,7 +74,7 @@ public class AccountController {
         if (result.hasErrors()){
             List<Location> listLocation=iLocation.findAll();
             model.addAttribute("listLocation", listLocation);
-            return "Patient/requires_account";
+            return "user/requires_account";
         }
             String password = generatePassword(8);
             patientDTO.setPassword(password);
@@ -107,7 +107,7 @@ public class AccountController {
         model.addAttribute("searchName", username);
         model.addAttribute("accountList", list);
         model.addAttribute("msg", msg);
-        return "Admin/Account/account";
+        return "admin/Account/account";
     }
 
 
@@ -147,7 +147,7 @@ public class AccountController {
         model.addAttribute("birthday", patientBirthdayFormatted);
         model.addAttribute("age", age);
         model.addAttribute("ageUnit", ageUnit);
-        return "Admin/Account/account_detail";
+        return "admin/Account/account_detail";
     }
 
 
@@ -192,7 +192,7 @@ public class AccountController {
     @GetMapping("/view_check_username")
     public String test(Model model){
        model.addAttribute("accountDTO", new AccountDTO());
-        return "Patient/ForgotPassword/check_username";
+        return "user/ForgotPassword/check_username";
     }
 
     /**
@@ -206,7 +206,7 @@ public class AccountController {
         ModelAndView modelAndView=new ModelAndView("Patient/ForgotPassword/check_email");
         if (result.hasErrors()){
 
-            return new ModelAndView("Patient/ForgotPassword/check_username");
+            return new ModelAndView("user/ForgotPassword/check_username");
         }
         IAccountDTO iAccountDTO=iAccount.findAllByUsername(accountDTO.getUsername());
         accountDTO.setEmail(iAccountDTO.getEmail());
@@ -235,7 +235,7 @@ public class AccountController {
         } else {
             model.addAttribute("messageError", "Gửi yêu cầu thất bại/");
         }
-        return new ModelAndView("Patient/ForgotPassword/confirm");
+        return new ModelAndView("user/ForgotPassword/confirm");
     }
 
     /**
@@ -246,12 +246,12 @@ public class AccountController {
     public String forgotPasswordForm(@PathVariable("verification") String verification, Model model){
         if (iAccount.checkVerificationCode(verification)<1){
             model.addAttribute("messageError","Link truy cập đã hết hạn sử dụng hoặc không tồn tại!!");
-            return "Patient/ForgotPassword/confirm";
+            return "user/ForgotPassword/confirm";
         }else {
             AccountDTO accountDTO=new AccountDTO();
             accountDTO.setVerificationCode(verification);
             model.addAttribute("account",accountDTO );
-            return "Patient/ForgotPassword/form_forgot_password";
+            return "user/ForgotPassword/form_forgot_password";
         }
     }
 
@@ -266,9 +266,9 @@ public class AccountController {
                                        BindingResult result){
         checkPasswordForgot.validate(account,result);
         if (result.hasErrors()){
-            return new ModelAndView("Patient/ForgotPassword/form_forgot_password");
+            return new ModelAndView("user/ForgotPassword/form_forgot_password");
         }
-        ModelAndView modelAndView=new ModelAndView("Patient/ForgotPassword/confirm");
+        ModelAndView modelAndView=new ModelAndView("user/ForgotPassword/confirm");
         iAccount.rePasswordByVerificationCode(account.getPassword(),account.getVerificationCode());
         modelAndView.addObject("messageSuccess","Đổi mật khẩu thành công");
         return modelAndView;

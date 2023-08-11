@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yêu cầu cấp lại mật khẩu</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous"/>
+    <link rel="stylesheet" th:href="@{/css/style-thangLv.css}">
+    <link rel="stylesheet" th:href="@{/patient/assets/css/style1.css}">
+
+</head>
+
+<body>
+
+<div class="container-change-pass">
+
+    <main class="card">
+
+        <section class="esquerda">
+            <h2 class="title">Yêu cầu cấp lại mật khẩu</h2>
+            <form th:action="@{/account/view_check_email}" method="post" th:object="${accountDTO}">
+                <section class="caixa__input">
+                    <label for="username" id="username">Số BHYT <span>  (*) </span></label>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" th:field="*{username}"
+                               placeholder="Nhấn vào để nhập" value="">
+                    </div>
+                    <p class="errors" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+                </section>
+                <section class="controle__acesso">
+                    <div class="container-login100-form-btn">
+                        <div class="">
+                            <button class="btn_login" type="submit">
+                                Xác nhận
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+            </form>
+        </section>
+        <section class="direita d-flex align-items-center">
+            <div class="background__imagem ">
+                <img th:src="@{/img/logo_vaccination.png}"/></div>
+        </section>
+    </main>
+</div>
+</body>
+</html>
