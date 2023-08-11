@@ -56,7 +56,6 @@ public class Validation implements Validator {
 
         }
 
-
         if (vaccinationHistoryDTO.getPreStatus() == null) {
             errors.rejectValue(fieldPreStauts, "preStatus.null", "Vui lòng nhập trạng thái bệnh nhân.");
         } else if (vaccinationHistoryDTO.getPreStatus().length() > 100) {

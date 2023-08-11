@@ -49,7 +49,7 @@
                             <span for="remember" style="padding: 13px 13px">Ghi nhớ tài khoản</span>
                         </div>
                         <div class="text-right col-6" style="padding-top: 13px">
-                            <a href="#">
+                            <a th:href="@{/account/view_check_username}">
                                 Quên mật khẩu ?
                             </a>
                         </div>
@@ -79,8 +79,8 @@
             </div>
         </section>
         <div class="title-signup">
-            <a>
-                Đăng ký tài khoản
+            <a th:href="@{/patient/requires_account}">
+                Yêu cầu cấp tài khoản
             </a>
         </div>
     </main>

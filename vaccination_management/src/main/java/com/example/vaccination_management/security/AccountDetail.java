@@ -37,7 +37,7 @@ public class AccountDetail implements UserDetails {
         return new AccountDetail(
                 account.getId(),
                 account.getUserName(),
-                account.isEnableFlag(),
+                account.getEnableFlag(),
                 account.getPassword(),
                 authorities);
     }

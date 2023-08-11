@@ -1,6 +1,15 @@
 package com.example.vaccination_management.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
+
+
+@Getter
+@Setter
 @Entity
 @Table(name = "patient")
 public class Patient {
@@ -39,8 +48,6 @@ public class Patient {
     @OneToOne
     @JoinColumn(name = "account_id")
     private Account account;
-
-
 
     public Patient() {
     }

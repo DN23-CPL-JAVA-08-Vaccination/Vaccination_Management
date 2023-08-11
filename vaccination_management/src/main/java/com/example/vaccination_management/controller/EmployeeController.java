@@ -62,7 +62,7 @@ public class EmployeeController {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("searchName", searchName);
         model.addAttribute("currentPage", page);
-        return "admin/employee/list";
+        return "Admin/employee/list";
     }
 
 
@@ -116,7 +116,7 @@ public class EmployeeController {
         this.currentPhone = employeeCreateDTO.getPhone();
         model.addAttribute("employeeCreateDTO", employeeCreateDTO);
         model.addAttribute("positionList", positionService.findAll());
-        return "admin/employee/update";
+        return "Admin/employee/update";
     }
 
     /**
