@@ -274,6 +274,11 @@ public class AccountController {
         return modelAndView;
     }
 
+    @GetMapping("/view_form_edit_information")
+    public ModelAndView viewFormEditInformation(Model model){
+
+        return new ModelAndView("/user/edit_information");
+    }
 
     /**
      * TLINH
