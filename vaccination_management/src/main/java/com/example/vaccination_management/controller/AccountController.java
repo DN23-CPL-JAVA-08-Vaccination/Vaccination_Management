@@ -14,14 +14,13 @@ import com.example.vaccination_management.validation.CheckPasswordForgot;
 import com.example.vaccination_management.validation.ForgotPasswordValidator;
 import com.example.vaccination_management.validation.RequiresAccountValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -35,7 +34,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
-@RequestMapping("/account")
+@RequestMapping("")
 public class AccountController {
 
     @Autowired
@@ -56,6 +55,9 @@ public class AccountController {
     @Autowired
     private CheckPasswordForgot checkPasswordForgot;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
     @Autowired
@@ -66,7 +68,7 @@ public class AccountController {
      * TLINH
      * Insert information to create an account
      */
-    @PostMapping("/insert_account")
+    @PostMapping("/account/insert_account")
     public String requiresAccount(Model model,
                                   @Valid @ModelAttribute("patient") PatientDTO patientDTO,
                                   BindingResult result, HttpServletRequest request){
@@ -77,7 +79,7 @@ public class AccountController {
             return "user/requires_account";
         }
             String password = generatePassword(8);
-            patientDTO.setPassword(password);
+            patientDTO.setPassword(passwordEncoder.encode(password));
             patientDTO.setEnableFlag(false);
             iAccount.insertAccount(patientDTO.getHealthInsurance(), patientDTO.getPassword(), patientDTO.getEmail(), patientDTO.getEnableFlag());
 
@@ -90,7 +92,7 @@ public class AccountController {
      * TLINH
      * Show  list account, search, pagination
      */
-    @GetMapping("/view_account")
+    @GetMapping("/admin/account/view_account")
     public String view(Model model, HttpServletRequest request,
                        @RequestParam(required = false, defaultValue = "") String username ,
                        @RequestParam(value = "page", defaultValue = "0") int page,
@@ -115,7 +117,7 @@ public class AccountController {
      * TLINH
      * view account details
      */
-    @GetMapping("/detail/{id}")
+    @GetMapping("/admin/account/detail/{id}")
     public String getDetailAccount(@PathVariable("id") Integer id, Model model){
         IAccountDetailDTO iAccountDetail=iAccount.findAccountById(id);
 
@@ -156,7 +158,7 @@ public class AccountController {
      * TLINH
      * Send email account activation/deactivation
      */
-    @GetMapping("/send_email/{id}")
+    @GetMapping("/admin/account/send_email/{id}")
     public ModelAndView sendEmail(@PathVariable("id") Integer id,
                                   ModelMap model){
             IAccountDetailDTO detailDTO=iAccount.findAccountById(id);
@@ -181,7 +183,7 @@ public class AccountController {
             }else {
                 model.addAttribute("msg","Thông tin tài khoản đã bị vô hiệu hóa, xin vui lòng khôi phục thông tin để tiếp tục");
             }
-            return new ModelAndView("redirect:/account/view_account", model);
+            return new ModelAndView("redirect:/admin/account/view_account", model);
 
     }
 
@@ -189,7 +191,7 @@ public class AccountController {
      * TLINH
      * View form check username
      */
-    @GetMapping("/view_check_username")
+    @GetMapping("/account/view_check_username")
     public String test(Model model){
        model.addAttribute("accountDTO", new AccountDTO());
         return "user/ForgotPassword/check_username";
@@ -199,11 +201,11 @@ public class AccountController {
      * TLINH
      * view form check email
      */
-    @PostMapping("/view_check_email")
+    @PostMapping("/account/view_check_email")
     public ModelAndView viewCheckEmail( @Valid @ModelAttribute("accountDTO") AccountDTO accountDTO,
                                         BindingResult result){
         forgotPasswordValidator.validate(accountDTO, result);
-        ModelAndView modelAndView=new ModelAndView("Patient/ForgotPassword/check_email");
+        ModelAndView modelAndView=new ModelAndView("user/ForgotPassword/check_email");
         if (result.hasErrors()){
 
             return new ModelAndView("user/ForgotPassword/check_username");
@@ -221,7 +223,7 @@ public class AccountController {
      * TLINH
      * Send confirmation email forgot password
      */
-    @PostMapping("/send_email_forgot_password")
+    @PostMapping("/account/send_email_forgot_password")
     public ModelAndView sendEmailForgotPassword( @ModelAttribute("accountDTO") AccountDTO accountDTO,
                                                  Model model){
         IAccountDTO iAccountDTO=iAccount.findAllByUsername(accountDTO.getUsername());
@@ -242,7 +244,7 @@ public class AccountController {
      * TLINH
      * View form forgot password
      */
-    @GetMapping("/form_forgot_password/{verification}")
+    @GetMapping("/account/form_forgot_password/{verification}")
     public String forgotPasswordForm(@PathVariable("verification") String verification, Model model){
         if (iAccount.checkVerificationCode(verification)<1){
             model.addAttribute("messageError","Link truy cập đã hết hạn sử dụng hoặc không tồn tại!!");
@@ -260,7 +262,7 @@ public class AccountController {
      * TLINH
      * Handling forgot password
      */
-    @PostMapping("/forgot_password")
+    @PostMapping("/account/forgot_password")
     public ModelAndView forgotPassword
             (@Valid @ModelAttribute("account") AccountDTO account,
                                        BindingResult result){
@@ -269,7 +271,8 @@ public class AccountController {
             return new ModelAndView("user/ForgotPassword/form_forgot_password");
         }
         ModelAndView modelAndView=new ModelAndView("user/ForgotPassword/confirm");
-        iAccount.rePasswordByVerificationCode(account.getPassword(),account.getVerificationCode());
+
+        iAccount.rePasswordByVerificationCode(passwordEncoder.encode(account.getPassword()),account.getVerificationCode());
         modelAndView.addObject("messageSuccess","Đổi mật khẩu thành công");
         return modelAndView;
     }

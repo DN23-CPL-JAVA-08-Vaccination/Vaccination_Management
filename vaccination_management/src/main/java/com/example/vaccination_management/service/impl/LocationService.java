@@ -14,11 +14,12 @@ public class LocationService implements ILocationService {
     private ILocationRepository iLocationRP;
 
     /**
-       * TLINH
-       * find all location
+     * TLINH
+     * find all location
      */
     @Override
     public List<Location> findAll() {
         return iLocationRP.findAll();
     }
+
 }

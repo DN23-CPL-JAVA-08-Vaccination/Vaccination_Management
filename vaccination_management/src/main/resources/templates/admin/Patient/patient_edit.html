@@ -18,6 +18,7 @@
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
+<<<<<<< HEAD:vaccination_management/src/main/resources/templates/admin/Patient/patient_edit.html
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
   <!-- Navbar Brand-->
   <a class="navbar-brand ps-3" th:href="@{../index.html}">Start Bootstrap</a>
@@ -43,33 +44,11 @@
     </li>
   </ul>
 </nav>
+=======
+<th:block th:insert="admin/nav"></th:block>
+>>>>>>> fix_bug_thanglv_huylvn:vaccination_management/src/main/resources/templates/Admin/Patient/patient_edit.html
 <div id="layoutSidenav">
-  <div id="layoutSidenav_nav">
-    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-      <div class="sb-sidenav-menu">
-        <div class="nav">
-          <div class="sb-sidenav-menu-heading">Core</div>
-          <a class="nav-link" href="index.html">
-            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-            Dashboard
-          </a>
-          <div class="sb-sidenav-menu-heading">Addons</div>
-          <a class="nav-link" href="../Account/account.html">
-            <div class="sb-nav-link-icon"><i class="fas fa-circle-user"></i></div>
-            Tài khoản
-          </a>
-          <a class="nav-link" th:href="@{/patient/view_patient}">
-            <div class="sb-nav-link-icon"><i class="fas fa-hospital-user"></i></div>
-            Bệnh nhân
-          </a>
-        </div>
-      </div>
-      <div class="sb-sidenav-footer">
-        <div class="small">Logged in as:</div>
-        Start Bootstrap
-      </div>
-    </nav>
-  </div>
+  <th:block th:insert="admin/sidenav"></th:block>
   <div id="layoutSidenav_content">
     <main>
       <div class="container-fluid px-4" style="margin-left: 300px">
@@ -77,14 +56,14 @@
           <div class="row" >
             <div class="receipt-main col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
 
-              <form th:action="@{/patient/save}" method="get" th:object="${patient}">
+              <form th:action="@{/admin/patient/save}" method="get" th:object="${patient}">
                 <div class="container">
                   <div class="row">
                     <div class="col-10">
                       <h2 class="mb-0">Thông tin bệnh nhân</h2>
                     </div>
                     <div class="col-2">
-                      <a th:href="@{/patient/view_patient}" class="btn-close float-end"></a>
+                      <a th:href="@{/admin/patient/view_patient}" class="btn-close float-end"></a>
                     </div>
                   </div>
                 </div>
@@ -119,10 +98,17 @@
                       <td>Giới tính : </td>
                       <td>
                         <span>
+<<<<<<< HEAD:vaccination_management/src/main/resources/templates/admin/Patient/patient_edit.html
                            <span style="margin-right: 10px;"></span>
                             <input class="form-check-input" type="radio" value="true" name="gender" id="Male"
                                    th:checked="${patient.gender == true}" th:text="Nam">
                                   <span style="margin-right: 30px;"></span>
+=======
+                             <span style="margin-right: 10px;"></span>
+                            <input class="form-check-input" type="radio" value="true" name="gender" id="Male"
+                                   th:checked="${patient.gender == true}" th:text="Nam">
+                                  <span style="margin-right: 20px;"></span>
+>>>>>>> fix_bug_thanglv_huylvn:vaccination_management/src/main/resources/templates/Admin/Patient/patient_edit.html
                                   <input class="form-check-input" type="radio" value="false" name="gender" id="Female"
                                      th:checked="${patient.gender == false}" th:text="Nữ">
                           </br>
@@ -263,7 +249,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
-                        <a th:href="@{/patient/view_patient}"><button type="button" class="btn btn-outline-warning">Xác nhận</button></a>
+                        <a th:href="@{/admin/patient/view_patient}"><button type="button" class="btn btn-outline-warning">Xác nhận</button></a>
                       </div>
                     </div>
                   </div>
@@ -274,19 +260,7 @@
         </div>
       </div>
     </main>
-
-    <footer class="py-4 bg-light mt-auto">
-      <div class="container-fluid px-4">
-        <div class="d-flex align-items-center justify-content-between small">
-          <div class="text-muted">Copyright &copy; Your Website 2023</div>
-          <div>
-            <a href="#">Privacy Policy</a>
-            &middot;
-            <a href="#">Terms &amp; Conditions</a>
-          </div>
-        </div>
-      </div>
-    </footer>
+    <th:block th:insert="admin/footer_admin"></th:block>
   </div>
 </div>
 

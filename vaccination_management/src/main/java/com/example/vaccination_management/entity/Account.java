@@ -1,10 +1,6 @@
 
 package com.example.vaccination_management.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -33,7 +29,7 @@ public class Account {
     @Column(name = "enable_flag")
     private Boolean enableFlag;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<AccountRole> accountRoles;
 
 
@@ -106,4 +102,6 @@ public class Account {
     public void setAccountRoles(List<AccountRole> accountRoles) {
         this.accountRoles = accountRoles;
     }
+
+
 }

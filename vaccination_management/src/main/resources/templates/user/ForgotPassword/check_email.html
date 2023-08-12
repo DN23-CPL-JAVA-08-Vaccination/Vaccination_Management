@@ -27,7 +27,7 @@
   <main class="card">
 
     <section class="esquerda">
-      <h3 class="title">Chúng tôi sẽ gửi thông tin đến email của bạn</h3>
+      <h3 class="title"> <span><a th:href="@{/account/view_check_username}" style="color: black"><i class="bi bi-arrow-return-left"></i></a></span>Chúng tôi sẽ gửi thông tin đến email của bạn</h3>
       <form th:action="@{/account/send_email_forgot_password}" method="post" th:object="${accountDTO}">
       <section class="caixa__input">
           <label for="username" id="username">Chúng tôi sẽ gửi thông tin đăng nhập đến:  </label>

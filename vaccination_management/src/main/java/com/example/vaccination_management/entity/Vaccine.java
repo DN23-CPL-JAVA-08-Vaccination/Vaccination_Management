@@ -1,6 +1,6 @@
 package com.example.vaccination_management.entity;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,12 +51,14 @@ public class Vaccine {
     @Column(name = "dosage")
     private Double dosage;
 
+
     @ManyToOne
     @JoinColumn(name = "vaccine_type_id")
     private VaccineType vaccineType;
 
     public Vaccine() {
     }
+
 
     public Vaccine(int id, String name, String code, String description, boolean deleteFlag, String createDate, String updateDate, Double price, String duration, String age, String image, Double dosage, VaccineType vaccineType) {
         this.id = id;
@@ -73,6 +75,7 @@ public class Vaccine {
         this.dosage = dosage;
         this.vaccineType = vaccineType;
     }
+
 
     public int getId() {
         return id;
@@ -162,6 +165,7 @@ public class Vaccine {
         this.image = image;
     }
 
+
     public Double getDosage() {
         return dosage;
     }
@@ -177,5 +181,5 @@ public class Vaccine {
     public void setVaccineType(VaccineType vaccineType) {
         this.vaccineType = vaccineType;
     }
-
 }
+

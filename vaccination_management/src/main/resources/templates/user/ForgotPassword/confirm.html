@@ -28,11 +28,21 @@
 
     <section class="esquerda">
       <h2 class="title">Yêu cầu cấp lại mật khẩu</h2>
-      <form>
+      <form th:action="@{/login}" method="get">
         <section class="caixa__input">
           <div class="card-body alert alert-success notification" role="alert" th:if="${messageSuccess}" th:text="${messageSuccess}"></div>
           <div class="card-body alert alert-danger notificationer" role="alert" th:if="${messageError}" th:text="${messageError}"></div>
         </section>
+        <section class="controle__acesso">
+          <div class="container-login100-form-btn">
+            <div class="">
+              <button class="btn_login" type="submit">
+                Quay lại đăng nhập
+              </button>
+            </div>
+          </div>
+        </section>
+
       </form>
     </section>
     <section class="direita d-flex align-items-center">

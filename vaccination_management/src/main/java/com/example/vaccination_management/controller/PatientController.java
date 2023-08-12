@@ -1,23 +1,31 @@
 package com.example.vaccination_management.controller;
 
-import com.example.vaccination_management.dto.IAccountDetailDTO;
-import com.example.vaccination_management.dto.PatientDTO;
-import com.example.vaccination_management.entity.Location;
+import com.example.vaccination_management.dto.IPatientDTO;
+import com.example.vaccination_management.dto.IVaccinationHistoryDTO;
 import com.example.vaccination_management.entity.Patient;
-import com.example.vaccination_management.service.IAccountService;
-import com.example.vaccination_management.service.IEmailService;
-import com.example.vaccination_management.service.ILocationService;
 import com.example.vaccination_management.service.IPatientService;
-import com.example.vaccination_management.validation.EditPatientValidator;
-import org.springframework.beans.BeanUtils;
+import com.example.vaccination_management.service.IVaccinationHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.vaccination_management.dto.IAccountDetailDTO;
+import com.example.vaccination_management.dto.PatientDTO;
+import com.example.vaccination_management.entity.Location;
+import com.example.vaccination_management.service.IAccountService;
+import com.example.vaccination_management.service.IEmailService;
+import com.example.vaccination_management.service.ILocationService;
+
+import com.example.vaccination_management.validation.EditPatientValidator;
+import org.springframework.beans.BeanUtils;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,18 +33,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
+
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.format.DateTimeFormatter;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Controller
-@RequestMapping("/patient")
 public class PatientController {
+
+    @Autowired
+    IPatientService iPatientService;
+    @Autowired
+    IVaccinationHistoryService iVaccinationHistoryService;
+
     @Autowired
     IAccountService iAccount;
 
@@ -52,12 +64,36 @@ public class PatientController {
     @Autowired
     ILocationService iLocation;
 
+    @GetMapping("/doctor/patient")
+    public String getAllPatient(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size , @RequestParam(defaultValue = "", required = false) String strSearch) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<IPatientDTO> patientPage = iPatientService.getPatients(pageable,'%' +strSearch + '%');
+        model.addAttribute("patientList", patientPage);
+        return "doctors/patient";
+    }
+
+    @GetMapping("/doctor/patient/view")
+    public String detailPatient(Model model,
+                                @RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "10") int size,
+                                @RequestParam(defaultValue = "", required = false) String strSearch,
+                                @RequestParam Integer id) {
+
+        Patient patient = iPatientService.getPatientById(id);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("lastTime").descending());
+        Page<IVaccinationHistoryDTO>  list = iVaccinationHistoryService.getVaccinationByPatient(id,pageable);
+        model.addAttribute("patientID",id);
+        model.addAttribute("patient",patient);
+        model.addAttribute("vaccinationList", list);
+        return "doctors/detailpatient";
+    }
+
 
     /**
      * TLINH
      * view form requires account
      */
-    @GetMapping("/requires_account")
+    @GetMapping("/patient/requires_account")
     public String viewFormRequires(ModelMap model, HttpServletRequest request){
         String message=request.getParameter("message");
         List<Location> listLocation=iLocation.findAll();
@@ -72,7 +108,7 @@ public class PatientController {
      * TLINH
      * Insert information patient
      */
-    @PostMapping("/insert_patient")
+    @PostMapping("/patient/insert_patient")
     public String insertPatient(@ModelAttribute("patientDTO") PatientDTO patientDTO,
                                 RedirectAttributes redirectAttributes){
         String addressNew=patientDTO.getAddress()+" Quận "+patientDTO.getLocation();
@@ -90,7 +126,7 @@ public class PatientController {
      * TLINH
      * View detail patient
      */
-    @GetMapping("/detail/{id}")
+    @GetMapping("/admin/patient/detail/{id}")
     public String patientDetail(Model model,
                                 @PathVariable("id") Integer id){
 
@@ -132,7 +168,7 @@ public class PatientController {
      * TLINH
      * view form edit by id patient
      */
-    @GetMapping("/form_edit/{id}")
+    @GetMapping("/admin/patient/form_edit/{id}")
     public ModelAndView viewFormEdit(ModelMap model,
                                      @PathVariable("id") Integer id){
         Optional<Patient> patient=iPatient.findById(id);
@@ -154,7 +190,7 @@ public class PatientController {
      * TLINH
      * save edited patient information
      */
-    @GetMapping("/save")
+    @GetMapping("/admin/patient/save")
     public ModelAndView save(ModelMap model,
                              @Valid @ModelAttribute("patient") PatientDTO patientDTO, BindingResult result){
         editPatientValidator.validate(patientDTO, result);
@@ -163,7 +199,7 @@ public class PatientController {
         }
         iPatient.upPatient(patientDTO.getName(), patientDTO.getBirthday(),patientDTO.getAddress(),patientDTO.getGender(),patientDTO.getPhone(),patientDTO.getGuardianName(),patientDTO.getGuardianPhone(),patientDTO.getId());
         model.addAttribute("msg","Cập nhật thông tin bệnh nhân thành công!!!");
-        return new ModelAndView("redirect:/patient/view_patient", model);
+        return new ModelAndView("redirect:/admin/patient/view_patient", model);
     }
 
 
@@ -171,7 +207,7 @@ public class PatientController {
      * TLINH
      * view patient information is stored
      */
-    @GetMapping("/view_patient_disable")
+    @GetMapping("/admin/patient/view_patient_disable")
     public String viewPatientDisable(Model model, HttpServletRequest request,
                                      @RequestParam(required = false, defaultValue = "") String username,
                                      @RequestParam(value = "page", defaultValue = "0") int page,
@@ -198,7 +234,7 @@ public class PatientController {
      * TLINH
      * view patient information
      */
-    @GetMapping("/view_patient")
+    @GetMapping("/admin/patient/view_patient")
     public String view(Model model, HttpServletRequest request,
                        @RequestParam(required = false, defaultValue = "") String username,
                        @RequestParam(value = "page", defaultValue = "0") int page,
@@ -225,7 +261,7 @@ public class PatientController {
      * TLINH
      * view patient information is delete flag
      */
-    @GetMapping("/view_patientDelete")
+    @GetMapping("/admin/patient/view_patientDelete")
     public String viewDelete(Model model, HttpServletRequest request,
                              @RequestParam(required = false, defaultValue = "") String username,
                              @RequestParam(value = "page", defaultValue = "0") int page,
@@ -252,12 +288,12 @@ public class PatientController {
      * TLINH
      * Delete flag / restore patient by id
      */
-    @GetMapping("/delete_flag/{id}/{deleteFlag}")
+    @GetMapping("/admin/patient/delete_flag/{id}/{deleteFlag}")
     public ModelAndView deleteFlag(@PathVariable("id") Integer id,
                              @PathVariable("deleteFlag") Boolean deleteFlag){
         Optional<Patient> patient= iPatient.findById(id);
         IAccountDetailDTO detailDTO=iAccount.findAccountById(patient.get().getAccount().getId());
-        ModelAndView modelAndView = new ModelAndView("redirect:/patient/view_patient");
+        ModelAndView modelAndView = new ModelAndView("redirect:/admin/patient/view_patient");
         iPatient.updateDeleteFlagById(deleteFlag,id);
         if (deleteFlag){
             iAccount.updateEnableFlagById(false,patient.get().getAccount().getId());
@@ -273,15 +309,14 @@ public class PatientController {
      * TLINH
      * Storage patient by id
      */
-    @GetMapping("/storage/{id}")
+    @GetMapping("/admin/patient/storage/{id}")
     public ModelAndView storage(@PathVariable("id") Integer id){
-        ModelAndView modelAndView=new ModelAndView("redirect:/patient/view_patient");
+        ModelAndView modelAndView=new ModelAndView("redirect:/admin/patient/view_patient");
         Optional<Patient> patient=iPatient.findById(id);
         iAccount.deleteById(patient.get().getAccount().getId());
         LocalDate currentDate=LocalDate.now();
         modelAndView.addObject("msg","Lưu trữ thông tin bệnh nhân thành công");
         return modelAndView;
     }
-
 
 }

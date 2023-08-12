@@ -27,7 +27,7 @@
     <main class="card">
 
         <section class="esquerda">
-            <h2 class="title">Yêu cầu cấp lại mật khẩu</h2>
+            <h2 class="title"> <span><a th:href="@{/login}" style="color: black"><i class="bi bi-arrow-return-left"></i></a></span>Yêu cầu cấp lại mật khẩu</h2>
             <form th:action="@{/account/view_check_email}" method="post" th:object="${accountDTO}">
                 <section class="caixa__input">
                     <label for="username" id="username">Số BHYT <span>  (*) </span></label>

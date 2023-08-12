@@ -12,13 +12,12 @@ public class CheckPasswordForgot implements Validator {
         return AccountDTO.class.equals(clazz);
     }
 
-
     @Override
     public void validate(Object target, Errors errors) {
         AccountDTO accountDTO = (AccountDTO) target;
         /**
-           * TLINH
-           * check the password entered in the form forgot pass
+         * TLINH
+         * check the password entered in the form forgot pass
          */
         if (accountDTO.getPassword() == null || accountDTO.getPassword().trim().isEmpty()){
             errors.rejectValue("password","passRequire","Vui lòng không để trống!!");
@@ -32,6 +31,7 @@ public class CheckPasswordForgot implements Validator {
                         errors.rejectValue("rePassword", "repassMismatch", "Mật khẩu nhập lại không giống với mật khẩu ban đầu");
                     }
                 }
+
         }
     }
 }
