@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Tables - SB Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/adminStyle.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/custom-css.css}">
+
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+
+</head>
+<body class="sb-nav-fixed">
+<th:block th:insert="admin/nav"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="admin/sidenav"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Vaccination History</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">History</li>
+                </ol>
+                <!--        <div class="card mb-4">-->
+                <!--          -->
+                <!--        </div>-->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i>
+                        History
+                    </div>
+                    <div class="card-body">
+                        <form  th:action="@{/doctor/history}" method="get" class="col-3 ms-auto">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" name="strSearch" placeholder="Search here.."  aria-describedby="button-addon2">
+                                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+                            </div>
+
+                        </form>
+                        <table id="datatablesSimple" class="table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>BirthDay</th>
+                                <th>Vaccination</th>
+                                <th>Vaccine</th>
+                                <th>End Time</th>
+                                <th>Times</th>
+                                <th>View</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="vaccination : ${historyList}">
+                                <td th:text="${vaccination.getId()}"></td>
+                                <td th:text="${vaccination.getPatientName()}"></td>
+                                <td th:text="${vaccination.getBirthFormat()}"></td>
+                                <td th:text="${vaccination.getVaccinationDesc()}"></td>
+                                <td th:text="${vaccination.getVaccineName()}"></td>
+                                <td th:text="${vaccination.getLastTimeFormatted()}"></td>
+
+                                <td th:text="${vaccination.getVaccinationTimes()}"></td>
+
+                                <td>
+                                    <a th:href="@{'/doctor/vaccination/view?id='+${vaccination.getId()}}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+
+
+                                </td>
+
+                            </tr>
+
+                            </tbody>
+                        </table>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination ms-1 d-flex justify-content-end align-items-center p-3">
+                                <li class="page-item me-3">
+                                    <a class="page-link"
+                                       th:href="@{/doctor/history(page=${historyList.number - 1})}"
+                                       th:if="${historyList.hasPrevious()}">Previous</a>
+                                </li>
+                                <li class="page-item" th:classappend="${historyList.first} ? disabled : ''">
+                                    <a class="page-link"
+                                       th:href="@{/doctor/history(page=0)}"
+                                       th:if="${historyList.number > 2}">1</a>
+                                </li>
+
+
+                                <li class="page-item" th:classappend="${i == historyList.number} ? active : ''"
+                                    th:each="i : ${#numbers.sequence(historyList.number, historyList.number + 1)}">
+                                    <a class="page-link"
+                                       th:href="@{/doctor/history(page=${i})}"
+                                       th:text="${i+1}"></a>
+                                </li>
+
+                                <li class="page-item" th:classappend="${historyList.last} ? disabled : ''">
+                                    <span class="page-link">...</span>
+                                </li>
+                                <li class="page-item" th:classappend="${historyList.last} ? disabled : ''">
+                                    <a class="page-link"
+                                       th:href="@{/doctor/history(page=${historyList.totalPages - 1})}"
+                                       th:if="${historyList.totalPages - historyList.number > 3}">${historyList.totalPages}</a>
+                                </li>
+                                <li class="page-item me-3">
+                                    <a class="page-link"
+                                       th:href="@{/doctor/history(page=${historyList.number + 1})}"
+                                       th:if="${historyList.hasNext()}">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <!-- Button trigger modal -->
+            <div th:if="${submitCheck}"  >
+                <!-- Đoạn mã JavaScript để hiển thị thông báo đăng ký thành công -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thông báo',
+                            text: 'Bạn đã cập nhật lịch sử tiêm chủng thành công !!!',
+                            confirmButtonColor: '#2766cb', // Thay đổi màu sắc của nút xác nhận (Bootstrap 5)
+                            allowOutsideClick: false,
+
+                        })
+                    });
+
+                </script>
+            </div>
+
+        </main>
+        <th:block th:insert="admin/footer_admin"></th:block>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="/js/scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+<script src="/js/datatables-simple-demo.js"></script>
+</body>
+</html>

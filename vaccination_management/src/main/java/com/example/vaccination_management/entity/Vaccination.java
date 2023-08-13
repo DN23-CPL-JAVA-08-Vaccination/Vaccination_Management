@@ -11,13 +11,13 @@ public class Vaccination {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "date", columnDefinition = "Date" )
+    @Column(name = "date", columnDefinition = "Date")
     private String date;
 
-    @Column(name = "start_time", columnDefinition = "Datetime" )
+    @Column(name = "start_time", columnDefinition = "Datetime")
     private String startTime;
 
-    @Column(name = "end_time", columnDefinition = "Datetime" )
+    @Column(name = "end_time", columnDefinition = "Datetime")
     private String endTime;
 
     @Column(name = "delete_flag")
@@ -29,7 +29,7 @@ public class Vaccination {
     @Column(name = "times")
     private int times;
 
-    @Column(name = "description" )
+    @Column(name = "description")
     private String description;
 
     @ManyToOne
@@ -94,7 +94,6 @@ public class Vaccination {
         this.endTime = endTime;
     }
 
-
     public boolean isDeleteFlag() {
         return deleteFlag;
     }
@@ -102,6 +101,7 @@ public class Vaccination {
     public void setDeleteFlag(boolean deleteFlag) {
         this.deleteFlag = deleteFlag;
     }
+
 
     public String getDescription() {
         return description;

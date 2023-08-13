@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Đăng ký tiêm chủng</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link th:href="@{/img/favicon.png}" rel="icon">
+    <link th:href="@{/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link rel="stylesheet" th:href="@{/vendor/fontawesome-free/css/all.min.css}">
+  <link rel="stylesheet" th:href="@{/vendor/animate.css/animate.min.css}">
+  <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+  <link rel="stylesheet" th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}">
+  <link rel="stylesheet" th:href="@{/vendor/glightbox/css/glightbox.min.css}">
+  <link rel="stylesheet" th:href="@{/vendor/remixicon/remixicon.css}">
+  <link rel="stylesheet" th:href="@{/vendor/swiper/swiper-bundle.min.css}">
+  <link rel="stylesheet" th:href="@{/vendor/boxicons/css/boxicons.min.css}">
+
+  <!-- Template Main CSS File -->
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/form-register-vaccination.css}">
+
+</head>
+
+<body>
+
+<th:block th:insert="header"></th:block>
+
+<main id="main">
+  <!-- ======= Vaccinations Register ======= -->
+  <section class="breadcrumbs">
+    <div class="container register">
+      <div class="row">
+        <div class="col-md-3 register-left">
+          <h3>Welcome</h3>
+          <p>Chào mừng mọi người đến với form đăng ký tiêm chủng, nơi chúng ta cùng hướng tới sức khỏe và an toàn cho tương lai!</p>
+        </div>
+        <div class="col-md-9 register-right">
+          <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+            <!-- Thêm thẻ span để chứa giá trị của biến age -->
+            <span class="age" id="ageValue" th:text="${age}"></span>
+
+            <li class="nav-item" th:if="${age < 16}">
+              <a class="nav-link active" id="tre-em-tab" data-toggle="tab" href="#tre-em" role="tab" aria-controls="tre-em" aria-selected="true">Trẻ em</a>
+            </li>
+            <li class="nav-item" th:if="${age >= 16}">
+              <a class="nav-link" id="nguoi-lon-tab" data-toggle="tab" href="#nguoi-lon" role="tab" aria-controls="nguoi-lon" aria-selected="false">Người lớn</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tre-em" role="tabpanel" aria-labelledby="tre-em-tab" th:if="${age < 16}">
+              <h3 class="register-heading">Đăng ký tiêm chủng</h3>
+              <form th:action="@{'/vaccination/register/' + ${vaccination.id}}" method="post" th:object="${vaccinationHistory}" class="vaccination-form">
+                <div class="row register-form">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="guardianName" class="form-label">Họ và tên người giám hộ *</label>
+                      <input type="text" id="guardianName" name="guardianName" class="form-control"
+                             pattern="^[\p{Lu}\p{Lt}][\p{Ll}\p{Lt}áàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộớờởỡợúùủũụưứừửữựýỳỷỹỵ]*(\s[\p{Lu}\p{Lt}][\p{Ll}\p{Lt}áàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộớờởỡợúùủũụưứừửữựýỳỷỹỵ]+){1,}$"
+                             title="Vui lòng nhập họ và tên có dấu viết hoa chữ cái đầu mỗi từ và ít nhất 2 từ" required/>
+                    </div>
+                    <div class="form-group">
+                      <label for="guardianPhone" class="form-label">Số điện thoại người giám hộ *</label>
+                      <input type="text" id="guardianPhone" name="guardianPhone" th:field="*{guardianPhone}" class="form-control"
+                             pattern="[0-9]{10}" title="Vui lòng nhập số điện thoại gồm 10 chữ số" required/>
+                    </div>
+                    <div class="form-group">
+                      <label for="date" class="form-label">Ngày tiêm:</label>
+                      <input type="text" id="date" name="startTime" th:value="${vaccination.date}" readonly="readonly" class="form-control"/>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="startTime" class="form-label">Thời gian bắt đầu tiêm chủng:</label>
+                      <input type="text" id="startTime" name="startTime" th:value="${vaccination.startTime}" readonly="readonly" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="endTime" class="form-label">Thời gian kết thúc tiêm chủng:</label>
+                      <input type="text" id="endTime" name="endTime" th:value="${vaccination.endTime}" readonly="readonly" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="vaccination_times" class="form-label">Đợt tiêm:</label>
+                      <input type="text" id="vaccination_times" name="vaccination_times" th:value="${vaccination.times}" readonly="readonly" class="form-control"/>
+                    </div>
+                    <!-- Set patient_id = 1 -->
+                    <input type="hidden" name="patient_id" value="1" />
+                    <input type="submit" value="Đăng ký" class="btnRegister"/>
+                    <a href="/vaccination/list-vaccination" class="btnExit">Thoát</a>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="tab-pane fade show" id="nguoi-lon" role="tabpanel" aria-labelledby="nguoi-lon-tab" th:if="${age >= 16}">
+              <h3 class="register-heading">Đăng ký tiêm chủng</h3>
+              <form th:action="@{'/vaccination/register/' + ${vaccination.id}}" method="post" th:object="${vaccinationHistory}" class="vaccination-form">
+                <div class="row register-form">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="guardianName2" class="form-label">Họ và tên người giám hộ:</label>
+                      <input type="text" id="guardianName2" name="guardianName" th:value="${patient.guardianName}" readonly="readonly" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="guardianPhone2" class="form-label">Số điện thoại người giám hộ:</label>
+                      <input type="text" id="guardianPhone2" name="guardianPhone" th:value="${patient.guardianPhone}" readonly="readonly" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="date2" class="form-label">Ngày tiêm:</label>
+                      <input type="text" id="date2" name="date" th:value="${vaccination.date}" readonly="readonly" class="form-control"/>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="startTime2" class="form-label">Thời gian bắt đầu tiêm chủng:</label>
+                      <input type="text" id="startTime2" name="startTime" th:value="${vaccination.startTime}" readonly="readonly" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="endTime2" class="form-label">Thời gian kết thúc tiêm chủng:</label>
+                      <input type="text" id="endTime2" name="endTime" th:value="${vaccination.endTime}" readonly="readonly" class="form-control"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="vaccination_times2" class="form-label">Đợt tiêm:</label>
+                      <input type="text" id="vaccination_times2" name="vaccination_times" th:value="${vaccination.times}" readonly="readonly" class="form-control"/>
+                    </div>
+                    <!-- Set patient_id = 1 -->
+                    <input type="hidden" name="patient_id" value="1" />
+                    <input type="submit" value="Đăng ký" class="btnRegister"/>
+                    <a th:href="@{/vaccination/list-vaccination}" class="btnExit">Thoát</a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<th:block th:insert="footer"></th:block>
+<!-- End Footer -->
+
+<div id="preloader"></div>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/vendor/purecounter/purecounter_vanilla.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/vendor/glightbox/js/glightbox.min.js}"></script>
+<script th:src="@{/vendor/swiper/swiper-bundle.min.js}"></script>
+<script th:src="@{/vendor/php-email-form/validate.js}"></script>
+
+<!-- Template Main JS File -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script th:src="@{/js/vaccination-form-register.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+<div th:if="${submitSuccess}">
+  <script th:src="@{/js/vaccination-form-notification.js}"></script>
+</div>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

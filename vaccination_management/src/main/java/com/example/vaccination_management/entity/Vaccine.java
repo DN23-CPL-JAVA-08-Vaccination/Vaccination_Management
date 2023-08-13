@@ -1,8 +1,14 @@
 package com.example.vaccination_management.entity;
 
+
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "vaccine")
 public class Vaccine {
@@ -23,6 +29,7 @@ public class Vaccine {
 
     @Column(name = "delete_flag")
     private boolean deleteFlag;
+
 
     @Column(name = "create_date", columnDefinition = "Datetime")
     private String createDate;
@@ -45,6 +52,7 @@ public class Vaccine {
 
     @Column(name = "dosage")
     private Double dosage;
+
 
     @ManyToOne
     @JoinColumn(name = "vaccine_type_id")
@@ -70,6 +78,7 @@ public class Vaccine {
         this.dosage = dosage;
         this.vaccineType = vaccineType;
     }
+
 
     public int getId() {
         return id;
@@ -159,6 +168,7 @@ public class Vaccine {
         this.image = image;
     }
 
+
     public Double getDosage() {
         return dosage;
     }
@@ -175,3 +185,4 @@ public class Vaccine {
         this.vaccineType = vaccineType;
     }
 }
+

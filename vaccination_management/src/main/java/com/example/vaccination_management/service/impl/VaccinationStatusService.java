@@ -11,8 +11,9 @@ import java.util.List;
 @Service
 public class VaccinationStatusService implements IVaccinationStatusService {
 
-
+    @Autowired
     private IVaccinationStatusRepository iVaccinationStatusRepository;
+
 
     @Autowired
     public VaccinationStatusService(IVaccinationStatusRepository iVaccinationStatusRepository) {
@@ -30,4 +31,12 @@ public class VaccinationStatusService implements IVaccinationStatusService {
     }
 
 
+    /**
+     * LoanHTP
+     * Retrieves a list of all available vaccination status records.
+     */
+    @Override
+    public List<VaccinationStatus> getAllVaccinationStatus() {
+        return iVaccinationStatusRepository.findAll();
+    }
 }

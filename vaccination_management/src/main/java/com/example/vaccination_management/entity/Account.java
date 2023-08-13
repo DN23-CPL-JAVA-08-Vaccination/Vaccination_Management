@@ -1,8 +1,10 @@
 
 package com.example.vaccination_management.entity;
 
+
 import javax.persistence.*;
 import java.util.List;
+
 
 @Entity
 @Table(name = "account")
@@ -26,15 +28,17 @@ public class Account {
     private String email;
 
     @Column(name = "enable_flag")
-    private boolean enableFlag;
+    private Boolean enableFlag;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
     private List<AccountRole> accountRoles;
+
 
     public Account() {
     }
 
-    public Account(int id, String userName, String password, String verificationCode, String email, boolean enableFlag, List<AccountRole> accountRoles) {
+
+    public Account(int id, String userName, String password, String verificationCode, String email, Boolean enableFlag, List<AccountRole> accountRoles) {
         this.id = id;
         this.userName = userName;
         this.password = password;
@@ -84,11 +88,11 @@ public class Account {
         this.email = email;
     }
 
-    public boolean isEnableFlag() {
+    public Boolean getEnableFlag() {
         return enableFlag;
     }
 
-    public void setEnableFlag(boolean enableFlag) {
+    public void setEnableFlag(Boolean enableFlag) {
         this.enableFlag = enableFlag;
     }
 
@@ -99,4 +103,6 @@ public class Account {
     public void setAccountRoles(List<AccountRole> accountRoles) {
         this.accountRoles = accountRoles;
     }
+
+
 }

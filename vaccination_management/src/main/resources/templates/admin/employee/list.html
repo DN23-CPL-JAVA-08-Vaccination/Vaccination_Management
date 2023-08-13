@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Quản lí Bác sĩ</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/styles-admin-thanglv.css}" rel="stylesheet">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src=" http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+</head>
+<body class="sb-nav-fixed">
+<th:block th:insert="admin/nav"></th:block>
+<div id="layoutSidenav">
+    <th:block th:insert="admin/sidenav"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Bác sĩ</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a th:href="@{/admin}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Bác sĩ</li>
+                </ol>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <a th:href="@{/admin/employee/create}">
+                            <button type="button" class="btn btn-outline-primary">Thêm mới +</button>
+                        </a>
+                        <form th:action="@{/admin/employee}" method="get"
+                              class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0 float-end">
+                            <div class="input-group">
+                                <input th:value="${searchName}" class="form-control" type="text"
+                                       placeholder="Nhập tên nhân viên" name="searchName"
+                                       aria-label="Search for..." aria-describedby="btnNavbarSearch"/>
+                                <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i
+                                        class="fas fa-search"></i></button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-body">
+                        <table class="table align-middle mb-0 bg-white">
+                            <thead class="bg-light">
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên</th>
+                                <th>Ngày sinh</th>
+                                <th>Giới tính</th>
+                                <th>Số điện thoại</th>
+                                <th>Email</th>
+                                <th colspan="3">Thao tác</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="employee,row :${employeeListDTOS}">
+                                <td th:text="${row.count}"></td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img
+                                                th:if="${employee.getImage() == null}"
+                                                src="https://cdn-icons-png.flaticon.com/512/6386/6386976.png"
+                                                alt="Ảnh"
+                                                style="width: 45px; height: 45px"
+                                                class="rounded-circle"
+                                        />
+                                        <img
+                                                th:if="${employee.getImage() != null}"
+                                                th:src="${employee.getImage()}"
+                                                alt="Ảnh"
+                                                style="width: 45px; height: 45px"
+                                                class="rounded-circle"
+                                        />
+                                        <div class="ms-3">
+                                            <p class="fw-bold mb-1" th:text="${employee.getName()}"></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td th:text="${#dates.format(employee.getBirthday(), 'dd/MM/yyyy')}"></td>
+                                <th:block>
+                                    <td th:if="${employee.getGender()}">Nam</td>
+                                    <td th:if="${!employee.getGender()}">Nữ</td>
+                                </th:block>
+
+                                <td th:text="${employee.getPhone()}">0123456789</td>
+                                <td th:text="${employee.getEmail()}">thangle2912@gmail.com</td>
+                                <td>
+                                    <a class="btn" data-bs-toggle="modal"
+                                       data-bs-target="#modelDelete"
+                                       th:attr="onclick=|deleteEmployee('${employee.getId()}','${employee.getName()}')|">
+                                        <i class="fa-solid fa-trash"></i>
+
+                                    </a>
+                                </td>
+                                <td>
+                                    <a th:href="@{/admin/employee/update(id=${employee.getId()})}" class="btn ">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class=" btn" data-bs-toggle="modal"
+                                       data-bs-target="#modalShowInfor"
+                                       th:attr="onclick=|showEmployeeDetail('${employee.getName()}','${employee.getAddress()}','${#dates.format(employee.getBirthday(), 'dd/MM/yyyy')}','${employee.getGender()}','${employee.getIdCard()}'
+                                                                                    ,'${employee.getPhone()}','${employee.getImage()}','${employee.getPosition()}','${employee.getEmail()}','${employee.getUsername()}')|">
+                                        <i class="fa-solid fa-circle-info"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <nav aria-label="Page navigation" class="mt-3">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" th:classappend="${currentPage == 0} ? disabled : ''">
+                                    <a class="page-link"
+                                       th:href="@{/admin/employee(page=${currentPage - 1}, size=${size})}">Previous</a>
+                                </li>
+                                <li class="page-item" th:classappend="${currentPage == i} ? active : ''"
+                                    th:each="i: ${#numbers.sequence(0, totalPages - 1)}">
+                                <li class="page-item" th:classappend="${currentPage == i} ? active : ''"
+                                    th:each="i: ${totalPages > 0 ? #numbers.sequence(0, totalPages - 1) : {}}">
+                                    <a class="page-link" th:href="@{/admin/employee(page=${i}, size=${size})}"
+                                       th:text="${i + 1}"></a>
+                                </li>
+                                <li class="page-item"
+                                    th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                                    <a class="page-link"
+                                       th:text="Next" th:href="@{/admin/employee(page=${currentPage + 1}, size=${size})}"></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <th:block th:insert="admin/footer_admin"></th:block>
+    </div>
+</div>
+<!-- Modal detail information -->
+<div class="modal fade modal-lg" id="modalShowInfor" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Thông tin chi tiết</h5>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <form action="#">
+                        <div class="row align-items-end">
+                            <div class="row col-md-12">
+                                <div class="col">
+                                    <div class="d-flex">
+                                        <div class="form-group col-md-6">
+                                            <label class="info">Tên tài khoản :</label>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <span class="info-person" id="usernameDetail">thangle2912</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="form-group col-md-6">
+                                            <label class="info">Họ và tên :</label>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <span class="info-person" id="nameDetail">Lê Văn Thắng</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="form-group col-md-6">
+                                            <label class="form-label info">Giới tính : </label>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <span class="info-person" id="genderDetail">Nam</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <img id="imageDetail" th:src="@{/img/avata.jpg}" class=" mx-auto d-block avatar">
+                                </div>
+                            </div>
+                            <div class="row col-md-12">
+                                <div class="col">
+                                    <div class="d-flex">
+                                        <div class="form-group col-md-6">
+                                            <label class="info">Số điện thoại :</label>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <span class="info-person" id="phoneDetail">0915823742</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="form-group col-md-6">
+                                            <label class="info">CMND/CCCD :</label>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <span class="info-person" id="idCardDetail">000000000000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="d-flex">
+                                        <div class="form-group col-md-5">
+                                            <label class="info">Ngày sinh :</label>
+                                        </div>
+                                        <div class="form-group col-md-7">
+                                            <span class="info-person" id="birthdayDetail">29/12/2000</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="form-group col-md-5">
+                                            <label class="info">Vị trí :</label>
+                                        </div>
+                                        <div class="form-group col-md-7">
+                                            <span class="info-person" id="positionDetail">Quản lí</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-12 d-flex padding-none">
+                                <div class="form-group col-md-3">
+                                    <label class="info">Email :</label>
+                                </div>
+                                <div class="form-group col-md-9">
+                                    <span class="info-person" id="emailDetail">thangle2912@gmail.com</span>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-12 d-flex padding-none">
+                                <div class="form-group col-md-3">
+                                    <label class="info">Địa chỉ :</label>
+                                </div>
+                                <div class="form-group col-md-9">
+                                    <span class="info-person"
+                                          id="addressDetail">295 Nguyễn Tất Thành, Đà Nẵng, Việt Nam</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Delete -->
+<div class="modal fade" id="modelDelete" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+     aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xác nhận thao tác</h5>
+            </div>
+            <div class="modal-body">
+                Bạn có muốn sa thải: <span id="titleEmployeeDelete"></span> ?
+            </div>
+            <form th:action="@{/admin/employee/delete}" method="get">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Xác nhận</button>
+                </div>
+                <input hidden name="id" type="text" id="idDelete">
+                <input hidden name="action" value="delete" type="text" id="">
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/scripts.js}"></script>
+<script th:src="@{/js/datatables-simple-demo.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+
+<script th:inline="javascript">
+    function deleteEmployee(id, name) {
+        document.getElementById('titleEmployeeDelete').innerText = name;
+        document.getElementById('idDelete').value = id;
+    }
+
+    function showEmployeeDetail(name, address, birthday, gender, idCard, phone, image, position, email, username) {
+        document.getElementById("nameDetail").innerText = name;
+        document.getElementById("addressDetail").innerText = address;
+        document.getElementById("birthdayDetail").innerText = birthday;
+        let tempGender;
+        if (gender) {
+            tempGender = 'Nam';
+        } else {
+            tempGender = 'Nữ';
+        }
+        document.getElementById("genderDetail").innerText = tempGender;
+        document.getElementById("idCardDetail").innerText = idCard;
+        document.getElementById("phoneDetail").innerText = phone;
+        document.getElementById("imageDetail").src = image;
+        document.getElementById("positionDetail").innerText = position;
+        document.getElementById("emailDetail").innerText = email;
+        document.getElementById("usernameDetail").innerText = username;
+
+    }
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+    var str = [[${msg}]];
+
+    if (str != null) {
+        if (str.includes("Cập nhật")) {
+            if (str.includes("thành công")) {
+                toastr.success(str, "Thông báo");
+            } else {
+                toastr.error(str, "Thông báo");
+            }
+        }
+        if (str.includes("Thêm mới")) {
+            if (str.includes("thành công")) {
+                toastr.success(str, "Thông báo");
+            } else {
+                toastr.error(str, "Thông báo");
+            }
+        }
+        if (str.includes("Xoá")) {
+            if (str.includes("thành công")) {
+                toastr.success(str, "Thông báo");
+            } else {
+                toastr.error(str, "Thông báo");
+            }
+        }
+        if (str.includes("Đổi mật khẩu")) {
+            if (str.includes("thành công")) {
+                toastr.success(str, "Thông báo");
+            } else {
+                toastr.error("Đổi mật khẩu thất bại !", "Thông báo");
+            }
+        }
+    }
+
+</script>
+</body>
+</html>

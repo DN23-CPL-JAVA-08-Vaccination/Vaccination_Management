@@ -1,14 +1,17 @@
 package com.example.vaccination_management.service;
 
-import com.example.vaccination_management.dto.DataMailDTO;
-
-import javax.mail.MessagingException;
+import com.example.vaccination_management.dto.AccountDTO;
+import com.example.vaccination_management.dto.IAccountDetailDTO;
 
 public interface IEmailService {
-    public void sendEmail(String to, String subject, String content);
 
+    void sendEmail(String to, String subject, String content);
 
-    //Error
-    //public void sendEmailById(int userId, String subject, String content);
-//    void sendHtmlMail(DataMailDTO dataMail, String templateName) throws MessagingException;
+    Boolean SendEmail(IAccountDetailDTO detailDTO);
+
+    Boolean SendEmailDeactivate(IAccountDetailDTO detailDTO);
+
+    Boolean SendEmailForgotPassword(AccountDTO accountDTO);
+
+    String hideEmail(String email);
 }
