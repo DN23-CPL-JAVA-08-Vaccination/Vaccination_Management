@@ -25,6 +25,12 @@
     <main class="card">
         <section class="esquerda">
             <h2 class="title">Đăng nhập</h2>
+<!--            <div th:if="${param.error}" class="form-group">-->
+<!--                <span th:text="${param.exception}" class="alert alert-danger">잘못된 아이디나 암호입니다</span>-->
+<!--            </div>    -->
+            <div class="form-group">
+                <span th:text="${param.errorMessage}" class="alert alert-danger">잘못된 아이디나 암호입니다</span>
+            </div>
             <form th:action="@{/j_spring_security_check}" method="post">
                 <section class="caixa__input">
                     <label for="username">Tên đăng nhập<span class="required-filed">(*)</span></label>
@@ -122,6 +128,13 @@
         if (str.includes("Đăng nhập thất bại")) {
             toastr.error(str, "Thông báo");
         }
+    }
+    if (str != null) {
+        alert(str)
+        if (str.includes("error")) {
+            toastr.error(str, "Thông báo");
+        }
+
     }
     if (str != null) {
         alert(str)
