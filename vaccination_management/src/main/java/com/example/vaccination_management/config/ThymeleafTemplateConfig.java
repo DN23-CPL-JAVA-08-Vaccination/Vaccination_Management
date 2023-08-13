@@ -1,4 +1,4 @@
-package com.example.vaccination_management.Config;
+package com.example.vaccination_management.config;
 
 import org.springframework.context.annotation.Bean;
 import org.thymeleaf.spring5.SpringTemplateEngine;

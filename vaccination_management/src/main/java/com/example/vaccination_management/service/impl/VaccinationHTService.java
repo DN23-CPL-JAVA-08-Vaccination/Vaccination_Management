@@ -36,17 +36,18 @@ public class VaccinationHTService implements IVaccinationHTService {
         return iVaccinationHistoryRepository.save(product);
     }
 
-
+       /**
+     * VuongVV
+     * update status,start time of VaccinationHistory, admin after login
+     */
     @Override
-    public void updateStatusVaccinationHistory(Integer statusId, Integer vaccinationHR) {
+    public void updateStatusVaccinationHistory(Integer statusId,Integer vaccinationHR) {
         iVaccinationHistoryRepository.updateStatusVaccinationHistory(statusId, vaccinationHR);
     }
-
     /**
-     * ThangLV
-     * get information of employee, user after login
+     * VuongVV
+     * Pagination of VaccinationHistory, admin after login
      */
-
     @Override
     public List<VaccinationHistory> getVaccinationHTByPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);

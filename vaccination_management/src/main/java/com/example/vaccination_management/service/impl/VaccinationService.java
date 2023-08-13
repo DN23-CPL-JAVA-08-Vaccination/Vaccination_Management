@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 //import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 //import java.awt.print.Pageable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,35 +39,34 @@ public class VaccinationService implements IVaccinationService {
         this.iVaccinationTypeRepository = iVaccinationTypeRepository;
         this.iVaccineRepository = iVaccineRepository;
     }
-
-
-//    @Override
-//    public List<VaccinationType> finAll() {
-//        return null;
-//    }
-
+    /**
+     * VuongVV
+     * create vaccination information of Vaccination, admin after login
+     */
     @Override
     public void saveVaccinationService(Vaccination vaccination , Location location, VaccinationType vaccinationType, Vaccine vaccine) {
         Location savedLocation = iLocationRepository.save(location); // Lưu địa chỉ trước để nhận id của địa chỉ sau khi lưu vào cơ sở dữ liệu
         vaccination.setLocation(savedLocation); // Gán địa chỉ có id đã lưu vào đối tượng person
-       // iVaccinationRepository.save(vaccination);
-
+        vaccination.setDate(String.valueOf(LocalDate.now()));
         VaccinationType savedVaccinationType=iVaccinationTypeRepository.save(vaccinationType);
         vaccination.setVaccinationType(savedVaccinationType);
-
         Vaccine savedVaccine=iVaccineRepository.save(vaccine);
         vaccination.setVaccine(savedVaccine);
-
         iVaccinationRepository.save(vaccination);
 
     }
-
+    /**
+     * VuongVV
+     * get all list  information of Vaccination, admin after login
+     */
     @Override
     public List<Vaccination> finAll() {
         return iVaccinationRepository.findAll();
     }
-
-
+     /**
+     * VuongVV
+     * delete  information of Vaccination, admin after login
+     */
     @Override
     public boolean deleteNotificationVaccination(int id) {
         try {
@@ -77,37 +77,73 @@ public class VaccinationService implements IVaccinationService {
             return false; // Xóa thất bại
         }
     }
-
+     /**
+     * VuongVV
+     * get information by id of Vaccination, admin after login
+     */
     @Override
     public Vaccination finById(int id) {
         return iVaccinationRepository.findById(id);
     }
 
-    // sendEmail by ID
+     /**
+     * VuongVV
+     * Sen email by address location, admin after login
+     */
     @Override
     public List<String> getPatientsWithMatchingLocationName(Vaccination vaccination) {
         List<Patient> patients = iPatientRepository.findAll();
         String locationName = vaccination.getLocation().getName();
         List<String> matchingPatientNames = new ArrayList<>();
-
         for (Patient patient : patients) {
             if (patient.getAddress().toLowerCase().contains(locationName.toLowerCase())) {
                 matchingPatientNames.add(patient.getAccount().getEmail());
             }
         }
-
         return matchingPatientNames;
     }
-    //list-vaccine
+    /**
+     * VuongVV
+     * Pagination soft list, admin after login
+     */
     @Override
     public List<Vaccination> getVaccinationByPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Vaccination> vaccinePage = iVaccinationRepository.findAll(pageable);
-        return vaccinePage.getContent();
+        Page<Vaccination> vaccinePage = iVaccinationRepository.findByDeleteFlagFalse(pageable);
+            return  vaccinePage.getContent();
     }
 
     @Override
     public long getTotalVaccination() {
-        return iVaccineRepository.count();
+        return iVaccinationRepository.count();
     }
+
+    /**
+     * VuongVV
+     * delete soft for Vaccination, admin after login
+     */
+    @Override
+    public void softDeleteVaccination(int id) {
+        Vaccination vaccination = iVaccinationRepository.findById(id);
+        if (vaccination != null) {
+            vaccination.setDeleteFlag(true);
+            iVaccinationRepository.save(vaccination);
+        }
+    }
+
+     /**
+     * VuongVV
+     * softlist deleted for Vaccination, admin after login
+     */
+    @Override
+    public List<Vaccination> getDeletedVaccinations() {
+        return iVaccinationRepository.findByDeleteFlagTrue();
+    }
+//     @Override
+//     public List<Vaccination> getVaccinationByPage(int page, int size) {
+//         Pageable pageable = PageRequest.of(page, size);
+//         Page<Vaccination> vaccinePage = iVaccinationRepository.findByDeleteFlagFalse(pageable);
+//         return  vaccinePage.getContent();
+//     }
+
 }

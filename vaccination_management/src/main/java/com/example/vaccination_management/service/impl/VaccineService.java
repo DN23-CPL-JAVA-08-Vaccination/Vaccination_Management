@@ -14,7 +14,10 @@ public class VaccineService implements IVaccineService {
 
     @Autowired
     private IVaccineRepository iVaccineRP;
-
+     /**
+     * VuongLV
+     * get all information of Vaccine, admin after login
+     */
     @Override
     public List<Vaccine> findAll() {
         return iVaccineRP.findAll();

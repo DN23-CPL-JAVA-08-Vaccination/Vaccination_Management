@@ -13,10 +13,9 @@ public class VaccinationTypeService implements IVaccinationTypeService {
 
     @Autowired
     private IVaccinationTypeRepository iVaccinationTypeRepository;
-
      /**
      * VuongLV
-     * get all information of VaccinationType,  after login
+     * get all information of VaccinationType, admin after login
      */
     @Override
     public List<VaccinationType> finAll() {

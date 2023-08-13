@@ -21,8 +21,6 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class EmailService implements IEmailService {
     private final JavaMailSender mailSender;
-
-
     //test email
     @Autowired
     private IAccountRepository iAccountRepository;

@@ -66,11 +66,18 @@
                                 <td class="col-md-8" th:text="${vaccinationHistory.patient.name}"></td>
                             </tr>
 
-
+<!--                            <tr>-->
+                            <!--                                <td class="col-md-4">Giới tính</td>-->
+                            <!--                                <td class="col-md-8" th:text="${vaccinationHistory.patient.gender}"></td>-->
+                            <!--                            </tr>-->
 
                             <tr>
                                 <td class="col-md-4"> người giám hộ </td>
                                 <td class="col-md-8" th:text="${vaccinationHistory.patient.guardianName}"></td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4"> Mã bảo hiểm </td>
+                                <td class="col-md-8" th:text="${vaccinationHistory.patient.healthInsurance}"></td>
                             </tr>
                             <tr>
                                 <td class="col-md-4"> Thời gian tiêm chủng </td>
@@ -82,7 +89,12 @@
                                 <td class="col-md-8" th:text="${vaccinationHistory.vaccination.location.name}"></td>
                             </tr>
                             <tr>
-                                <td class="col-md-4"><strong>Loại vaccine </strong></td>
+                                <td class="col-md-4"> Tuổi(<span th:text="${vaccinationHistory.vaccination.vaccine.getAge()}"></span>)</td>
+                           <td> <span th:text="${T(java.time.LocalDate).now().getYear() - T(java.time.LocalDate).parse(vaccinationHistory.patient.getBirthday()).getYear()}"></span></td>
+<!--                                <td class="col-md-8" th:text="${vaccinationHistory.patient.getBirthday()}"></td>-->
+                            </tr>
+                            <tr>
+                                <td class="col-md-4"><strong>Vaccine </strong></td>
                                 <td class="col-md-8" th:text="${vaccinationHistory.vaccination.vaccine.name}"></td>
                             </tr>
 
@@ -105,17 +117,24 @@
                             <!--              </select>-->
                             </td>
 
-
-
-
                             </tbody>
 
                     </table>
-                    <select style="width: 200px;height: 35px;    margin-left: 45px;" id="vaccinationStatusList" name="vaccinationStatusList.id" th:required="required" th:field="${vaccinationHistory.vaccinationStatus.id}">
+                        <input class="hover" style="width: 100%; height: 33px; border-radius: 5px; font-size: 13px; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); border: 1px solid #ccc;"
+                               type="datetime-local" id="startTime" th:field="*{startTime}"
+                               th:min="${formattedNow}"    />
+<!--                        <span style="display: none" th:text="${vaccinationHistory.getEndTime()}"></span>-->
+                    <select class="hover" style="outline: none;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;border-radius: 10px;width: 250px;height: 35px;    margin-left: 45px;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;" id="vaccinationStatusList" name="vaccinationStatusList.id" th:required="required" th:field="${vaccinationHistory.vaccinationStatus.id}">
                         <option th:each="vaccinationStatusList : ${vaccinationStatusList}" th:value="${vaccinationStatusList.id}"
                                 th:text="${vaccinationStatusList.name}" th:selected="${vaccinationStatusList.id==vaccinationHistory.vaccinationStatus.id}" required>
                         </option>
                     </select>
+                        <style>
+                            .hover:hover{
+                                outline: none;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;border-radius: 10px;width: 250px;height: 35px
+                            }
+
+                        </style>
 
                     <button style="width: 170px;height: 40px;font-size: 16px;margin-top: -5px;border-radius: 15px" class="btn btn-primary" type="submit">Cập nhật trang thái</button>
                     </form>
@@ -139,13 +158,13 @@
                     <div class="receipt-header receipt-header-mid receipt-footer">
                         <div class="col-xs-8 col-sm-8 col-md-8 text-left">
                             <div class="receipt-right">
-                                <p><b>Date :</b> 15 Aug 2016</p>
-                                <h5 style="color: rgb(140, 140, 140);">Thank you for your business!</h5>
+<!--                                <p><b>Date :</b> 15 Aug 2016</p>-->
+                                <h5 style="color: rgb(140, 140, 140);">Lưu ý: phải thỏa mãn tất cả các điều kiện!</h5>
                             </div>
                         </div>
                         <div class="col-xs-4 col-sm-4 col-md-4">
                             <div class="receipt-left">
-                                <h1>Signature</h1>
+<!--                                <h1>Signature</h1>-->
                             </div>
                         </div>
                     </div>

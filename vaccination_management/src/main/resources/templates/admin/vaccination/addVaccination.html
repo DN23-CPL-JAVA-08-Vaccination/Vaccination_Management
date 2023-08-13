@@ -16,7 +16,7 @@
 <body>
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
   <!-- Navbar Brand-->
-  <a class="navbar-brand ps-3" href="index.html">Start Bootstrap</a>
+  <a class="navbar-brand ps-3" href="../../index.html">Start Bootstrap</a>
   <!-- Sidebar Toggle-->
   <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
   <!-- Navbar Search-->
@@ -70,7 +70,7 @@
             </nav>
           </div>
 <!--          <div class="sb-sidenav-menu-heading">Vaccination History</div>-->
-          <a class="nav-link" href="listVaccination">
+          <a class="nav-link" href="ListVaccination">
             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
             Tiêm phòng
           </a>
@@ -92,26 +92,38 @@
     <main class="history-vacination" style="margin-top: 50px;">
 
 
-      <form th:action="@{/addVaccination}" th:object="${vaccination}" method="post">
+      <form th:action="@{/admin/AddVaccination}" th:object="${vaccination}" method="post">
         <div style="margin-left: 5px;margin-right: 5px" class="row">
 
+<!--          <h1  th:if="${duration}"> [[${durationError}]] </h1>-->
+
+
+<!--&lt;!&ndash;        <h1 th:if="${duration}">[[${duration}]]</h1>&ndash;&gt;-->
           <div class="col-sm-4 ">
-            <p style="margin-left: 5px;">  Địa chỉ tiêm chủng  </p>
+            <p style="margin-left: 5px;">  Địa chỉ tiêm chủng <span style="color: red">(*)</span>  </p>
             <select style=" font-size: 13px;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;" class="form-select" th:field="*{location}" aria-label="Default select example">
-              <option th:each="location : ${locationList}" th:text="${location.name}" th:value="${location.id}"></option>
+
+              <option th:each="location : ${locationList}" th:text="${location.locationDetail}" th:value="${location.id}"></option>
             </select>
           </div>
+          <style>
+            .hover:hover{
+              outline: none;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;border-radius: 10px;width: 250px;height: 35px
+            }
 
+          </style>
           <div class="col-sm-4 ">
-            <p style="margin-left: 5px;">Loại Vaccine</p>
+            <p style="margin-left: 5px;">Yêu cầu <span style="color: red">(*)</span></p>
             <select style=" font-size: 13px;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;" class="form-select" th:field="*{vaccinationType}" aria-label="Default select example">
+
               <option th:each="vaccineType : ${vaccineTypeList}" th:text="${vaccineType.name}" th:value="${vaccineType.id}"></option>
             </select>
           </div>
 
           <div class="col-sm-4 ">
-            <p style="margin-left: 5px;"> Vaccine</p>
+            <p style="margin-left: 5px;"> Vaccine <span style="color: red">(*)</span></p>
             <select style=" font-size: 13px;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;" class="form-select" th:field="*{vaccine}" aria-label="Default select example">
+
               <option th:each="vaccine : ${vaccineList}" th:text="${vaccine.name}" th:value="${vaccine.id}"></option>
             </select>
           </div>
@@ -121,39 +133,57 @@
         <div class="row" style="margin-right: 5px;margin-left: 5px;margin-top: 40px">
 
           <div class="col-sm-4 ">
-            <label style="margin-bottom: 5px" for="startTime">Thời gian bắt đầu đăng ký</label>
-            <input style="    width: 100%;height: 33px;border-radius: 5px;font-size: 13px;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;" type="datetime-local" id="startTime" th:field="*{startTime}" onchange="validateDateTime()">
+            <label style="margin-bottom: 5px" for="startTime">Thời gian bắt đầu tiêm <span style="color: red">(*)</span></label>
+<!--            <input class="hover" style="    width: 100%;height: 33px;border-radius: 5px;font-size: 13px;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;" type="datetime-local" id="startTime" th:field="*{startTime}" onchange="validateDateTime()">-->
+            <input class="hover" style="width: 100%; height: 33px; border-radius: 5px; font-size: 13px; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); border: 1px solid #ccc;"
+                   type="datetime-local" id="startTime" th:field="*{startTime}" onchange="validateDateTime()"
+                   th:min="${formattedNow}" />
+            <span  style="color: red" th:if="${#fields.hasErrors('startTime')}" th:errors="*{startTime}"></span>
+
           </div>
           <div class="col-sm-4 ">
-            <label style="margin-bottom: 5px" for="endTime">Hạn chót đăng ký</label>
-            <input style="         width: 100%;height: 33px;border-radius: 5px;font-size: 13px;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;" type="datetime-local" id="endTime" th:field="*{endTime}">
+            <label style="margin-bottom: 5px" for="endTime">Thời gian kết thúc tiêm <span style="color: red">(*)</span></label>
+            <input class="hover" style="  width: 100%;height: 33px;border-radius: 5px;font-size: 13px;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;" type="datetime-local" id="endTime" th:field="*{endTime}">
+            <span  style="color: red" th:if="${#fields.hasErrors('endTime')}" th:errors="*{endTime}"></span>
+
           </div>
 
           <div class="col-sm-4 ">
-            <label style="margin-bottom: 5px" for="times">Thời gian tiêm</label>
-            <input style=" width: 100%;height: 33px;border-radius: 5px;font-size: 13px;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;" type="number" id="times" th:field="*{times}" step="1" min="0">
+            <label style="margin-bottom: 5px">Lần tiêm thứ <span style="color: red">(*)</span></label>
+            <input class="hover" style="width: 100%; height: 33px; border-radius: 5px; font-size: 13px; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.01); border: 1px solid #ccc;"type="number" id="timesInput" th:field="${vaccination.times}" value="0">
+            <span  style="color: red" th:if="${#fields.hasErrors('times')}" th:errors="*{times}"></span>
+
           </div>
 
         </div>
         <div class="row" style="margin-left: 5px;margin-right: 5px;margin-top: 40px" >
-            <div class="col-sm-3 ">
-              <label style="margin-bottom: 5px" for="date">Ngày tiêm</label><br>
-              <input  style=" width: 460px;height: 33px;border-radius: 5px;font-size: 13px;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;" type="date" id="date" th:field="*{date}" onchange="validateDateTime()">
-            </div>
-            <div style="    margin-left: 250px;   margin-top: 32px;" class="col-sm-3 ">
-              <input type="radio" id="enableFlagTrue" name="enableFlag" th:field="*{enableFlag}" value="true">
-              <label for="enableFlagTrue">True</label>
-              <input type="radio" id="enableFlagFalse" name="enableFlag" th:field="*{enableFlag}" value="false">
-              <label for="enableFlagFalse">False</label>
-            </div>
+<!--            <div class="col-sm-4 ">-->
+<!--              <label style="margin-bottom: 5px" for="date">Ngày tạo</label><br>-->
+<!--              <input class="hover"  style=" width: 100%;height: 33px;border-radius: 5px;font-size: 13px;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;" type="date" id="date" th:field="*{date}" onchange="validateDateTime()">-->
+<!--            </div>-->
+          <div class="col-sm-4">
+
+            <label style="margin-bottom: 5px" for="duration">Công dụng của thuốc<span style="color: red">(*)</span></label><br>
+            <input class="hover" style="width: 100%; height: 33px; border-radius: 5px; font-size: 13px; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); border: 1px solid #ccc;"
+                   type="text" id="duration" th:field="*{duration}" />
+            <span  style="color: red" th:if="${#fields.hasErrors('duration')}" th:errors="*{duration}"></span>
+
+          </div>
+          <div class="col-sm-8 ">
+            <label style="margin-bottom: 5px" for="description">Tiêu đề <span style="color: red">(*)</span></label><br>
+            <input class="hover" style="box-shadow: none; width: 100%; height: 33px; border-radius: 5px; font-size: 13px; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); border: 1px solid #ccc;"
+                   type="text" id="description" th:field="*{description}" onchange="validateDateTime()" >
+            <span  style="color: red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+
+
+          </div>
         </div>
         <div class="row">
 
           <div class="col-sm-12 " style="margin-left: 300px">
 
-            <a  href="listVaccination" style="text-decoration: none">
+            <a  href="ListVaccination" style="text-decoration: none">
               <div style="border-radius: 8px 8px 8px 0!important;margin-top: 40px;margin-bottom: 30px;width: 160px"    class="btn btn-outline-danger">Huỷ bỏ</div>
-
             </a>
 <!--          <a href="listVaccination">  <button style="border-radius: 8px 8px 8px 0!important;margin-top: 40px;margin-bottom: 30px;width: 160px"    class="btn btn-outline-danger">Huỷ bỏ</button> </a>-->
             <button style="border-radius: 8px 8px 8px 0!important;margin-top: 40px;margin-bottom: 30px;width: 160px" type="submit"  class="btn btn-primary">Xác nhận</button>
@@ -187,7 +217,39 @@
 <script th:src="@{/js/datatables-simple-demo.js}"></script>
 </body>
 </html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 <script>
+  var timesInput = document.getElementById("timesInput");
+  var defaultValue = 0;
+
+  timesInput.addEventListener("input", function() {
+    if (timesInput.value === "") {
+      timesInput.value = defaultValue;
+    }
+  });
+</script>
+<div th:if="${submitSuccess}">
+  <!-- Đoạn mã JavaScript để hiển thị thông báo đăng ký thành công -->
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+      Swal.fire({
+        icon: 'success',
+        title: 'Đăng ký thông báo thành công!',
+        text: 'Đã đăng ký thành công thông báo yêu cầu tiêm chủng',
+        confirmButtonText: 'Quay lại trang chủ',
+        confirmButtonColor: '#0d6efd', // Thay đổi màu sắc của nút xác nhận (Bootstrap 5)
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = '/admin/ListVaccination'; // Điều hướng về trang chủ khi người dùng nhấp vào nút "Quay lại trang chủ"
+        }
+      });
+    });
+  </script>
+</div>
+<script>
+
   function validateDateTime() {
     const startTimeInput = document.getElementById('startTime');
     const endTimeInput = document.getElementById('endTime');
@@ -197,7 +259,7 @@
 
     // Calculate the minimum value for endTime (startTime + 5 days)
     const minimumEndTime = new Date(startTimeValue);
-    minimumEndTime.setDate(startTimeValue.getDate() + 5);
+    minimumEndTime.setDate(startTimeValue.getDate() + 1);
 
     // Disable the endTime input when it's less than minimumEndTime
     if (endTimeValue < minimumEndTime) {
@@ -217,31 +279,31 @@
   document.getElementById('endTime').addEventListener('change', validateDateTime);
 </script>
 
-<script>
-  function validateDateTime() {
-    const startTimeInput = document.getElementById('startTime');
-    const endTimeInput = document.getElementById('endTime');
-    const dateInput = document.getElementById('date');
+<!--<script>-->
+<!--  function validateDateTime() {-->
+<!--    const startTimeInput = document.getElementById('startTime');-->
+<!--    const endTimeInput = document.getElementById('endTime');-->
+<!--    const dateInput = document.getElementById('date');-->
 
-    const startTimeValue = new Date(startTimeInput.value);
-    const endTimeValue = new Date(endTimeInput.value);
-    const dateValue = new Date(dateInput.value);
+<!--    const startTimeValue = new Date(startTimeInput.value);-->
+<!--    const endTimeValue = new Date(endTimeInput.value);-->
+<!--    const dateValue = new Date(dateInput.value);-->
 
-    // Disable the date input if it's outside the range of startTime and endTime
-    if (dateValue < startTimeValue || dateValue > endTimeValue) {
-      dateInput.value = ''; // Reset the value
-      dateInput.setAttribute('disabled', 'disabled');
-    } else {
-      dateInput.removeAttribute('disabled');
-      dateInput.setCustomValidity('');
-    }
+<!--    // Disable the date input if it's outside the range of startTime and endTime-->
+<!--    if (dateValue < startTimeValue || dateValue > endTimeValue) {-->
+<!--      dateInput.value = ''; // Reset the value-->
+<!--      dateInput.setAttribute('disabled', 'disabled');-->
+<!--    } else {-->
+<!--      dateInput.removeAttribute('disabled');-->
+<!--      dateInput.setCustomValidity('');-->
+<!--    }-->
 
-    // Set the min and max attributes of the date input based on startTime and endTime
-    dateInput.setAttribute('min', startTimeInput.value.slice(0, 10));
-    dateInput.setAttribute('max', endTimeInput.value.slice(0, 10));
-  }
+<!--    // Set the min and max attributes of the date input based on startTime and endTime-->
+<!--    dateInput.setAttribute('min', startTimeInput.value.slice(0, 10));-->
+<!--    dateInput.setAttribute('max', endTimeInput.value.slice(0, 10));-->
+<!--  }-->
 
-  // Add event listeners to the startTime and endTime inputs
-  document.getElementById('startTime').addEventListener('change', validateDateTime);
-  document.getElementById('endTime').addEventListener('change', validateDateTime);
-</script>
+<!--  // Add event listeners to the startTime and endTime inputs-->
+<!--  document.getElementById('startTime').addEventListener('change', validateDateTime);-->
+<!--  document.getElementById('endTime').addEventListener('change', validateDateTime);-->
+<!--</script>-->
