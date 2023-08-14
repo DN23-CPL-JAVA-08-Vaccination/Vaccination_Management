@@ -31,9 +31,7 @@ public class ForgotPasswordValidator implements Validator {
         if (accountDTO.getUsername() == null || accountDTO.getUsername().isEmpty()) {
             errors.rejectValue("username", "Required", "Mã đăng nhập không được để trống!!!");
         } else {
-            if (!accountDTO.getUsername().matches("^[A-Z]{2}[0-5][0-9]{2}[0-9]{10}$")) {
-                errors.rejectValue("username", "UserNameFormat", "Mã đăng nhập không đúng !!!");
-            } else if (iAccountService.finByUserName(accountDTO.getUsername()) < 1) {
+          if (iAccountService.finByUserName(accountDTO.getUsername()) < 1) {
                 errors.rejectValue("username", "UserNameExits", "Mã đăng nhập không tồn tại!!!");
 
             }

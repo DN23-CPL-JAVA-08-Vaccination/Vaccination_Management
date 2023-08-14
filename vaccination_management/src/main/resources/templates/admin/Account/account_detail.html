@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
-    <title>Title</title>
+    <title>Thông tin chi tiết tài khoản</title>
 
   <script th:src="@{//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js}"></script>
   <script th:src="@{//code.jquery.com/jquery-1.11.1.min.js}"></script>
@@ -42,10 +42,8 @@
                   <tr>
                     <td class="text-right">Số BHYT: </td>
                     <td class="text-right" th:text="${account.patientHealthInsurance}"> </td>
-                  </tr> <tr>
-                    <td class="text-right">Mật khẩu : </td>
-                    <td class="text-right" th:text="${account.password}"> </td>
-                  </tr> <tr>
+                  </tr>
+                  <tr>
                     <td class="text-right">Email : </td>
                     <td class="text-right" th:text="${account.email}"></td>
                   </tr>

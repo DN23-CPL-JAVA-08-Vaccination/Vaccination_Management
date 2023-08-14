@@ -6,12 +6,14 @@ public interface IAccountDTO {
 
     String getEmail();
 
-    Boolean getEnableFlag();
+    Boolean getAccountEnableFlag();
 
     String getPassword();
 
     String getUsername();
 
     String getVerificationCode();
+
+    Integer getRoleId();
 
 }

@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tables - SB Admin</title>
+        <title>Qua lý tài khoản</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link th:href="@{/admin/css/styles.css}" rel="stylesheet" />
@@ -41,11 +41,16 @@
                             </div>
                             <div class="container">
                                 <div class="row justify-content-end search">
+                                    <div class="col">
+                                        <a th:href="@{/admin/account/view_account}" type="button" class="btn btn-outline-primary"  th:class="(${actionFlag} == 'view_account') ? 'btn btn-primary' : 'btn btn-outline-primary'"><i class="fa-solid fa-hospital-user"></i></a>
+                                        <a th:href="@{/admin/account/view_account_doctor}" type="button" th:class="(${actionFlag} == 'view_account_doctor') ? 'btn btn-info' : 'btn btn-outline-info'"><i class="fa-solid fa-user-doctor"></i></a>
+                                        <a th:href="@{/admin/account/view_account_admin}" type="button" class="btn btn-outline-warning " th:class="(${actionFlag} == 'view_account_admin') ? 'btn btn-warning' : 'btn btn-outline-warning'" ><i class="fa-solid fa-user-secret"></i></a>
+                                    </div>
                                     <form th:action="@{/admin/account/view_account}"   th:value="${searchName}" class="col-4">
                                         <div class="input-group rounded">
-                                            <input type="search" name="username" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-                                            <span class="input-group-text border-0" id="search-addon">
-                                                <button type="submit"><i class="fas fa-search"></i></button>
+                                            <input type="search" name="searchName" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                                            <span >
+                                                <button type="submit" class="btn btn-secondary"><i class="fas fa-search"></i></button>
                                               </span>
                                         </div>
                                     </form>
@@ -58,7 +63,6 @@
                                         <tr>
                                             <th>STT</th>
                                             <th>Tên đăng nhập</th>
-                                            <th>Mật khẩu</th>
                                             <th>Email</th>
                                             <th>Trạng thái</th>
                                             <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
@@ -68,7 +72,6 @@
                                         <tr>
                                             <th>STT</th>
                                             <th>Tên đăng nhập</th>
-                                            <th>Mật khẩu</th>
                                             <th>Email</th>
                                             <th>Trạng thái</th>
                                             <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
@@ -77,17 +80,16 @@
                                     <tbody>
                                         <tr th:each="account, row :${accountList}">
                                             <td th:text="${row.count}"></td>
-                                            <td th:text="${account.userName}"></td>
-                                            <td th:text="${account.password}"></td>
+                                            <td th:text="${account.username}"></td>
                                             <td th:text="${account.email}"></td>
-                                            <td th:if="${account.enableFlag}"> <i class="far fa-circle-check" style="color: green;"></i> Kích hoạt </td>
-                                            <td th:if="${!account.enableFlag}"><i class="far fa-exclamation-circle" style="color: red;"></i> Chưa kích hoạt</td>
+                                            <td th:if="${account.accountEnableFlag} == true"> <i class="far fa-circle-check" style="color: green;"></i> Kích hoạt </td>
+                                            <td th:if="${account.accountEnableFlag} == false"><i class="far fa-exclamation-circle" style="color: red;"></i> Chưa kích hoạt</td>
                                             <td>
                                                 <span class="action-buttons">
                                                     <div>
                                                     <a th:href="@{'/admin/account/detail/'+ ${account.id}}" type="button" style="color: black;"><i class="far fa-eye"></i></a></div>
-                                                    <a type="button" th:if="${account.enableFlag}"  style="color: green;"  th:data-toggle="modal" th:data-target="'#unEnableFlagModal-' + ${account.id}" th:data-id="${account.id}"><i class="fas fa-envelope-open-text"></i></a>
-                                                    <a type="button" th:if="${!account.enableFlag}"  style="color: rgba(47,49,47,0.96); " th:data-toggle="modal" th:data-target="'#enableFlagModal-' + ${account.id}" th:data-id="${account.id}"><i class="fas fa-envelope-open-text"></i></a>
+                                                    <a type="button" th:if="${account.accountEnableFlag == true } "  style="color: green;"  th:data-toggle="modal" th:data-target="'#unEnableFlagModal-' + ${account.id}" th:data-id="${account.id}"><i class="fas fa-envelope-open-text"></i></a>
+                                                    <a type="button" th:if="${account.accountEnableFlag == false}"  style="color: rgba(47,49,47,0.96); " th:data-toggle="modal" th:data-target="'#enableFlagModal-' + ${account.id}" th:data-id="${account.id}"><i class="fas fa-envelope-open-text"></i></a>
                                                 </span>
                                             </td>
 
@@ -106,7 +108,7 @@
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
-                                                            <a th:href="@{'/admin/account/send_email/'+ ${account.id}}"><button type="button" class="btn btn-outline-success">Xác nhận</button></a>
+                                                            <a th:href="@{'/admin/account/send_email/'+ ${account.getId()}}"><button type="button" class="btn btn-outline-success">Xác nhận</button></a>
                                                         </div>
                                                     </div>
                                                 </div>

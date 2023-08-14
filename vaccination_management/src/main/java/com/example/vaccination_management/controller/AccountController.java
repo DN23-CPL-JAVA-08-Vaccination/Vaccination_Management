@@ -1,15 +1,9 @@
 package com.example.vaccination_management.controller;
 
-import com.example.vaccination_management.dto.AccountDTO;
-import com.example.vaccination_management.dto.IAccountDTO;
-import com.example.vaccination_management.dto.IAccountDetailDTO;
-import com.example.vaccination_management.dto.PatientDTO;
+import com.example.vaccination_management.dto.*;
 import com.example.vaccination_management.entity.Account;
 import com.example.vaccination_management.entity.Location;
-import com.example.vaccination_management.service.IAccountService;
-import com.example.vaccination_management.service.IEmailService;
-import com.example.vaccination_management.service.ILocationService;
-import com.example.vaccination_management.service.IPatientService;
+import com.example.vaccination_management.service.*;
 import com.example.vaccination_management.validation.CheckPasswordForgot;
 import com.example.vaccination_management.validation.ForgotPasswordValidator;
 import com.example.vaccination_management.validation.RequiresAccountValidator;
@@ -42,6 +36,9 @@ public class AccountController {
 
     @Autowired
     IPatientService iPatient;
+
+    @Autowired
+    IAccountRoleService iAccountRole;
 
     @Autowired
     IEmailService iEmail;
@@ -78,11 +75,12 @@ public class AccountController {
             model.addAttribute("listLocation", listLocation);
             return "user/requires_account";
         }
+
             String password = generatePassword(8);
-            patientDTO.setPassword(passwordEncoder.encode(password));
+            patientDTO.setPassword(password);
             patientDTO.setEnableFlag(false);
             iAccount.insertAccount(patientDTO.getHealthInsurance(), patientDTO.getPassword(), patientDTO.getEmail(), patientDTO.getEnableFlag());
-
+            iAccountRole.insertAccountRole(iAccount.findLatestAccountId(),3);
             model.addAttribute("patientDTO", patientDTO);
             return "forward:/patient/insert_patient";
         }
@@ -94,20 +92,76 @@ public class AccountController {
      */
     @GetMapping("/admin/account/view_account")
     public String view(Model model, HttpServletRequest request,
-                       @RequestParam(required = false, defaultValue = "") String username ,
+                       @RequestParam(required = false, defaultValue = "") String searchName ,
                        @RequestParam(value = "page", defaultValue = "0") int page,
                        @RequestParam(value = "size", defaultValue = "4") int size){
         String msg = request.getParameter("msg");
-        Pageable pageable=PageRequest.of(page, size, Sort.by("username").descending());
-        List<Account> list=iAccount.getAccountByPage('%'+username+'%', pageable);
-        long totalAccount=iAccount.getTotalAccount('%'+username+'%');
-        int totalPage= (int) Math.ceil((double) totalAccount/size);
 
+        Pageable pageable = PageRequest.of(page, size, Sort.by("username").descending());
+
+        List<IAccountDTO> list = iAccount.getAllAccountByPage(3, '%' + searchName + '%', pageable);
+        long totalAccount = iAccount.getTotalAllAccount(3, '%' + searchName + '%');
+        int totalPage = (int) Math.ceil((double) totalAccount / size);
+        String actionFlag ="view_account";
 
         model.addAttribute("totalPages", totalPage);
         model.addAttribute("currentPage", page);
-        model.addAttribute("searchName", username);
+        model.addAttribute("searchName", searchName);
         model.addAttribute("accountList", list);
+        model.addAttribute("actionFlag", actionFlag);
+        model.addAttribute("msg", msg);
+        return "admin/Account/account";
+    }
+
+    @GetMapping("/admin/account/view_account_doctor")
+    public String viewAccountDoctor(Model model, HttpServletRequest request,
+                       @RequestParam(required = false, defaultValue = "") String searchName ,
+                       @RequestParam(value = "page", defaultValue = "0") int page,
+                       @RequestParam(value = "size", defaultValue = "4") int size){
+        String msg = request.getParameter("msg");
+//        Pageable pageable=PageRequest.of(page, size, Sort.by("account.username").descending());
+//        List<Account> list=iAccount.getAccountByPage('%'+username+'%', pageable);
+//        long totalAccount=iAccount.getTotalAccount('%'+username+'%');
+//        int totalPage= (int) Math.ceil((double) totalAccount/size);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("username").descending());
+
+        List<IAccountDTO> list = iAccount.getAllAccountByPage(2, '%' + searchName + '%', pageable);
+        long totalAccount = iAccount.getTotalAllAccount(2, '%' + searchName + '%');
+        int totalPage = (int) Math.ceil((double) totalAccount / size);
+        String actionFlag ="view_account_doctor";
+
+        model.addAttribute("totalPages", totalPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("searchName", searchName);
+        model.addAttribute("accountList", list);
+        model.addAttribute("actionFlag", actionFlag);
+        model.addAttribute("msg", msg);
+        return "admin/Account/account";
+    }
+    @GetMapping("/admin/account/view_account_admin")
+    public String viewAccountAdmin(Model model, HttpServletRequest request,
+                                    @RequestParam(required = false, defaultValue = "") String searchName ,
+                                    @RequestParam(value = "page", defaultValue = "0") int page,
+                                    @RequestParam(value = "size", defaultValue = "4") int size){
+        String msg = request.getParameter("msg");
+//        Pageable pageable=PageRequest.of(page, size, Sort.by("account.username").descending());
+//        List<Account> list=iAccount.getAccountByPage('%'+username+'%', pageable);
+//        long totalAccount=iAccount.getTotalAccount('%'+username+'%');
+//        int totalPage= (int) Math.ceil((double) totalAccount/size);
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("username").descending());
+
+        List<IAccountDTO> list = iAccount.getAllAccountByPage(1, '%' + searchName + '%', pageable);
+        long totalAccount = iAccount.getTotalAllAccount(1, '%' + searchName + '%');
+        int totalPage = (int) Math.ceil((double) totalAccount / size);
+        String actionFlag ="view_account_admin";
+
+        model.addAttribute("totalPages", totalPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("searchName", searchName);
+        model.addAttribute("accountList", list);
+        model.addAttribute("actionFlag", actionFlag);
         model.addAttribute("msg", msg);
         return "admin/Account/account";
     }
@@ -175,6 +229,7 @@ public class AccountController {
                     Boolean isEmail = iEmail.SendEmail(detailDTO);
                     if (isEmail) {
                         iAccount.updateEnableFlagById(true, id);
+                        iAccount.updatePasswordById(passwordEncoder.encode(detailDTO.getPassword()), id);
                         model.addAttribute("msg", "Gửi email kích hoạt tài khoản thành công");
                     } else {
                         model.addAttribute("msg", "Gửi email kích hoạt tài khoản thất bại");
@@ -210,9 +265,9 @@ public class AccountController {
 
             return new ModelAndView("user/ForgotPassword/check_username");
         }
-        IAccountDTO iAccountDTO=iAccount.findAllByUsername(accountDTO.getUsername());
-        accountDTO.setEmail(iAccountDTO.getEmail());
-        String hiddenEmail=iEmail.hideEmail(iAccountDTO.getEmail());
+        Account account=iAccount.findAllByUsername(accountDTO.getUsername());
+        accountDTO.setEmail(account.getEmail());
+        String hiddenEmail=iEmail.hideEmail(account.getEmail());
         modelAndView.addObject("hiddenEmail",hiddenEmail);
         modelAndView.addObject("accountDTO",accountDTO);
       return modelAndView;
@@ -226,8 +281,9 @@ public class AccountController {
     @PostMapping("/account/send_email_forgot_password")
     public ModelAndView sendEmailForgotPassword( @ModelAttribute("accountDTO") AccountDTO accountDTO,
                                                  Model model){
-        IAccountDTO iAccountDTO=iAccount.findAllByUsername(accountDTO.getUsername());
-        accountDTO.setUsername(iAccountDTO.getUsername());
+        Account account= iAccount.findAllByUsername(accountDTO.getUsername());
+//        IAccountDTO iAccountDTO=iAccount.findAllByUsername(accountDTO.getUsername());
+        accountDTO.setUsername(account.getUserName());
         String verification_code = generatePassword(24);
         accountDTO.setVerificationCode(verification_code);
         iAccount.updateVerificationCodeByUserName(verification_code,accountDTO.getUsername());
@@ -277,11 +333,7 @@ public class AccountController {
         return modelAndView;
     }
 
-    @GetMapping("/view_form_edit_information")
-    public ModelAndView viewFormEditInformation(Model model){
 
-        return new ModelAndView("/user/edit_information");
-    }
 
     /**
      * TLINH

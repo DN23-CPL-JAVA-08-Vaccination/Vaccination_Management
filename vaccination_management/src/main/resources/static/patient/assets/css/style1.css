@@ -117,11 +117,15 @@
 }
 .btnSubmit
 {
+  margin-left: 200px;
   border:none;
-  border-radius:1.5rem;
+  border-radius:2rem;
   padding: 1%;
   width: 20%;
   cursor: pointer;
-  background: #0062cc;
+
   color: #fff;
+}
+.required1{
+  color: red;
 }

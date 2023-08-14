@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
-    <title>Title</title>
+    <title>Chỉnh sửa thông tin bệnh nhân</title>
 
   <script th:src="@{//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js}"></script>
   <script th:src="@{//code.jquery.com/jquery-1.11.1.min.js}"></script>
@@ -18,7 +18,6 @@
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
-<<<<<<< HEAD:vaccination_management/src/main/resources/templates/admin/Patient/patient_edit.html
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
   <!-- Navbar Brand-->
   <a class="navbar-brand ps-3" th:href="@{../index.html}">Start Bootstrap</a>
@@ -44,9 +43,7 @@
     </li>
   </ul>
 </nav>
-=======
 <th:block th:insert="admin/nav"></th:block>
->>>>>>> fix_bug_thanglv_huylvn:vaccination_management/src/main/resources/templates/Admin/Patient/patient_edit.html
 <div id="layoutSidenav">
   <th:block th:insert="admin/sidenav"></th:block>
   <div id="layoutSidenav_content">
@@ -63,7 +60,7 @@
                       <h2 class="mb-0">Thông tin bệnh nhân</h2>
                     </div>
                     <div class="col-2">
-                      <a th:href="@{/admin/patient/view_patient}" class="btn-close float-end"></a>
+                      <a th:href="@{/admin/patient/view_patient}" th:data-toggle="modal" th:data-target="'#cancelModal'" class="btn-close float-end"></a>
                     </div>
                   </div>
                 </div>
@@ -80,6 +77,7 @@
                     <form>
 
                     <tr>
+                      <input th:field="*{id}"  id="id" class="form-input" type="hidden"  >
                       <td>Họ và tên : </td>
                       <td><input th:field="*{name}"  id="name" class="form-input" type="text"  > </br>
                         <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
@@ -98,17 +96,10 @@
                       <td>Giới tính : </td>
                       <td>
                         <span>
-<<<<<<< HEAD:vaccination_management/src/main/resources/templates/admin/Patient/patient_edit.html
-                           <span style="margin-right: 10px;"></span>
-                            <input class="form-check-input" type="radio" value="true" name="gender" id="Male"
-                                   th:checked="${patient.gender == true}" th:text="Nam">
-                                  <span style="margin-right: 30px;"></span>
-=======
                              <span style="margin-right: 10px;"></span>
                             <input class="form-check-input" type="radio" value="true" name="gender" id="Male"
                                    th:checked="${patient.gender == true}" th:text="Nam">
                                   <span style="margin-right: 20px;"></span>
->>>>>>> fix_bug_thanglv_huylvn:vaccination_management/src/main/resources/templates/Admin/Patient/patient_edit.html
                                   <input class="form-check-input" type="radio" value="false" name="gender" id="Female"
                                      th:checked="${patient.gender == false}" th:text="Nữ">
                           </br>
@@ -133,6 +124,17 @@
                       </td>
 
                     </tr>
+                      <tr>
+                        <td>Quận : </td>
+                        <td>
+                          <select  id="typeId" name="typeId" th:field="${patient.location}">
+                            <option th:each="item:${listLocation}" th:value="${item.name}" th:text="${item.name}" th:selected="${patient.location == item.name}" >  </option>
+                          </select>
+                          </br>
+                          <p  style="color: red" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></p>
+                        </td>
+
+                      </tr>
                       <tr>
                         <td>Email : </td>
                         <td><input th:field="*{email}"  id="email" class="form-input" type="text"  >
