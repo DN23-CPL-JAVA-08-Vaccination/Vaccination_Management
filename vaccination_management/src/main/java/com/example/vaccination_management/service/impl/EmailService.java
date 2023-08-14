@@ -1,17 +1,16 @@
 package com.example.vaccination_management.service.impl;
 
-import com.example.vaccination_management.dto.DataMailDTO;
-import com.example.vaccination_management.entity.Account;
+import com.example.vaccination_management.entity.Patient;
+import com.example.vaccination_management.entity.Vaccination;
 import com.example.vaccination_management.repository.IAccountRepository;
+import com.example.vaccination_management.repository.IPatientRepository;
 import com.example.vaccination_management.service.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.springframework.ui.Model;
 import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
@@ -20,18 +19,11 @@ import javax.mail.internet.MimeMessage;
 import com.example.vaccination_management.dto.AccountDTO;
 import com.example.vaccination_management.dto.EmailDTO;
 import com.example.vaccination_management.dto.IAccountDetailDTO;
-import com.example.vaccination_management.service.IEmailService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.util.StringUtils;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -48,26 +40,15 @@ public class EmailService implements IEmailService {
     private IAccountRepository iAccountRepository;
 
     @Autowired
-    public EmailService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
+    private IPatientRepository iPatientRepository;
 
 
-    @Override
-    public void sendEmail(String to, String subject, String content) {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
+//    @Autowired
+//    public EmailService(JavaMailSender mailSender) {
+//        this.mailSender = mailSender;
+//    }
 
-        try {
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(content, true); // Enable HTML content if needed
 
-            mailSender.send(message);
-        } catch (MessagingException | MailException e) {
-            e.printStackTrace(); // Handle or log the exception accordingly
-        }
-    }
 
 
     /**
@@ -84,9 +65,53 @@ public class EmailService implements IEmailService {
         helper.setSubject(emailDTO.getSubject());
         helper.setText(html, true);
         mailSender.send(message);
-
-
     }
+
+
+    public List<String> getPatientsWithMatchingLocationName(Vaccination vaccination) {
+        List<Patient> patients = iPatientRepository.findAll();
+        String locationName = vaccination.getLocation().getName();
+        List<String> matchingPatientNames = new ArrayList<>();
+        for (Patient patient : patients) {
+            if (patient.getAddress().toLowerCase().contains(locationName.toLowerCase())) {
+                matchingPatientNames.add(patient.getAccount().getEmail());
+            }
+        }
+        return matchingPatientNames;
+    }
+    @Override
+  public Boolean SendEmailTBByLocation(Vaccination vaccination){
+      try {
+          EmailDTO emailDTO =new EmailDTO();
+          if (vaccination != null) {
+          if (!getPatientsWithMatchingLocationName(vaccination).isEmpty()) {
+              for (String account : getPatientsWithMatchingLocationName(vaccination)) {
+                  emailDTO.setTo(account);
+              }
+          }
+      }
+            emailDTO.setSubject(vaccination.getDescription());
+            Map<String, Object> props = new HashMap<>();
+            props.put("description", vaccination.getDescription());
+
+          props.put("vaccinationType", vaccination.getVaccinationType().getName());
+          props.put("vaccineName", vaccination.getVaccine().getName());
+          props.put("times", vaccination.getTimes());
+          props.put("age", vaccination.getVaccine().getAge());
+
+          props.put("startTime", vaccination.getStartTime());
+          props.put("endTime", vaccination.getEndTime());
+          props.put("duration", vaccination.getDuration());
+          props.put("locationDetail", vaccination.getLocation().getLocationDetail());
+          props.put("registrationLink", "dangkitiemchung/" + vaccination.getId());
+            emailDTO.setProps(props);
+            sendHtmlMail(emailDTO, "/admin/vaccination/notification_email");
+      return true;
+      } catch (MessagingException exp) {
+            exp.printStackTrace();
+        }
+            return false;
+  }
 
     /**
      * TLINH

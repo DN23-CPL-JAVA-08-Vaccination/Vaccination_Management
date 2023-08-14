@@ -41,7 +41,8 @@ public interface IVaccinationService {
      * VuongVV
      * Send email by address location, admin after login
      */
-    public List<String> getPatientsWithMatchingLocationName(Vaccination vaccination);
+//    public List<String> getPatientsWithMatchingLocationName(Vaccination vaccination);
+
 
     /**
      * VuongVV

@@ -5,6 +5,7 @@ import com.example.vaccination_management.service.*;
 import com.example.vaccination_management.validation.VaccinationEventValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -73,8 +75,6 @@ public class VaccinationController {
     @Autowired
     private IEmailService iEmailService;
 
-    @Autowired
-    private SpringTemplateEngine templateEngine;
 
     @Autowired
     private VaccinationEventValidator vaccinationEventValidator;
@@ -90,6 +90,8 @@ public class VaccinationController {
 
     @Autowired
     private IVaccineTypeService vaccineTypeService;
+
+    @Autowired IEmailService iEmail;
 
     /**
      * VuongVV
@@ -224,52 +226,26 @@ public class VaccinationController {
      * send Email vaccination notification by location of Vaccination , admin after login
      */
     @GetMapping("/admin/endMailAddress/{id}")
-    public String sendEmailAdress(@PathVariable("id") int id, RedirectAttributes model) {
-        Vaccination vaccination = iVaccinationService.finById(id);
-        if (vaccination != null) {
-            List<String> matchingPatientNames = iVaccinationService.getPatientsWithMatchingLocationName(vaccination);
-            if (!matchingPatientNames.isEmpty()) {
-                String subject = vaccination.getDescription();
-                // String content = "Kính gửi! <br>Thông báo tiêm chủng "+vaccination.getVaccine().getName()+" lần thứ "+vaccination.getTimes()+" độ tuổi "+vaccination.getVaccine().getAge()+" bắt đầu đăng ký từ "+vaccination.getStartTime()+" và kết thúc vào "+vaccination.getEndTime()+" và thời gian tiêm vào khoản "+vaccination.getDuration()+" tại "+vaccination.getLocation().getLocationDetail()+" đăng kí vào lòng truy cập vào đường link <a href='dangkitiemchung/"+vaccination.getId()+"'>Đăng ký tiêm chủng</a> <br> trân trọng cảm ơn.";
-                String content = buildEmailContent(vaccination);
-                for (String account : matchingPatientNames) {
-                    iEmailService.sendEmail(account, subject, content);
-                }
-                model.addFlashAttribute("messageEm", vaccination.getLocation().getName());
-
-                model.addFlashAttribute("submitSuccess", true);
-
-//                model.addFlashAttribute("messageEmail", " <span style='background-color: #18d26e'> Email được gửi thành công đến tất cả các tài khoản thuộc "+ vaccination.getLocation().getName()+"! </span>");
-            } else {
-
-                model.addFlashAttribute("messageEmail", "Không tìm thấy tài khoản!");
-            }
-            return "redirect:/admin/ListVaccination";
-            //   model.addAttribute("matchingPatientNames",matchingPatientNames);
+    public String sendEmailAdress(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes){
+        Vaccination vaccination=iVaccinationService.finById(id);
+        Boolean isEmail = iEmail.SendEmailTBByLocation(vaccination);
+        if(isEmail){
+            redirectAttributes.addFlashAttribute("submitSuccess", true);
+            redirectAttributes.addFlashAttribute("messageEm","Email đã gửi thành công khu vực "+vaccination.getLocation().getName());
+        }else{
+            redirectAttributes.addFlashAttribute("messageEm","Gửi thất bại không tìm thấy email");
         }
-        return "admin/vaccination/error_email";
+
+
+
+        return "redirect:/admin/ListVaccination";
     }
-
-    private String buildEmailContent(Vaccination vaccination) {
-        Context context = new Context();
-        context.setVariable("description", vaccination.getDescription());
-        context.setVariable("vaccinationType", vaccination.getVaccinationType().getName());
-        context.setVariable("vaccineName", vaccination.getVaccine().getName());
-        context.setVariable("times", vaccination.getTimes());
-        context.setVariable("age", vaccination.getVaccine().getAge());
-
-        context.setVariable("startTime", vaccination.getStartTime());
-        context.setVariable("endTime", vaccination.getEndTime());
-        context.setVariable("duration", vaccination.getDuration());
-        context.setVariable("locationDetail", vaccination.getLocation().getLocationDetail());
-        context.setVariable("registrationLink", "dangkitiemchung/" + vaccination.getId());
-
-        return templateEngine.process("admin/vaccination/notification_email", context);
-    }
-
     @GetMapping("/admin/softDeleteVaccination/{id}")
-    public String softDeleteVaccination(@PathVariable int id) {
+    public String softDeleteVaccination(@PathVariable int id,RedirectAttributes redirectAttributes) {
         iVaccinationService.softDeleteVaccination(id);
+        redirectAttributes.addFlashAttribute("submitSuccess", true);
+        redirectAttributes.addFlashAttribute("messageEm","Bỏ vào thùng rác thành công ?");
+
         return "redirect:/admin/ListVaccination"; // Thay đổi đường dẫn tương ứng
     }
 

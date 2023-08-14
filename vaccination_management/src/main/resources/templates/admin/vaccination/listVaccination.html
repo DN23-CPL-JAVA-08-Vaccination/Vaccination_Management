@@ -137,29 +137,66 @@
                   <td th:text="${vaccination.date}"></td>
 <!--                  <td th:text="${vaccination.endTime}"></td>-->
                 <td>
-<!--                    <a style="text-decoration: none" th:href="@{/endMailAddress/{id}(id=${vaccination.id})}">     <i class="fa-solid fa-envelopes-bulk"></i> </a>-->
-                    <a style="text-decoration: none" th:href="@{/admin/endMailAddress/{id}(id=${vaccination.id})}" onclick="return confirmAndSendEmail()">
-                        <i class="fa-solid fa-envelopes-bulk"></i>
-                    </a>
+<!--                    <a style="text-decoration: none" th:href="@{/admin/endMailAddress/{id}(id=${vaccination.id})}" onclick="return confirmAndSendEmail()">-->
+<!--                        <i class="fa-solid fa-envelopes-bulk"></i>-->
+<!--                    </a>-->
+                    <button type="button" class="btn btn-outline-primary" th:data-toggle="modal" th:data-target="'#emailModal-' + ${vaccination.id}" th:data-id="${vaccination.id}" style="margin-bottom: 3px">
+                        <i class="fa-solid fa-envelopes-bulk"  aria-hidden="true"></i>
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade custom-modal" th:id="'emailModal-' + ${vaccination.id}" tabindex="-1" role="dialog" aria-labelledby="addModalLabel">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color: #0D6EFD">
+                                    <h5 class="modal-title" id="addModalLabel">Xác nhận gửi Mail</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Mời bạn xác nhận gửi email?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
+                                    <a th:href="@{/admin/endMailAddress/{id}(id=${vaccination.id})}"><button type="button" class="btn btn-outline-primary">Xác nhận</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <script>
-                        function confirmAndSendEmail() {
-                            if (confirm('Bạn có muốn gửi email hay không?')) {
-                                return true; // Thực hiện chuyển hướng
-                            } else {
-                                return false; // Không thực hiện chuyển hướng
-                            }
-                        }
-                    </script>
 
 
 <!--                  <a                th:href="@{/admin/deleteNotification/{id}(id=${vaccination.id})}"-->
 <!--                  ><i class="fa-solid fa-trash"></i></a>-->
-                  <i class="fa-light fa-pen-to-square"></i>
 
-                    <a th:href="@{/admin/softDeleteVaccination/{id}(id=${vaccination.id})}" >
-                        <i class="fa-solid fa-trash-can-arrow-up"></i>
-                    </a>
+                    <button type="button" class="btn btn-outline-danger" th:data-toggle="modal" th:data-target="'#deleteModal-' + ${vaccination.id}" th:data-id="${vaccination.id}">
+                        <i class="fa-solid fa-trash-can-arrow-up" aria-hidden="true"></i>
+
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade custom-modal" th:id="'deleteModal-' + ${vaccination.id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color:#dc3545">
+                                    <h5 class="modal-title" id="deleteModalLabel">xoá sự kiện</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Xác nhận xoá sự kiện ?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
+                                    <a th:href="@{/admin/softDeleteVaccination/{id}(id=${vaccination.id})}"><button type="button" class="btn btn-outline-danger">Xác nhận</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+<!--                    <a th:href="@{/admin/softDeleteVaccination/{id}(id=${vaccination.id})}" >-->
+<!--                        <i class="fa-solid fa-trash-can-arrow-up"></i>-->
+<!--                    </a>-->
                 </td>
 
 
@@ -169,15 +206,11 @@
 
             </table>
 
-              <div class="row">
-
-                  <div class="col-sm-12 " style="margin-left: 60%">
-
+              <div style="margin-left: 60%;">
                       <a  th:href="@{/admin/ListDeleteVaccination}" style="text-decoration: none">
                           <div style="border-radius: 8px 8px 8px 0!important;margin-top: 40px;margin-bottom: 30px;width: 160px"    class="btn btn-outline-danger"><i class="fa-solid fa-trash-arrow-up"></i>Đã xoá</div>
                       </a>
                                 <a th:href="@{/admin/AddVaccination}">  <button style="border-radius: 8px 8px 8px 0!important;margin-top: 40px;margin-bottom: 30px;width: 160px"   class="btn btn-primary"><i class="fa-solid fa-plus"></i>Thêm mới</button> </a>
-                  </div>
               </div>
               <nav aria-label="Page navigation" class="mt-3">
                   <ul class="pagination justify-content-center">
@@ -231,7 +264,7 @@
         document.addEventListener('DOMContentLoaded', function () {
             Swal.fire({
                 icon: 'success',
-                title: 'Email gửi thành công khu vực '+messageEm,
+                title: messageEm,
                 text: '',
                 confirmButtonText: 'Thoát',
                 confirmButtonColor: '#0d6efd', // Thay đổi màu sắc của nút xác nhận (Bootstrap 5)
@@ -245,14 +278,9 @@
     </script>
 </div>
 
-<!--<script>-->
-<!--  function showConfirmation() {-->
-<!--    if (confirm("Are you sure you want to delete this account?")) {-->
-<!--      // Nếu người dùng đồng ý, chuyển hướng đến trang "email_sent.html"-->
-<!--      window.location.href = '@{/deleteNotification/{id}(id=${vaccination.id})}';-->
-<!--    }-->
-<!--   -->
-<!--  }-->
-<!--</script>-->
 </body>
 </html>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

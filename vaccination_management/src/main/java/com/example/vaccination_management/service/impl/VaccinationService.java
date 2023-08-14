@@ -103,18 +103,18 @@ public class VaccinationService implements IVaccinationService {
      * VuongVV
      * Sen email by address location, admin after login
      */
-    @Override
-    public List<String> getPatientsWithMatchingLocationName(Vaccination vaccination) {
-        List<Patient> patients = iPatientRepository.findAll();
-        String locationName = vaccination.getLocation().getName();
-        List<String> matchingPatientNames = new ArrayList<>();
-        for (Patient patient : patients) {
-            if (patient.getAddress().toLowerCase().contains(locationName.toLowerCase())) {
-                matchingPatientNames.add(patient.getAccount().getEmail());
-            }
-        }
-        return matchingPatientNames;
-    }
+//    @Override
+//    public List<String> getPatientsWithMatchingLocationName(Vaccination vaccination) {
+//        List<Patient> patients = iPatientRepository.findAll();
+//        String locationName = vaccination.getLocation().getName();
+//        List<String> matchingPatientNames = new ArrayList<>();
+//        for (Patient patient : patients) {
+//            if (patient.getAddress().toLowerCase().contains(locationName.toLowerCase())) {
+//                matchingPatientNames.add(patient.getAccount().getEmail());
+//            }
+//        }
+//        return matchingPatientNames;
+//    }
     /**
      * VuongVV
      * Pagination soft list, admin after login
