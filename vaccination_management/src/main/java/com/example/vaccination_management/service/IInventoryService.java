@@ -42,4 +42,9 @@ public interface IInventoryService {
      * remove inventory from database, admin after login
      */
     public void deleteInventory(int inventoryID) throws InventoryNotFoundException;
+    /**
+     * QuangVt
+     * Update inventory quantity vaccine when completed vaccination
+     */
+    void updateInventoryQuantity(Integer vaccine_id);
 }

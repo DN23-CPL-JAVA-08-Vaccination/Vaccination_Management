@@ -45,13 +45,13 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Code</th>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Duration</th>
-                                <th>Price</th>
-                                <th>Created Date</th>
-                                <th>Type</th>
-                                <th>Vaccination</th>
+                                <th>Tên</th>
+                                <th>Mô tả</th>
+                                <th>Khoảng thời gian</th>
+                                <th>Giá</th>
+                                <th>Ngày tạo</th>
+                                <th>Loại</th>
+                                <th>Sự kiện TC</th>
                             </tr>
                             </thead>
 
@@ -63,7 +63,7 @@
                                 <td th:text="${vaccine.getVaccineName()}"></td>
                                 <td th:text="${vaccine.getDescription()}"></td>
                                 <td th:text="${vaccine.getDuration()}"></td>
-                                <td th:text="${vaccine.getPrice()}"></td>
+                                <td th:text="${vaccine.getPriceFormat()}"></td>
                                 <td th:text="${vaccine.getDateFormat()}"></td>
                                 <td th:text="${vaccine.getTypeName()}"></td>
                                 <td>

@@ -1,5 +1,7 @@
 package com.example.vaccination_management.dto;
 
+import com.example.vaccination_management.utils.FormatPrice;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +24,14 @@ public interface IVaccineDTO {
     String getCreateDate();
 
     String getTypeName();
+    default String  getPriceFormat(){
+        FormatPrice formatPrice = new FormatPrice();
+        String formattedPrice = formatPrice.formatCurrency(getPrice());
+        return formattedPrice;
+    }
+
+
+
 
     default String getDateFormat() {
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");

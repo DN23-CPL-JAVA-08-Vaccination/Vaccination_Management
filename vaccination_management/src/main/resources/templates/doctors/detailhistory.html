@@ -27,7 +27,7 @@
                         <table class="table table-bordered  rounded shadow-lg">
                             <thead>
                             <tr class="bg-dark text-white">
-                                <th colspan="2"> Details</th>
+                                <th colspan="2"> Chi tiết</th>
                             </tr>
                             </thead>
                             <tr>
@@ -48,7 +48,7 @@
 
                             </tr>
                             <tr>
-                                <td class="col-md-3 p-3">Patient Name</td>
+                                <td class="col-md-3 p-3">Họ tên bệnh nhân</td>
                                 <td class="col-md-4 p-3"    >
                                     <input
                                             type="text"
@@ -64,7 +64,7 @@
 
                             </tr>
                             <tr>
-                                <td class="col-md-3 p-3">Patient Birthday</td>
+                                <td class="col-md-3 p-3">Ngày sinh</td>
                                 <td class="col-md-4 p-3">
                                     <input
                                             type="text"
@@ -79,7 +79,7 @@
 
                             </tr>
                             <tr>
-                                <td class="col-md-3 p-3">Vaccination</td>
+                                <td class="col-md-3 p-3">Sự kiện tiêm chủng</td>
                                 <td class="col-md-4 p-3">
                                     <input
                                             type="text"
@@ -94,7 +94,7 @@
 
                             </tr>
                             <tr>
-                                <td class="col-md-3 p-3">Vaccine Name</td>
+                                <td class="col-md-3 p-3">Vắc-xin</td>
                                 <td class="col-md-4 p-3">
                                     <input
                                             type="text"
@@ -105,10 +105,19 @@
                                             th:field="*{vaccineName}"
                                             readonly
                                     >
+                                    <input
+                                            type="text"
+                                            class="form-control border-0 bg-white"
+                                            name="vaccineName"
+                                            id="vaccineId"
+                                            th:value="${vaccinationdetail?.getVaccineId()}"
+                                            th:field="*{vaccineId}"
+                                            hidden
+                                    >
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-md-3 p-3">Dosage</td>
+                                <td class="col-md-3 p-3">Liều lượng</td>
 
                                 <td class="col-md-4 p-3 ">
                                     <input
@@ -123,7 +132,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-md-3 p-3">Duration</td>
+                                <td class="col-md-3 p-3">Khoảng thời gian</td>
                                 <td class="col-md-4 p-3">
                                     <input
                                             type="text"
@@ -138,7 +147,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-md-3 p-3">Vaccination Times</td>
+                                <td class="col-md-3 p-3">Lần tiêm</td>
 
                                 <td class="col-md-4 p-3">
                                     <input
@@ -153,7 +162,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-md-3 p-3">Start Time</td>
+                                <td class="col-md-3 p-3">Ngày đăng ký </td>
 
                                 <td class="col-md-4 p-3" >
                                     <input
@@ -169,35 +178,39 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-md-3 p-3">Employee Name</td>
+                                <td class="col-md-3 p-3">Bác sĩ</td>
                                 <td class="col-md-4 p-3">
                                     <input
                                             type="text"
                                             class="form-control border-0 bg-white"
                                             name="employeeName"
                                             id="employeeName"
-                                            th:value="${vaccinationdetail?.getEmployeeName()}"
+                                            th:value="${employee?.getName()}"
                                             th:field="*{employeeName}"
                                             readonly
                                     >
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-md-3 p-3">Employee Phone</td>
+                                <td class="col-md-3 p-3"> Số điện thoại BS</td>
                                 <td class="col-md-4 p-3">
                                     <input
                                             type="text"
                                             class="form-control border-0 bg-white"
                                             name="employeePhone"
                                             id="employeePhone"
-                                            th:value="${vaccinationdetail?.getEmployeePhone()}"
+                                            th:value="${employee?.getPhone()}"
                                             th:field="*{employeePhone}"
                                             readonly
                                     >
                                 </td>
 
                             <tr>
-                                <td class="col-md-3 p-3">Guardian Name</td>
+                                <td class="col-md-3 p-3">Người giám hộ
+                                    <span class="text-danger" th:if="${vaccinationdetail?.getAgePatient() < 16}">
+                                        (*)
+                                    </span>
+                                </td>
                                 <td class="col-md-4 p-3">
                                     <input
                                             type="text"
@@ -205,7 +218,6 @@
                                             name="guardianName"
                                             id="guardianName"
                                             th:value="${vaccinationdetail?.getGuardianName()}"
-                                            th:attr="required=${vaccinationdetail?.getAgePatient() < 15}"
                                             th:field="*{guardianName}"
                                     >
                                     <span style="color: red;" th:if="${#fields.hasErrors('guardianName')}"
@@ -213,7 +225,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-md-3 p-3">Guardian Phone</td>
+                                <td class="col-md-3 p-3">Số điện thoại
+                                    <span class="text-danger" th:if="${vaccinationdetail?.getAgePatient() < 16}">
+                                        (*)
+                                    </span>
+                                </td>
                                 <td class="col-md-4 p-3">
                                     <input
                                             type="text"
@@ -221,7 +237,6 @@
                                             name="guardianPhone"
                                             id="guardianPhone"
                                             th:value="${vaccinationdetail?.getGuardianPhone()}"
-                                            th:attr="required=${vaccinationdetail?.getAgePatient() < 15}"
                                             th:field="*{guardianPhone}"
                                     >
 
@@ -232,13 +247,15 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-md-3 p-3">Patient's condition</td>
+                                <td class="col-md-3 p-3">Tình trạng bệnh nhân
+                                    <span class="text-danger">
+                                        (*)
+                                    </span></td>
                                 <td class="col-md-4 p-3">
                                 <textarea class="form-control"
                                           name="preStatus"
                                           placeholder="Leave a comment here"
                                           id="preStatus"
-                                          required
                                           th:field="*{preStatus}"
                                 >
                                 </textarea>
@@ -248,22 +265,22 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-md-3 p-3">Status</td>
+                                <td class="col-md-3 p-3">Trạng thái</td>
                                 <td class="col-md-4 p-3">
                                     <select class="form-select"
                                             th:field="*{status}"
                                     >
-                                        <option th:value="3">
+                                        <option th:value="1">
                                             Chưa tiêm
                                         </option>
-                                        <option th:selected="${vaccinationdetail?.getStatus() == '4' }" th:value="4">
+                                        <option th:selected="${vaccinationdetail?.getStatus() == '2' }" th:value="2">
                                             Đã tiêm
                                         </option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-md-3 p-3">Time</td>
+                                <td class="col-md-3 p-3">Thời gian tiêm</td>
                                 <td class="col-md-4 p-3">
                                     <input
                                             type="text"
@@ -286,9 +303,18 @@
                                     th:value="${vaccinationdetail?.getAgePatient()}"
                                     th:field="*{agePatient}"
                             >
+                            <input
+                                    type="text"
+                                    hidden
+                                    class="form-control"
+                                    name="emailPatient"
+                                    id="emailPatient"
+                                    th:value="${vaccinationdetail?.getEmailPatient()}"
+                                    th:field="*{emailPatient}"
+                            >
                             <tr>
                                 <td colspan="2">
-                                    <div th:if="${vaccinationdetail?.getStatus() == 3 || errorsCheck == true} ">
+                                    <div th:if="${vaccinationdetail?.getStatus() == 1 || errorsCheck == true} ">
                                         <button type="submit" class="btn btn-success float-end m-2 p-2 w-25">Update
                                         </button>
                                     </div>

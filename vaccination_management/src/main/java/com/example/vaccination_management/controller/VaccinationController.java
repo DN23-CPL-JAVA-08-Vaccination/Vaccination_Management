@@ -1,13 +1,11 @@
 package com.example.vaccination_management.controller;
 
-import com.example.vaccination_management.dto.IVaccinationDTO;
-import com.example.vaccination_management.dto.IVaccinationHistoryDTO;
-import com.example.vaccination_management.dto.VaccinationHistoryDTO;
+import com.example.vaccination_management.dto.*;
+import com.example.vaccination_management.entity.Employee;
 import com.example.vaccination_management.entity.VaccinationHistory;
 import com.example.vaccination_management.entity.VaccinationStatus;
-import com.example.vaccination_management.service.IVaccinationHistoryService;
-import com.example.vaccination_management.service.IVaccinationService;
-import com.example.vaccination_management.service.IVaccineStatusService;
+import com.example.vaccination_management.security.AccountDetailService;
+import com.example.vaccination_management.service.*;
 import com.example.vaccination_management.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -35,6 +34,15 @@ public class VaccinationController {
     Validation validation;
     @Autowired
     IVaccinationService iVaccinationService;
+    @Autowired
+    IInventoryService iInventoryService;
+    @Autowired
+    IEmailService iEmailService;
+    @Autowired
+    AccountDetailService accountDetailService;
+    @Autowired
+    private IEmployeeService employeeService;
+
 
     /**
      * QuangVT
@@ -55,25 +63,47 @@ public class VaccinationController {
     @GetMapping("/doctor/vaccination/view")
     public String schedule(Model model, @RequestParam int id) {
         IVaccinationHistoryDTO iVacc = iVaccinationHistoryService.getVaccinationHistoryByID(id);
+
+
         VaccinationHistoryDTO vaccinationHistoryDTO = new VaccinationHistoryDTO();
         vaccinationHistoryDTO.setId(iVacc.getId());
         vaccinationHistoryDTO.setPatientName(iVacc.getPatientName());
         vaccinationHistoryDTO.setPatientBirth(iVacc.getBirthFormat());
         vaccinationHistoryDTO.setVaccinationDesc(iVacc.getVaccinationDesc());
         vaccinationHistoryDTO.setVaccineName(iVacc.getVaccineName());
+        vaccinationHistoryDTO.setVaccineId(iVacc.getVaccineId());
         vaccinationHistoryDTO.setRegisTime(iVacc.getRegisTimeFormatted());
         vaccinationHistoryDTO.setVaccinationTimes(iVacc.getVaccinationTimes());
-        vaccinationHistoryDTO.setEmployeeName(iVacc.getEmployeeName());
-        vaccinationHistoryDTO.setEmployeePhone(iVacc.getEmployeePhone());
+
+        Integer employeeId = iVacc.getEmployeeId();
+        if (employeeId == null){
+            String username = accountDetailService.getCurrentUserName();
+            InfoEmployeeAccountDTO employeeDTO = employeeService.getInforByUsername(username);
+            model.addAttribute("employeeDTO", employeeDTO);
+            vaccinationHistoryDTO.setEmployeeName(employeeDTO.getName());
+            vaccinationHistoryDTO.setEmployeePhone(Integer.valueOf(employeeDTO.getPhone()));
+            model.addAttribute("employee",employeeDTO);
+
+        } else {
+            InforEmployeeDTO employeeDTO = employeeService.getInforById(iVacc.getEmployeeId());
+            vaccinationHistoryDTO.setEmployeeName(employeeDTO.getName());
+            vaccinationHistoryDTO.setEmployeePhone(Integer.valueOf(employeeDTO.getPhone()));
+            model.addAttribute("employee",employeeDTO);
+        }
+
+
+
         vaccinationHistoryDTO.setGuardianName(iVacc.getGuardianName());
         vaccinationHistoryDTO.setGuardianPhone(iVacc.getGuardianPhone());
         vaccinationHistoryDTO.setPreStatus(iVacc.getPreStatus());
         vaccinationHistoryDTO.setStatus(iVacc.getStatus());
-        vaccinationHistoryDTO.setLastTime(iVacc.getRegisTimeFormatted());
+        vaccinationHistoryDTO.setLastTime(iVacc.getLastTimeFormatted());
         vaccinationHistoryDTO.setDosage(iVacc.getDosage());
         vaccinationHistoryDTO.setDuration(iVacc.getDuration());
         vaccinationHistoryDTO.setAgePatient(iVacc.getAgePatient());
+        vaccinationHistoryDTO.setEmailPatient(iVacc.getEmailPatient());
         boolean hasErrors = false;
+
         model.addAttribute("errorsCheck", hasErrors);
         model.addAttribute("vaccinationdetail", iVacc);
         model.addAttribute("vaccinationObject", vaccinationHistoryDTO);
@@ -84,6 +114,7 @@ public class VaccinationController {
      * QuangVT
      * update information of accination history by ID,
      */
+    @Transactional
     @PostMapping("/doctor/vaccination/view")
     public String update(@Validated @ModelAttribute("vaccinationObject") VaccinationHistoryDTO vaccinationHistoryDTO ,
                          BindingResult bindingResult, Model model , RedirectAttributes redirectAttributes) {
@@ -96,6 +127,10 @@ public class VaccinationController {
             return "doctors/detailhistory";
 
         }
+        String username = accountDetailService.getCurrentUserName();
+        InfoEmployeeAccountDTO employeeDTO = employeeService.getInforByUsername(username);
+        Employee employee = employeeService.getEmployeeById(employeeDTO.getId());
+        vaccinationHistory.setEmployee(employee);
         vaccinationHistory.setGuardianName(vaccinationHistoryDTO.getGuardianName());
         vaccinationHistory.setGuardianPhone(vaccinationHistoryDTO.getGuardianPhone());
         vaccinationHistory.setPreStatus(vaccinationHistoryDTO.getPreStatus());
@@ -104,9 +139,24 @@ public class VaccinationController {
         Timestamp timestamp = Timestamp.valueOf(now);
         vaccinationHistory.setEndTime(String.valueOf(timestamp));
         iVaccinationHistoryService.save(vaccinationHistory);
+
+        Integer vaccine_id = vaccinationHistoryDTO.getVaccineId();
+        iInventoryService.updateInventoryQuantity(vaccine_id);
+
+        if (vaccinationHistory.getVaccinationStatus().getId() == 2){
+            IVaccinationHistoryDTO iVaccinationHistoryDTO = iVaccinationHistoryService.getVaccinationHistoryByID(vaccinationHistoryDTO.getId());
+            Boolean isEmail = iEmailService.SendEmailCompleted(iVaccinationHistoryDTO);
+            if (isEmail) {
+                model.addAttribute("msg", true);
+            } else {
+                model.addAttribute("msg", false);
+            }
+        }
+
         redirectAttributes.addFlashAttribute("submitCheck", true);
         return "redirect:/doctor/history";
     }
+
     /**
      * QuangVT
      * get information of accination history completed

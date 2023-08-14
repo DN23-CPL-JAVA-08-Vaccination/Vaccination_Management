@@ -14,6 +14,7 @@ public class VaccinationHistoryDTO {
     private String patientBirth;
     private String vaccinationDesc;
     private String vaccineName;
+    private Integer vaccineId;
     private String regisTime;
     private String lastTime;
     private Integer vaccinationTimes;
@@ -28,17 +29,19 @@ public class VaccinationHistoryDTO {
     private Double dosage;
     private String duration;
     private Integer agePatient;
+    private String emailPatient;
 
 
     public VaccinationHistoryDTO() {
     }
 
-    public VaccinationHistoryDTO(Integer id, String patientName, String patientBirth, String vaccinationDesc, String vaccineName, String regisTime, String lastTime, Integer vaccinationTimes, String employeeName, Integer employeePhone, Integer status, String guardianName, String guardianPhone, String preStatus, Double dosage, String duration) {
+    public VaccinationHistoryDTO(Integer id, String patientName, String patientBirth, String vaccinationDesc, String vaccineName,Integer vaccineId, String regisTime, String lastTime, Integer vaccinationTimes, String employeeName, Integer employeePhone, Integer status, String guardianName, String guardianPhone, String preStatus, Double dosage, String duration) {
         this.id = id;
         this.patientName = patientName;
         this.patientBirth = patientBirth;
         this.vaccinationDesc = vaccinationDesc;
         this.vaccineName = vaccineName;
+        this.vaccineId = vaccineId;
         this.regisTime = regisTime;
         this.lastTime = lastTime;
         this.vaccinationTimes = vaccinationTimes;
@@ -52,6 +55,22 @@ public class VaccinationHistoryDTO {
         this.dosage = dosage;
         this.duration = duration;
 
+    }
+
+    public Integer getVaccineId() {
+        return vaccineId;
+    }
+
+    public String getEmailPatient() {
+        return emailPatient;
+    }
+
+    public void setEmailPatient(String emailPatient) {
+        this.emailPatient = emailPatient;
+    }
+
+    public void setVaccineId(Integer vaccineId) {
+        this.vaccineId = vaccineId;
     }
 
     public String getPatientName() {

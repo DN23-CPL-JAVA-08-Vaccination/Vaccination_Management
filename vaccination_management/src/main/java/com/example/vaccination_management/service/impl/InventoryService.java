@@ -104,4 +104,14 @@ public class InventoryService implements IInventoryService {
 
         iInventoryRepository.deleteById(inventoryID);
     }
+
+    /**
+     * QuangVt
+     * Update inventory quantity vaccine when completed vaccination
+     */
+    @Override
+    public void updateInventoryQuantity(Integer vaccine_id){
+        iInventoryRepository.updateInventoryQuantity(vaccine_id);
+    }
+
 }

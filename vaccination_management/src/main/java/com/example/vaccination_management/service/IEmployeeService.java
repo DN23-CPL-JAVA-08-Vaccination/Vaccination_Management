@@ -85,4 +85,6 @@ public interface IEmployeeService {
      * get total Employee by Name
      */
     long getTotalEmployee(String nameSearch);
+
+    Employee getEmployeeById(Integer id);
 }

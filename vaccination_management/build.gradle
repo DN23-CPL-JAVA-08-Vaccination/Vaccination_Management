@@ -32,12 +32,16 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
     implementation group: 'org.springframework.security', name: 'spring-security-web', version: '5.4.2'
     implementation group: 'org.springframework.security', name: 'spring-security-config', version: '5.4.2'
     implementation group: 'org.springframework.security', name: 'spring-security-taglibs', version: '5.4.2'
     implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.4.3'
     implementation group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity5', version: '3.0.4.RELEASE'
+
+
+
 
 
 }
