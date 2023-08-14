@@ -20,19 +20,18 @@
         <main>
             <div class="container-fluid px-4">
                 <h1 class="mt-4">
-                    <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                    Quản lý loại Vaccine
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    Thùng rác
                 </h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item">Dashboard</li>
-                    <li class="breadcrumb-item active">Loại Vaccine</li>
+                    <li class="breadcrumb-item"><a th:href="@{/admin/vaccineTypes}">Loại vaccine</a></li>
+                    <li class="breadcrumb-item active">Thùng rác</li>
                 </ol>
                 <div class="card mb-4">
                     <div class="card-header">
-                        <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                        Loại Vaccine
-                        <a th:href="@{/admin/vaccineTypes/newVaccineType}"><button type="button" class="btn btn-outline-primary btn-sm" style="float: right"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
-                        <a th:href="@{/admin/vaccineTypes/recycleVaccineType}"><button type="button" class="btn btn-outline-warning btn-sm" style="float: right; margin-right: 5px"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        Thùng rác
                     </div>
                     <div th:if="${messages}" class="alert alert-success text-center">
                         [[${messages}]]
@@ -58,32 +57,55 @@
                             </tr>
                             </tfoot>
                             <tbody>
-                            <tr th:each = "vaccineType : ${vaccineTypeList}">
+                            <tr th:each = "vaccineType : ${recycleVaccineTypeList}">
                                 <td th:text="${vaccineType.id}"></td>
                                 <td th:text="${vaccineType.name}"></td>
                                 <td><a th:href="@{/admin/vaccineTypes/{id}(id=${vaccineType.id})}"><button type="button" class="btn btn-outline-info"><i class="fa fa-info-circle" aria-hidden="true"></i></button></a></td>
-                                <td><a th:href="@{/admin/vaccineTypes/editVaccineType/{id}(id=${vaccineType.id})}"><button type="button" class="btn btn-outline-success"><i class="fa fa-pencil-square" aria-hidden="true"></i></button></a></td>
                                 <td>
-
-                                    <button type="button" class="btn btn-outline-danger" th:data-toggle="modal" th:data-target="'#deleteModal-' + ${vaccineType.id}" th:data-id="${vaccineType.id}">
-                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    <button type="button" class="btn btn-outline-success" th:data-toggle="modal" th:data-target="'#restoreModal-' + ${vaccineType.id}" th:data-id="${vaccineType.id}">
+                                        <i class="fa fa-refresh" aria-hidden="true"></i>
                                     </button>
                                     <!-- Modal -->
-                                    <div class="modal fade custom-modal" th:id="'deleteModal-' + ${vaccineType.id}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+                                    <div class="modal fade custom-modal" th:id="'restoreModal-' + ${vaccineType.id}" tabindex="-1" role="dialog" aria-labelledby="restoreModalLabel">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
-                                                <div class="modal-header" style="background-color: #dc3545">
-                                                    <h5 class="modal-title" id="deleteModalLabel">Xóa loại Vaccine?</h5>
+                                                <div class="modal-header" style="background-color: #198754">
+                                                    <h5 class="modal-title" id="restoreModalLabel">Khôi phục Vaccine?</h5>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p>Nếu bạn xóa loại vaccine này, nó sẽ được chuyển vào thùng rác. Bạn có chắc chắn muốn tiếp tục không?</p>
+                                                    <p>Nếu bạn khôi phục vaccine này, nó sẽ được chuyển tới trang quản lý Vaccine. Bạn có chắc chắn muốn tiếp tục không?</p>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
-                                                    <a th:href="@{/admin/vaccineTypes/deleteVaccineType/{id}(id=${vaccineType.id})}"><button type="button" class="btn btn-outline-danger">Xác nhận</button></a>
+                                                    <a th:href="@{/admin/vaccineTypes/recycleVaccineType/restoreVaccineType/{id}(id=${vaccineType.id})}"><button type="button" class="btn btn-outline-success">Xác nhận</button></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-danger" th:data-toggle="modal" th:data-target="'#destroyModal-' + ${vaccineType.id}" th:data-id="${vaccineType.id}">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade custom-modal" th:id="'destroyModal-' + ${vaccineType.id}" tabindex="-1" role="dialog" aria-labelledby="destroyModalLabel">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background-color: #dc3545">
+                                                    <h5 class="modal-title" id="destroyModalLabel">Xóa loại Vaccine?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Nếu bạn xóa loại vaccine này, nó sẽ biến mất mãi mãi. Bạn có chắc chắn muốn tiếp tục không?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
+                                                    <a th:href="@{/admin/vaccineTypes/recycleVaccineType/destroyVaccineType/{id}(id=${vaccineType.id})}"><button type="button" class="btn btn-outline-danger">Xác nhận</button></a>
                                                 </div>
                                             </div>
                                         </div>

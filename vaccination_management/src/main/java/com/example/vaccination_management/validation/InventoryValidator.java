@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.regex.Pattern;
 
 @Component
 public class InventoryValidator implements Validator {
@@ -27,6 +28,11 @@ public class InventoryValidator implements Validator {
         String fieldSupplier = "supplier";
         String fieldProduction = "productionDate";
         String fieldExpiration = "expirationDate";
+        String fieldAddress = "address";
+        String fieldName = "inventoryName";
+
+        String regexName = "^[a-zA-Z0-9\'-\'\\sáàảãạăâắằấầặẵẫậéèẻ ẽẹếềểễệóêòỏõọôốồổỗộ ơớờởỡợýíìỉĩịđùúủũụưứ� �ửữựÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠ ƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼ� ��ỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞ ỠỢỤỨỪỬỮỰỲỴÝỶỸửữựỵ ỷỹ ,]*$";
+        String regexAddress = "^[a-zA-Z0-9\'-\'\\sáàảãạăâắằấầặẵẫậéèẻ ẽẹếềểễệóêòỏõọôốồổỗộ ơớờởỡợýíìỉĩịđùúủũụưứ� �ửữựÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠ ƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼ� ��ỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞ ỠỢỤỨỪỬỮỰỲỴÝỶỸửữựỵ ỷỹ ,]*$";
 
         if (inventory.getQuantity() == 0) {
             errors.rejectValue(fieldQuantity, "quantity.null", "Vui lòng nhập số lượng vaccine.");
@@ -69,11 +75,29 @@ public class InventoryValidator implements Validator {
 
             if (expiration.equals(production)) {
                 errors.rejectValue(fieldExpiration, "expiration.value", "Hạn sử dụng không được trùng với ngày sản xuất.");
-            } else if (Period.between(production, expiration).getMonths() < 3) {
-                errors.rejectValue(fieldExpiration, "expiration.value", "Hạn sử dụng tối thiểu là 3 tháng.");
-            } else if (Period.between(production, expiration).getMonths() > 24) {
-                errors.rejectValue(fieldExpiration, "expiration.value", "Hạn sử dụng tối đa là 24 tháng.");
+            } else if (Period.between(production, expiration).getMonths() < 3 || Period.between(production, expiration).getMonths() > 24) {
+                errors.rejectValue(fieldExpiration, "expiration.value", "Hạn sử dụng tối thiểu là 3 tháng và tối đa là 24 tháng.");
             }
+        }
+
+        if (inventory.getInventoryName() == null || inventory.getInventoryName() == "") {
+            errors.rejectValue(fieldName, "name.null", "Vui lòng nhập tên lô hàng.");
+        } else if (inventory.getInventoryName().trim().length() < 5) {
+            errors.rejectValue(fieldName, "name.length", "Tên lô hàng ít nhất 5 kí tự.");
+        } else if (inventory.getInventoryName().trim().length() > 20) {
+            errors.rejectValue(fieldName, "name.length", "Tên lô hàng tối đa 20 kí tự.");
+        } else if (!Pattern.compile(regexName).matcher(inventory.getInventoryName().trim()).find()) {
+            errors.rejectValue(fieldName, "name.pattern", "Tên không được nhập ký tự đặt biệt.");
+        }
+
+        if (inventory.getAddress() == null || inventory.getAddress() == "") {
+            errors.rejectValue(fieldAddress, "address.null", "Vui lòng nhập địa chỉ công ty.");
+        } else if (inventory.getAddress().trim().length() < 6) {
+            errors.rejectValue(fieldAddress, "address.length", "Địa chỉ ít nhất 6 kí tự.");
+        } else if (inventory.getAddress().trim().length() > 100) {
+            errors.rejectValue(fieldAddress, "address.length", "Địa chỉ tốt đa 100 kí tự.");
+        } else if (!Pattern.compile(regexAddress).matcher(inventory.getAddress()).find()) {
+            errors.rejectValue(fieldAddress, "address.pattern", "Đại chỉ không được nhập ký tự đặt biệt.");
         }
     }
 }

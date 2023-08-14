@@ -42,7 +42,9 @@
                                     <label class="col-sm-4 col-form-label">Tên loại Vaccine<span
                                             class="required-field">(*)</span>: </label>
                                     <div class="col-sm-8">
-                                        <input type="text" th:field="*{name}" class="form-control" placeholder="Tên loại Vaccine" required/>
+                                        <input type="text" th:field="*{name}" class="form-control" placeholder="Tên loại Vaccine"/>
+                                        <span style="color: red" th:if="${#fields.hasErrors('name')}"
+                                              th:errors="*{name}"></span>
                                     </div>
                                 </div>
                                 <div class="text-center" style="padding-top: 20px">

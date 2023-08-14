@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 public class InventoryController {
     @Autowired
@@ -145,8 +147,43 @@ public class InventoryController {
             e.printStackTrace();
         }
 
-        redirectAttributes.addFlashAttribute("messages", "The inventory has been destroyed successfully");
+        redirectAttributes.addFlashAttribute("messages", "Lô hàng đã được chuyển vào kho lô hàng!");
 
         return "redirect:/admin/vaccines/" + vaccineID;
+    }
+
+    /**
+     * HuyLVN
+     * show inventory of vaccine
+     */
+    @GetMapping("/admin/vaccines/recycleInventory/{id}")
+    public String RecycleInventory(@PathVariable("id") int vaccineID, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            Vaccine vaccine = vaccineService.getVaccineByID(vaccineID);
+            List<Inventory> inventoryList = inventoryService.getInventoryInRecycle(vaccine);
+
+            model.addAttribute("vaccine", vaccine);
+            model.addAttribute("inventoryList", inventoryList);
+        } catch (VaccineNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return "admin/Inventory/RecycleInventory";
+    }
+
+    @GetMapping("/admin/vaccines/recycleInventory/destroyInventory/{id}")
+    public String destroyVaccine(@PathVariable("id") int inventoryID, RedirectAttributes redirectAttributes) {
+        int vaccineID = 0;
+        try {
+            Inventory inventory = inventoryService.getInventoryByID(inventoryID);
+            vaccineID = inventory.getVaccine().getId();
+
+            inventoryService.destroyInventory(inventoryID);
+        } catch (InventoryNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        redirectAttributes.addFlashAttribute("messages", "Lô hàng đã được xóa khỏi CSDL!");
+        return "redirect:/admin/vaccines/recycleInventory/" + vaccineID;
     }
 }
