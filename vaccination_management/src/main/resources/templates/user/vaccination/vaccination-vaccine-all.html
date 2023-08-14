@@ -92,78 +92,78 @@
   </div>
 </header><!-- End Header -->
 
-  <main id="main">
-    <!-- ======= Vaccine list and VaccineType ======= -->
-    <section class="breadcrumbs">
-      <div class="container custom-container">
-        <form th:action="@{/vaccine/list-vaccine}" method="get" class="search-form">
-          <div class="input-group">
-            <input type="text" name="search" class="form-control" placeholder="Tìm kiếm">
-            <button type="submit" class="btn btn-primary">Tìm</button>
+<main id="main">
+  <!-- ======= Vaccine list and VaccineType ======= -->
+  <section class="breadcrumbs">
+    <div class="container custom-container">
+      <form th:action="@{/vaccine/list-vaccine}" method="get" class="search-form">
+        <div class="input-group">
+          <input type="text" name="search" class="form-control" placeholder="Tìm kiếm">
+          <button type="submit" class="btn btn-primary">Tìm</button>
+        </div>
+      </form>
+    </div>
+    <div class="container">
+      <div class="row">
+        <!--          <div class="col-sm-2">-->
+        <!--            <a th:href="@{/vaccine/list-vaccine}" class="custom-links"><i class="bi bi-activity"></i><strong>Loại vắc-xin</strong></a>-->
+        <!--            <div class="row" th:each="vaccineType : ${vaccineTypes}">-->
+        <!--              <a th:href="@{/vaccine/list-vaccine/{vaccine_type_id}(vaccine_type_id=${vaccineType.id})}" th:text="${vaccineType.name}" class="custom-link"></a>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <div class="col-sm-2">
+          <a th:href="@{/vaccine/list-vaccine}" class="custom-links"><i class="bi bi-activity"></i><strong>Loại vắc-xin</strong></a>
+          <div class="row" th:each="vaccineType : ${vaccineTypes}">
+            <a th:href="@{/vaccine/list-vaccine/{vaccine_type_id}(vaccine_type_id=${vaccineType.id})}"
+               th:text="${vaccineType.name}"
+               class="custom-link"
+               th:classappend="${vaccineType.id == vaccine_type_id} ? 'active-vaccine-type' : ''"></a>
           </div>
-        </form>
-      </div>
-      <div class="container">
-        <div class="row">
-<!--          <div class="col-sm-2">-->
-<!--            <a th:href="@{/vaccine/list-vaccine}" class="custom-links"><i class="bi bi-activity"></i><strong>Loại vắc-xin</strong></a>-->
-<!--            <div class="row" th:each="vaccineType : ${vaccineTypes}">-->
-<!--              <a th:href="@{/vaccine/list-vaccine/{vaccine_type_id}(vaccine_type_id=${vaccineType.id})}" th:text="${vaccineType.name}" class="custom-link"></a>-->
-<!--            </div>-->
-<!--          </div>-->
-          <div class="col-sm-2">
-            <a th:href="@{/vaccine/list-vaccine}" class="custom-links"><i class="bi bi-activity"></i><strong>Loại vắc-xin</strong></a>
-            <div class="row" th:each="vaccineType : ${vaccineTypes}">
-              <a th:href="@{/vaccine/list-vaccine/{vaccine_type_id}(vaccine_type_id=${vaccineType.id})}"
-                 th:text="${vaccineType.name}"
-                 class="custom-link"
-                 th:classappend="${vaccineType.id == vaccine_type_id} ? 'active-vaccine-type' : ''"></a>
-            </div>
-          </div>
-          <div class="col-sm-10">
-            <h2 class="mb-2 text-left"><strong>Thông báo tiêm chủng của thành phố Đà Nẵng</strong></h2>
-            <p class="mb-4 text-left">Dưới đây là danh sách thông báo tiêm chủng của vắc-xin <span th:text="${vaccine.name}"></span>. Xem và đăng ký tiêm chủng ngay để bảo vệ sức khỏe cho bản thân và cộng đồng!</p>
-            <div class="row flex-row flex-wrap row-custom">
-              <div class="col-sm-6 col-md-6 col-lg-6" th:each="vaccinations : ${vaccinationList}">
-                <div class="card d-flex flex-column align-items-start card-custom">
-                  <img th:src="${vaccinations.vaccine.image}" class ="card-img-top">
-                    <div class="card-body d-flex flex-column flex-grow-1">
-                      <div class="d-flex justify-content-between align-items-start mb-2">
-                        <h3 class="card-title" th:text="${vaccinations.vaccine.name}"></h3>
-                        <span class="badge badge-pill badge-primary blinking-badge custom-badge-lg">
+        </div>
+        <div class="col-sm-10">
+          <h2 class="mb-2 text-left"><strong>Thông báo tiêm chủng của thành phố Đà Nẵng</strong></h2>
+          <p class="mb-4 text-left">Dưới đây là danh sách thông báo tiêm chủng của tất cả các loại vắc-xin. Xem và đăng ký tiêm chủng ngay để bảo vệ sức khỏe cho bản thân và cộng đồng!</p>
+          <div class="row flex-row flex-wrap row-custom">
+            <div class="col-sm-6 col-md-6 col-lg-6" th:each="vaccinations : ${vaccinationList}">
+              <div class="card d-flex flex-column align-items-start card-custom">
+                <img th:src="${vaccinations.vaccine.image}" class ="card-img-top">
+                <div class="card-body d-flex flex-column flex-grow-1">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h3 class="card-title" th:text="${vaccinations.vaccine.name}"></h3>
+                    <span class="badge badge-pill badge-primary blinking-badge custom-badge-lg">
                           <span class="blinking-content" th:text="${vaccinations.vaccinationType.name}"></span>
                         </span>
-                      </div>
-<!--                      <h3 class="card-title" th:text="${vaccinations.vaccine.name}"></h3>-->
-                      <p class="card-text"><strong>Loại vắc-xin: </strong><span th:text="${vaccinations.vaccine.vaccineType.name}"></span></p>
-                      <p class="card-text"><strong>Đợt tiêm lần: </strong><span th:text="${vaccinations.times}"></span></p>
-<!--                      <p class="card-text"><strong>Thời hạn tác dụng: </strong><span th:text="${vaccinations.duration + ' tháng'}"></span></p>-->
-                      <p class="card-text"><strong>Ngày bắt đầu tiêm: </strong><span th:text="${vaccinations.startTime}"></span></p>
-                      <p class="card-text"><strong>Ngày kết thúc tiêm: </strong><span th:text="${vaccinations.endTime}"></span></p>
-                      <p class="card-text"><strong>Mô tả: </strong><span th:text="${vaccinations.description}"></span></p>
-                      <p class="card-text"><strong>Địa chỉ tiêm: </strong><span th:text="${vaccinations.location.name}"></span></p>
-                      <a th:href="@{/vaccination/form-vaccination/{id}(id=${vaccinations.id})}" class="btn-custom">Đăng ký tiêm chủng</a></span></p>
-                    </div>
+                  </div>
+                  <!--                      <h3 class="card-title" th:text="${vaccinations.vaccine.name}"></h3>-->
+                  <p class="card-text"><strong>Loại vắc-xin: </strong><span th:text="${vaccinations.vaccine.vaccineType.name}"></span></p>
+                  <p class="card-text"><strong>Đợt tiêm lần: </strong><span th:text="${vaccinations.times}"></span></p>
+                  <!--                      <p class="card-text"><strong>Thời hạn tác dụng: </strong><span th:text="${vaccinations.duration + ' tháng'}"></span></p>-->
+                  <p class="card-text"><strong>Ngày bắt đầu tiêm: </strong><span th:text="${vaccinations.startTime}"></span></p>
+                  <p class="card-text"><strong>Ngày kết thúc tiêm: </strong><span th:text="${vaccinations.endTime}"></span></p>
+                  <p class="card-text"><strong>Mô tả: </strong><span th:text="${vaccinations.description}"></span></p>
+                  <p class="card-text"><strong>Địa chỉ tiêm: </strong><span th:text="${vaccinations.location.name}"></span></p>
+                  <a th:href="@{/vaccination/form-vaccination/{id}(id=${vaccinations.id})}" class="btn-custom">Đăng ký tiêm chủng</a></span></p>
                 </div>
               </div>
             </div>
-            <nav aria-label="Page navigation" class="mt-3">
-              <ul class="pagination justify-content-center">
-                <li class="page-item" th:classappend="${currentPage == 0} ? disabled : ''">
-                  <a class="page-link" th:href="@{/vaccination/list-vaccination/{vaccine_id}(vaccine_id=${vaccine_id}, page=${currentPage > 0 ? currentPage - 1 : 0}, size=${size})}">Trước</a>
-                </li>
-                <li class="page-item" th:classappend="${currentPage == i} ? active : ''" th:each="i: ${totalPages > 0 ? #numbers.sequence(0, totalPages - 1) : {}}">
-                  <a class="page-link" th:href="@{/vaccination/list-vaccination/{vaccine_id}(vaccine_id=${vaccine_id}, page=${i}, size=${size})}" th:text="${i + 1}"></a>
-                </li>
-                <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
-                  <a class="page-link" th:href="@{/vaccination/list-vaccination/{vaccine_id}(vaccine_id=${vaccine_id}, page=${currentPage + 1}, size=${size})}" th:text="Sau"></a>
-                </li>
-              </ul>
-            </nav>
           </div>
+          <nav aria-label="Page navigation" class="mt-3">
+            <ul class="pagination justify-content-center">
+              <li class="page-item" th:classappend="${currentPage == 0} ? disabled : ''">
+                <a class="page-link" th:href="@{/vaccination/list-vaccination/{vaccine_id}(vaccine_id=${vaccine_id}, page=${currentPage > 0 ? currentPage - 1 : 0}, size=${size})}">Trước</a>
+              </li>
+              <li class="page-item" th:classappend="${currentPage == i} ? active : ''" th:each="i: ${totalPages > 0 ? #numbers.sequence(0, totalPages - 1) : {}}">
+                <a class="page-link" th:href="@{/vaccination/list-vaccination/{vaccine_id}(vaccine_id=${vaccine_id}, page=${i}, size=${size})}" th:text="${i + 1}"></a>
+              </li>
+              <li class="page-item" th:classappend="${currentPage == totalPages - 1 ? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/vaccination/list-vaccination/{vaccine_id}(vaccine_id=${vaccine_id}, page=${currentPage + 1}, size=${size})}" th:text="Sau"></a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
 </main><!-- End #main -->
 

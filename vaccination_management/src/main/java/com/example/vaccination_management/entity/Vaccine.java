@@ -42,7 +42,7 @@ public class Vaccine {
     private String image;
 
     @Column(name = "dosage")
-    private String dosage;
+    private Double dosage;
 
     @ManyToOne
     @JoinColumn(name = "vaccine_type_id")
@@ -51,7 +51,7 @@ public class Vaccine {
     public Vaccine() {
     }
 
-    public Vaccine(int id, String name, String code, String description, boolean deleteFlag, String createDate, String updateDate, Double price, String duration, String age, String image, String dosage, VaccineType vaccineType) {
+    public Vaccine(int id, String name, String code, String description, boolean deleteFlag, String createDate, String updateDate, Double price, String duration, String age, String image, Double dosage, VaccineType vaccineType) {
         this.id = id;
         this.name = name;
         this.code = code;
@@ -155,11 +155,11 @@ public class Vaccine {
         this.image = image;
     }
 
-    public String getDosage() {
+    public Double getDosage() {
         return dosage;
     }
 
-    public void setDosage(String dosage) {
+    public void setDosage(Double dosage) {
         this.dosage = dosage;
     }
 

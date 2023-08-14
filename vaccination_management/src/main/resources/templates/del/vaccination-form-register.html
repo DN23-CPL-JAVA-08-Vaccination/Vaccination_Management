@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Đăng ký tiêm chủng</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link th:href="@{/img/favicon.png}" rel="icon">
+    <link th:href="@{/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link rel="stylesheet" th:href="@{/vendor/fontawesome-free/css/all.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/animate.css/animate.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap-icons/bootstrap-icons.css}">
+    <link rel="stylesheet" th:href="@{/vendor/glightbox/css/glightbox.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/remixicon/remixicon.css}">
+    <link rel="stylesheet" th:href="@{/vendor/swiper/swiper-bundle.min.css}">
+    <link rel="stylesheet" th:href="@{/vendor/boxicons/css/boxicons.min.css}">
+
+    <!-- Template Main CSS File -->
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/form-register-vaccination.css}">
+
+</head>
+
+<body>
+
+<!-- ======= Top Bar ======= -->
+<div id="topbar" class="d-flex align-items-center fixed-top">
+    <div class="container d-flex justify-content-between">
+        <div class="contact-info d-flex align-items-center">
+            <i class="bi bi-envelope"></i> <a href="mailto:contact@example.com">contact@example.com</a>
+            <i class="bi bi-phone"></i> +1 5589 55488 55
+        </div>
+        <div class="d-none d-lg-flex social-links align-items-center">
+            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></i></a>
+        </div>
+    </div>
+</div>
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top">
+    <div class="container d-flex align-items-center">
+        <h1 class="logo me-auto"><a href="index.html">Medilab</a></h1>
+        <nav id="navbar" class="navbar order-last order-lg-0">
+            <ul>
+                <li><a class="nav-link scrollto " href="#hero">Home</a></li>
+                <li><a class="nav-link scrollto" href="#about">About</a></li>
+                <li><a class="nav-link scrollto" href="#services">Services</a></li>
+                <li><a class="nav-link scrollto" href="#departments">Departments</a></li>
+                <li><a class="nav-link scrollto" href="#doctors">Doctors</a></li>
+                <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
+                    <ul>
+                        <li><a href="#">Drop Down 1</a></li>
+                        <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
+                            <ul>
+                                <li><a href="#">Deep Drop Down 1</a></li>
+                                <li><a href="#">Deep Drop Down 2</a></li>
+                                <li><a href="#">Deep Drop Down 3</a></li>
+                                <li><a href="#">Deep Drop Down 4</a></li>
+                                <li><a href="#">Deep Drop Down 5</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">Drop Down 2</a></li>
+                        <li><a href="#">Drop Down 3</a></li>
+                        <li><a href="#">Drop Down 4</a></li>
+                    </ul>
+                </li>
+                <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+        <a href="#appointment" class="appointment-btn scrollto"><span class="d-none d-md-inline">Make an</span>
+            Appointment</a>
+    </div>
+</header><!-- End Header -->
+
+<main id="main">
+    <!-- ======= Vaccinations Register ======= -->
+      <section class="breadcrumbs">
+        <div class="container register">
+          <div class="row">
+            <div class="col-md-3 register-left">
+              <h3>Welcome</h3>
+              <p>Chào mừng mọi người đến với form đăng ký tiêm chủng, nơi chúng ta cùng hướng tới sức khỏe và an toàn cho tương lai!</p>
+            </div>
+            <div class="col-md-9 register-right">
+              <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                <!-- Thêm thẻ span để chứa giá trị của biến age -->
+                <span class="age" id="ageValue" th:text="${age}"></span>
+
+                <li class="nav-item" th:if="${age < 16}">
+                  <a class="nav-link active" id="tre-em-tab" data-toggle="tab" href="#tre-em" role="tab" aria-controls="tre-em" aria-selected="true">Trẻ em</a>
+                </li>
+                <li class="nav-item" th:if="${age >= 16}">
+                  <a class="nav-link" id="nguoi-lon-tab" data-toggle="tab" href="#nguoi-lon" role="tab" aria-controls="nguoi-lon" aria-selected="false">Người lớn</a>
+                </li>
+              </ul>
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="tre-em" role="tabpanel" aria-labelledby="tre-em-tab" th:if="${age < 16}">
+                  <h3 class="register-heading">Đăng ký tiêm chủng</h3>
+                  <form th:action="@{'/vaccination/register/' + ${vaccination.id}}" method="post" th:object="${vaccinationHistory}" class="vaccination-form">
+                    <div class="row register-form">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="guardianName" class="form-label">Họ và tên người giám hộ *</label>
+                          <input type="text" id="guardianName" name="guardianName" class="form-control" th:field="${patient.guardianName}"/>
+                        </div>
+                        <div class="form-group">
+                          <label for="guardianPhone" class="form-label">Số điện thoại người giám hộ *</label>
+                          <input type="text" id="guardianPhone" name="guardianPhone" th:field="${patient.guardianPhone}" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                          <label for="date" class="form-label">Ngày tiêm:</label>
+                          <input type="text" id="date" name="startTime" th:value="${vaccination.date}" readonly="readonly" class="form-control"/>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="startTime" class="form-label">Thời gian bắt đầu tiêm chủng:</label>
+                          <input type="text" id="startTime" name="startTime" th:value="${vaccination.startTime}" readonly="readonly" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                          <label for="endTime" class="form-label">Thời gian kết thúc tiêm chủng:</label>
+                          <input type="text" id="endTime" name="endTime" th:value="${vaccination.endTime}" readonly="readonly" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                          <label for="vaccination_times" class="form-label">Đợt tiêm:</label>
+                          <input type="text" id="vaccination_times" name="vaccination_times" th:value="${vaccination.times}" readonly="readonly" class="form-control"/>
+                        </div>
+                        <!-- Set patient_id = 1 -->
+                        <input type="hidden" name="patient_id" value="1" />
+                        <input type="submit" value="Đăng ký" class="btnRegister"/>
+                        <a th:href="@{/vaccination/list-vaccination}" class="btnExit">Thoát</a>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div class="tab-pane fade show" id="nguoi-lon" role="tabpanel" aria-labelledby="nguoi-lon-tab" th:if="${age >= 16}">
+                  <h3 class="register-heading">Đăng ký tiêm chủng</h3>
+                  <form th:action="@{'/vaccination/register/' + ${vaccination.id}}" method="post" th:object="${vaccinationHistory}" class="vaccination-form">
+                    <div class="row register-form">
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="guardianName2" class="form-label">Họ và tên người giám hộ:</label>
+                          <input type="text" id="guardianName2" name="guardianName" th:value="${patient.guardianName}" readonly="readonly" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                          <label for="guardianPhone2" class="form-label">Số điện thoại người giám hộ:</label>
+                          <input type="text" id="guardianPhone2" name="guardianPhone" th:value="${patient.guardianPhone}" readonly="readonly" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                          <label for="date2" class="form-label">Ngày tiêm:</label>
+                          <input type="text" id="date2" name="date" th:value="${vaccination.date}" readonly="readonly" class="form-control"/>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group">
+                          <label for="startTime2" class="form-label">Thời gian bắt đầu tiêm chủng:</label>
+                          <input type="text" id="startTime2" name="startTime" th:value="${vaccination.startTime}" readonly="readonly" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                          <label for="endTime2" class="form-label">Thời gian kết thúc tiêm chủng:</label>
+                          <input type="text" id="endTime2" name="endTime" th:value="${vaccination.endTime}" readonly="readonly" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                          <label for="vaccination_times2" class="form-label">Đợt tiêm:</label>
+                          <input type="text" id="vaccination_times2" name="vaccination_times" th:value="${vaccination.times}" readonly="readonly" class="form-control"/>
+                        </div>
+                        <!-- Set patient_id = 1 -->
+                        <input type="hidden" name="patient_id" value="1" />
+                        <input type="submit" value="Đăng ký" class="btnRegister"/>
+                        <a th:href="@{/vaccination/list-vaccination}" class="btnExit">Thoát</a>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </section>
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer">
+    <div class="footer-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 footer-contact">
+                    <h3>Medilab</h3>
+                    <p>
+                        A108 Adam Street <br>
+                        New York, NY 535022<br>
+                        United States <br><br>
+                        <strong>Phone:</strong> +1 5589 55488 55<br>
+                        <strong>Email:</strong> info@example.com<br>
+                    </p>
+                </div>
+                <div class="col-lg-2 col-md-6 footer-links">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 footer-links">
+                    <h4>Our Services</h4>
+                    <ul>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6 footer-newsletter">
+                    <h4>Join Our Newsletter</h4>
+                    <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
+                    <form action="" method="post">
+                        <input type="email" name="email"><input type="submit" value="Subscribe">
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container d-md-flex py-4">
+        <div class="me-md-auto text-center text-md-start">
+            <div class="copyright">
+                &copy; Copyright <strong><span>Medilab</span></strong>. All Rights Reserved
+            </div>
+            <div class="credits">
+                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            </div>
+        </div>
+        <div class="social-links text-center text-md-right pt-3 pt-md-0">
+            <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+            <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+            <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+            <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+            <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+        </div>
+    </div>
+</footer><!-- End Footer -->
+
+<div id="preloader"></div>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+<script th:src="@{/js/vaccination-form-confirm.js}"></script>
+
+<!-- Vendor JS Files -->
+<script th:src="@{/vendor/purecounter/purecounter_vanilla.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/vendor/glightbox/js/glightbox.min.js}"></script>
+<script th:src="@{/vendor/swiper/swiper-bundle.min.js}"></script>
+<script th:src="@{/vendor/php-email-form/validate.js}"></script>
+
+<!-- Template Main JS File -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/js/main.js"></script>
+<script th:src="@{/js/vaccination-form-register.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+<div th:if="${submitSuccess}">
+    <script th:src="@{/js/vaccination-form-notification.js}"></script>
+</div>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>

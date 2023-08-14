@@ -95,7 +95,7 @@ public class VaccinationHistoryController {
 
         //lấy vaccinatinStatusID từ VaccinationHistory
         int vaccinationStatusId = vaccinationHistory.getVaccinationStatus().getId();
-        if(vaccinationStatusId == 4){
+        if(vaccinationStatusId == 2){
             return "/user/patient/view-vaccination-history";
         }else {
             return "/user/patient/view-vaccination-history2";

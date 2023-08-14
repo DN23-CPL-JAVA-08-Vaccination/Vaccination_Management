@@ -6,9 +6,13 @@ import com.example.vaccination_management.entity.VaccinationStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IVaccinationHistoryRepository extends JpaRepository<VaccinationHistory, Integer> {
@@ -49,4 +53,10 @@ public interface IVaccinationHistoryRepository extends JpaRepository<Vaccination
      * Retrieves a paginated list of vaccination history records associated with the provided patient ID.
      */
     public Page<VaccinationHistory> findByPatientId(int patientId, Pageable pageable);
+
+    @Transactional
+    @Modifying
+    @Query(value="INSERT INTO vaccination_history(delete_flag, dosage, end_time, guardian_name, guardian_phone, start_time, vaccination_times, patient_id, vaccination_id, vaccination_status_id) \n" +
+            "VALUES(?1,?2,?3,?4, ?5, ?6, ?7, ?8, ?9, ?10)",nativeQuery = true)
+    void insertVaccinationHTR(Boolean deleteFlag, Double dosage, LocalDateTime endTime, String guardianName, String guardianPhone, LocalDateTime startTime, int vaccinationTimes, int patientId, int vaccinationId, int vaccinationStatusId);
 }

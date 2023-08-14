@@ -18,7 +18,7 @@
         <div class="d-flex">
           <h4 class="col-md-11">
             <span th:text="${vaccinationHistory.vaccinationStatus.name}">
-            </span> tiêm chủng
+            </span> chủng
           </h4>
           <h4 class="col-md-1 text-end">
             <a th:href="${originalUrl}">
@@ -44,15 +44,33 @@
               <td class="col-md-3" th:text="${vaccinationHistory.vaccination.vaccine.name}"></td>
             </tr>
             <tr>
+              <td class="col-md-6">Đăng ký tiêm ngày</td>
+              <td class="col-md-3" th:text="${vaccinationHistory.endTime}"></td>
+            </tr>
+            <tr>
               <td class="col-md-6">Người giám hộ</td>
-              <td class="col-md-3" th:text="${vaccinationHistory.guardianName}"></td>
+              <td class="col-md-3">
+<!--                <span th:if="${vaccinationHistory.guardianName != null}" th:text="${vaccinationHistory.guardianName}"></span>-->
+<!--                <span th:unless="${vaccinationHistory.guardianName != null}">Không có</span>-->
+                <span th:if="${vaccinationHistory.guardianName != null && vaccinationHistory.guardianName != ''}" th:text="${vaccinationHistory.guardianName}"></span>
+                <span th:unless="${vaccinationHistory.guardianName != null && vaccinationHistory.guardianName != ''}">Không có</span>
+              </td>
             </tr>
             <tr>
               <td class="col-md-6">Số điện thoại người giám hộ</td>
-              <td class="col-md-3" th:text="${vaccinationHistory.guardianPhone}"></td>
+              <td class="col-md-3">
+<!--                <span th:if="${vaccinationHistory.guardianPhone != null}" th:text="${vaccinationHistory.guardianPhone}"></span>-->
+<!--                <span th:unless="${vaccinationHistory.guardianPhone != null}">Không có</span>-->
+                <span th:if="${vaccinationHistory.guardianPhone != null && vaccinationHistory.guardianPhone != ''}" th:text="${vaccinationHistory.guardianPhone}"></span>
+                <span th:unless="${vaccinationHistory.guardianPhone != null && vaccinationHistory.guardianPhone != ''}">Không có</span>
+              </td>
             </tr>
             <tr>
-              <td class="col-md-6">Đăng ký đợt tiêm thứ</td>
+              <td class="col-md-6">Liều lượng</td>
+              <td class="col-md-3" th:text="${vaccinationHistory.dosage + ' ml'}"></td>
+            </tr>
+            <tr>
+              <td class="col-md-6">Lần tiêm thứ</td>
               <td class="col-md-3" th:text="${vaccinationHistory.vaccinationTimes}"></td>
             </tr>
             <tr>
@@ -63,10 +81,6 @@
               <td class="col-md-6">Địa điểm tiêm</td>
               <td class="col-md-3" th:text="${vaccinationHistory.vaccination.location.name}"></td>
             </tr>
-            <tr>
-              <td class="col-md-6">Ngày tiêm</td>
-              <td class="col-md-3" th:text="${vaccinationHistory.startTime}"></td>
-            </tr>
             </tbody>
           </table>
         </div>
@@ -75,15 +89,14 @@
           <div class="receipt-header receipt-header-mid receipt-footer">
             <div class="col-xs-8 col-sm-8 col-md-8 text-left">
               <div class="receipt-right">
-                <p><b>Date :</b> 15 Aug 2016</p>
-                <h5 style="color: rgb(140, 140, 140);">Thank you for your business!</h5>
+                <p><b>Ngày đăng ký :</b> <span th:text="${vaccinationHistory.startTime}"></span></p>
               </div>
             </div>
-            <div class="col-xs-4 col-sm-4 col-md-4">
-              <div class="receipt-left">
-                <h1>Signature</h1>
-              </div>
-            </div>
+<!--            <div class="col-xs-4 col-sm-4 col-md-4">-->
+<!--              <div class="receipt-left">-->
+<!--                <h5 style="color: rgb(140, 140, 140);">Thank you for watching!</h5>-->
+<!--              </div>-->
+<!--            </div>-->
           </div>
         </div>
 

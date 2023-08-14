@@ -1,3 +1,4 @@
+console.log('Hàm callback được thực thi');
 document.addEventListener('DOMContentLoaded', function () {
     Swal.fire({
         icon: 'success',
