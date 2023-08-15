@@ -1,5 +1,4 @@
-package com.example.vaccination_management.config;
-
+package com.example.vaccination_management.Config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

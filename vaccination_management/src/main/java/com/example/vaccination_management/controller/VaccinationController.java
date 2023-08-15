@@ -38,10 +38,13 @@ import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
 
 import static com.example.vaccination_management.utils.DateUtils.calculateAge;
 
 import java.sql.Timestamp;
+
 
 @RequestMapping("/")
 @Controller
@@ -67,7 +70,19 @@ public class VaccinationController {
     private Validation validation;
 
     @Autowired
-    private IVaccinationService iVaccinationService;
+    IVaccinationService iVaccinationService;
+
+    @Autowired
+    IInventoryService iInventoryService;
+
+    @Autowired
+    IEmailService iEmailService;
+
+    @Autowired
+    private AccountDetailService accountDetailService;
+
+    @Autowired
+    private IEmployeeService employeeService;
 
     @Autowired
     private IPatientService patientService;
@@ -85,9 +100,7 @@ public class VaccinationController {
     private VaccinationValidator vaccinationValidator;
 
     @Autowired
-    private AccountDetailService accountDetailService;
-
-    @Autowired IEmailService iEmail;
+    IEmailService iEmail;
 
     /**
      * VuongVV
@@ -222,25 +235,25 @@ public class VaccinationController {
      * send Email vaccination notification by location of Vaccination , admin after login
      */
     @GetMapping("/admin/endMailAddress/{id}")
-    public String sendEmailAdress(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes){
-        Vaccination vaccination=iVaccinationService.finById(id);
+    public String sendEmailAdress(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+        Vaccination vaccination = iVaccinationService.finById(id);
         Boolean isEmail = iEmail.SendEmailTBByLocation(vaccination);
-        if(isEmail){
+        if (isEmail) {
             redirectAttributes.addFlashAttribute("submitSuccess", true);
-            redirectAttributes.addFlashAttribute("messageEm","Email đã gửi thành công khu vực "+vaccination.getLocation().getName());
-        }else{
-            redirectAttributes.addFlashAttribute("messageEm","Gửi thất bại không tìm thấy email");
+            redirectAttributes.addFlashAttribute("messageEm", "Email đã gửi thành công khu vực " + vaccination.getLocation().getName());
+        } else {
+            redirectAttributes.addFlashAttribute("messageEm", "Gửi thất bại không tìm thấy email");
         }
-
 
 
         return "redirect:/admin/ListVaccination";
     }
+
     @GetMapping("/admin/softDeleteVaccination/{id}")
-    public String softDeleteVaccination(@PathVariable int id,RedirectAttributes redirectAttributes) {
+    public String softDeleteVaccination(@PathVariable int id, RedirectAttributes redirectAttributes) {
         iVaccinationService.softDeleteVaccination(id);
         redirectAttributes.addFlashAttribute("submitSuccess", true);
-        redirectAttributes.addFlashAttribute("messageEm","Bỏ vào thùng rác thành công ?");
+        redirectAttributes.addFlashAttribute("messageEm", "Bỏ vào thùng rác thành công ?");
 
         return "redirect:/admin/ListVaccination"; // Thay đổi đường dẫn tương ứng
     }
@@ -267,25 +280,46 @@ public class VaccinationController {
     @GetMapping("/doctor/vaccination/view")
     public String schedule(Model model, @RequestParam int id) {
         IVaccinationHistoryDTO iVacc = iVaccinationHistoryService.getVaccinationHistoryByID(id);
+
+
         VaccinationHistoryDTO vaccinationHistoryDTO = new VaccinationHistoryDTO();
         vaccinationHistoryDTO.setId(iVacc.getId());
         vaccinationHistoryDTO.setPatientName(iVacc.getPatientName());
         vaccinationHistoryDTO.setPatientBirth(iVacc.getBirthFormat());
         vaccinationHistoryDTO.setVaccinationDesc(iVacc.getVaccinationDesc());
         vaccinationHistoryDTO.setVaccineName(iVacc.getVaccineName());
+        vaccinationHistoryDTO.setVaccineId(iVacc.getVaccineId());
         vaccinationHistoryDTO.setRegisTime(iVacc.getRegisTimeFormatted());
         vaccinationHistoryDTO.setVaccinationTimes(iVacc.getVaccinationTimes());
-        vaccinationHistoryDTO.setEmployeeName(iVacc.getEmployeeName());
-        vaccinationHistoryDTO.setEmployeePhone(iVacc.getEmployeePhone());
+
+        Integer employeeId = iVacc.getEmployeeId();
+        if (employeeId == null) {
+            String username = accountDetailService.getCurrentUserName();
+            InfoEmployeeAccountDTO employeeDTO = employeeService.getInforByUsername(username);
+            model.addAttribute("employeeDTO", employeeDTO);
+            vaccinationHistoryDTO.setEmployeeName(employeeDTO.getName());
+            vaccinationHistoryDTO.setEmployeePhone(Integer.valueOf(employeeDTO.getPhone()));
+            model.addAttribute("employee", employeeDTO);
+
+        } else {
+            InforEmployeeDTO employeeDTO = employeeService.getInforById(iVacc.getEmployeeId());
+            vaccinationHistoryDTO.setEmployeeName(employeeDTO.getName());
+            vaccinationHistoryDTO.setEmployeePhone(Integer.valueOf(employeeDTO.getPhone()));
+            model.addAttribute("employee", employeeDTO);
+        }
+
+
         vaccinationHistoryDTO.setGuardianName(iVacc.getGuardianName());
         vaccinationHistoryDTO.setGuardianPhone(iVacc.getGuardianPhone());
         vaccinationHistoryDTO.setPreStatus(iVacc.getPreStatus());
         vaccinationHistoryDTO.setStatus(iVacc.getStatus());
-        vaccinationHistoryDTO.setLastTime(iVacc.getRegisTimeFormatted());
+        vaccinationHistoryDTO.setLastTime(iVacc.getLastTimeFormatted());
         vaccinationHistoryDTO.setDosage(iVacc.getDosage());
         vaccinationHistoryDTO.setDuration(iVacc.getDuration());
         vaccinationHistoryDTO.setAgePatient(iVacc.getAgePatient());
+        vaccinationHistoryDTO.setEmailPatient(iVacc.getEmailPatient());
         boolean hasErrors = false;
+
         model.addAttribute("errorsCheck", hasErrors);
         model.addAttribute("vaccinationdetail", iVacc);
         model.addAttribute("vaccinationObject", vaccinationHistoryDTO);
@@ -296,6 +330,7 @@ public class VaccinationController {
      * QuangVT
      * update information of accination history by ID,
      */
+    @Transactional
     @PostMapping("/doctor/vaccination/view")
     public String update(@Validated @ModelAttribute("vaccinationObject") VaccinationHistoryDTO
                                  vaccinationHistoryDTO,
@@ -309,6 +344,10 @@ public class VaccinationController {
             return "doctors/detailhistory";
 
         }
+        String username = accountDetailService.getCurrentUserName();
+        InfoEmployeeAccountDTO employeeDTO = employeeService.getInforByUsername(username);
+        Employee employee = employeeService.getEmployeeById(employeeDTO.getId());
+        vaccinationHistory.setEmployee(employee);
         vaccinationHistory.setGuardianName(vaccinationHistoryDTO.getGuardianName());
         vaccinationHistory.setGuardianPhone(vaccinationHistoryDTO.getGuardianPhone());
         vaccinationHistory.setPreStatus(vaccinationHistoryDTO.getPreStatus());
@@ -317,6 +356,20 @@ public class VaccinationController {
         Timestamp timestamp = Timestamp.valueOf(now);
         vaccinationHistory.setEndTime(String.valueOf(timestamp));
         iVaccinationHistoryService.save(vaccinationHistory);
+
+        Integer vaccine_id = vaccinationHistoryDTO.getVaccineId();
+        iInventoryService.updateInventoryQuantity(vaccine_id);
+
+        if (vaccinationHistory.getVaccinationStatus().getId() == 2) {
+            IVaccinationHistoryDTO iVaccinationHistoryDTO = iVaccinationHistoryService.getVaccinationHistoryByID(vaccinationHistoryDTO.getId());
+            Boolean isEmail = iEmailService.SendEmailCompleted(iVaccinationHistoryDTO);
+            if (isEmail) {
+                model.addAttribute("msg", true);
+            } else {
+                model.addAttribute("msg", false);
+            }
+        }
+
         redirectAttributes.addFlashAttribute("submitCheck", true);
         return "redirect:/doctor/history";
     }
@@ -466,37 +519,37 @@ public class VaccinationController {
         return "/user/vaccination/vaccination-form-register";
     }
 
-     /**
-         * LoanHTP
-         * Displays the vaccination registration form for a specific vaccination.
-         */
-     @PostMapping("/register")
-     public String registerVaccination(@ModelAttribute("vaccinationHistoryDTO")
-                                               CreateVaccinationHistoryDTO vaccinationHistoryDTO,
-                                       Model model,
-                                       BindingResult bindingResult,
-                                       RedirectAttributes redirectAttributes){
+    /**
+     * LoanHTP
+     * Displays the vaccination registration form for a specific vaccination.
+     */
+    @PostMapping("/register")
+    public String registerVaccination(@ModelAttribute("vaccinationHistoryDTO")
+                                              CreateVaccinationHistoryDTO vaccinationHistoryDTO,
+                                      Model model,
+                                      BindingResult bindingResult,
+                                      RedirectAttributes redirectAttributes) {
 //        Patient patientGet = patientService.findPatientById(2);
-         String username = accountDetailService.getCurrentUserName();
-         Patient patientGet = patientService.findPatientByUsername(username);
-         vaccinationHistoryDTO.setPatient(patientGet);
-         LocalDateTime endTime= LocalDateTime.parse(vaccinationHistoryDTO.getEndTime());
-         LocalDateTime startTime = LocalDateTime.now();
-         int idStatus= 1;
-         Vaccination vaccination = iVaccinationService.findVaccinationById(vaccinationHistoryDTO.getVaccinationId());
-         vaccinationHistoryDTO.setVaccination(vaccination);
-         int age = calculateAge(patientGet.getBirthday());
-         model.addAttribute("age", age);
-         vaccinationValidator.validate(vaccinationHistoryDTO,bindingResult);
-         if(bindingResult.hasErrors()){
-             return "/user/vaccination/vaccination-form-register";
-         }
-         iVaccinationHistory.insertVaccinationHTR(false, vaccinationHistoryDTO.getDosage(), endTime, vaccinationHistoryDTO.getGuardianName(), vaccinationHistoryDTO.getGuardianPhone(), startTime, vaccinationHistoryDTO.getVaccinationTimes(), patientGet.getId(), vaccinationHistoryDTO.getVaccinationId(), idStatus);
+        String username = accountDetailService.getCurrentUserName();
+        Patient patientGet = patientService.findPatientByUsername(username);
+        vaccinationHistoryDTO.setPatient(patientGet);
+        LocalDateTime endTime = LocalDateTime.parse(vaccinationHistoryDTO.getEndTime());
+        LocalDateTime startTime = LocalDateTime.now();
+        int idStatus = 1;
+        Vaccination vaccination = iVaccinationService.findVaccinationById(vaccinationHistoryDTO.getVaccinationId());
+        vaccinationHistoryDTO.setVaccination(vaccination);
+        int age = calculateAge(patientGet.getBirthday());
+        model.addAttribute("age", age);
+        vaccinationValidator.validate(vaccinationHistoryDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "/user/vaccination/vaccination-form-register";
+        }
+        iVaccinationHistory.insertVaccinationHTR(false, vaccinationHistoryDTO.getDosage(), endTime, vaccinationHistoryDTO.getGuardianName(), vaccinationHistoryDTO.getGuardianPhone(), startTime, vaccinationHistoryDTO.getVaccinationTimes(), patientGet.getId(), vaccinationHistoryDTO.getVaccinationId(), idStatus);
 
-         // Thiết lập thuộc tính "submitSuccess" trong RedirectAttributes
-         redirectAttributes.addFlashAttribute("submitSuccess", true);
-         return "redirect:/vaccination/form-vaccination/" + vaccinationHistoryDTO.getVaccinationId();
+        // Thiết lập thuộc tính "submitSuccess" trong RedirectAttributes
+        redirectAttributes.addFlashAttribute("submitSuccess", true);
+        return "redirect:/vaccination/form-vaccination/" + vaccinationHistoryDTO.getVaccinationId();
 //        return "/user/vaccination/vaccination-form-register";
-     }
-
     }
+
+}

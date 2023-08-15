@@ -115,6 +115,7 @@ public class InventoryService implements IInventoryService {
         iInventoryRepository.deleteById(inventoryID);
     }
 
+
     @Override
     public void deleteInventory(int inventoryID) {
         Optional<Inventory> inventoryOptional = iInventoryRepository.findById(inventoryID);
@@ -127,4 +128,15 @@ public class InventoryService implements IInventoryService {
             iInventoryRepository.save(inventory);
         }
     }
+
+    /**
+     * QuangVt
+     * Update inventory quantity vaccine when completed vaccination
+     */
+    @Override
+    public void updateInventoryQuantity(Integer vaccine_id){
+        iInventoryRepository.updateInventoryQuantity(vaccine_id);
+    }
+
+
 }

@@ -19,10 +19,10 @@
   <div id="layoutSidenav_content">
     <main>
       <div class="container-fluid px-4">
-        <h1 class="mt-4">Patient</h1>
+        <h1 class="mt-4">Bệnh nhân</h1>
         <ol class="breadcrumb mb-4">
           <li class="breadcrumb-item"><a th:href="@{/}">Dashboard</a></li>
-          <li class="breadcrumb-item active">Patient</li>
+          <li class="breadcrumb-item active">Bệnh nhân</li>
         </ol>
         <!--        <div class="card mb-4">-->
         <!--          -->
@@ -30,7 +30,7 @@
         <div class="card mb-4">
           <div class="card-header">
             <i class="fas fa-table me-1"></i>
-            Patient
+            Bệnh nhân
           </div>
           <div class="card-body">
             <form  th:action="@{/doctor/patient}" method="get" class="col-3 ms-auto">
@@ -44,12 +44,12 @@
               <thead>
               <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>Birthday</th>
-                <th>PhoneNumber</th>
-                <th>Address</th>
-                <th>Details</th>
+                <th>Họ tên</th>
+                <th>Giới tính</th>
+                <th>Ngày sinh</th>
+                <th>Số điện thoại</th>
+                <th>Địa chỉ</th>
+                <th>Chi tiết</th>
               </tr>
               </thead>
 

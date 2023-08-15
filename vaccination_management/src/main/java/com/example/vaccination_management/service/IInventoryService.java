@@ -50,4 +50,10 @@ public interface IInventoryService {
     public void destroyInventory(int inventoryID) throws InventoryNotFoundException;
 
     public void deleteInventory(int inventoryID);
+
+    /**
+     * QuangVt
+     * Update inventory quantity vaccine when completed vaccination
+     */
+    void updateInventoryQuantity(Integer vaccine_id);
 }

@@ -19,6 +19,20 @@ import javax.mail.internet.MimeMessage;
 import com.example.vaccination_management.dto.AccountDTO;
 import com.example.vaccination_management.dto.EmailDTO;
 import com.example.vaccination_management.dto.IAccountDetailDTO;
+
+import com.example.vaccination_management.dto.IVaccinationHistoryDTO;
+import com.example.vaccination_management.dto.InforEmployeeDTO;
+import com.example.vaccination_management.service.IEmailService;
+import com.example.vaccination_management.service.IEmployeeService;
+
+import com.example.vaccination_management.dto.AccountDTO;
+import com.example.vaccination_management.dto.IAccountDetailDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
@@ -29,32 +43,27 @@ import java.util.Map;
 
 @Service
 public class EmailService implements IEmailService {
-
     @Autowired
     private JavaMailSender mailSender;
 
     @Autowired
     private SpringTemplateEngine templateEngine;
-    //test email
+
     @Autowired
     private IAccountRepository iAccountRepository;
 
     @Autowired
     private IPatientRepository iPatientRepository;
 
-
-//    @Autowired
-//    public EmailService(JavaMailSender mailSender) {
-//        this.mailSender = mailSender;
-//    }
-
-
+    @Autowired
+    private IEmployeeService employeeService;
 
 
     /**
      * TLINH
      * set html interface for email
      */
+    @Override
     public void sendHtmlMail(EmailDTO emailDTO, String templateName) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -79,47 +88,48 @@ public class EmailService implements IEmailService {
         }
         return matchingPatientNames;
     }
+
     @Override
-  public Boolean SendEmailTBByLocation(Vaccination vaccination){
-      try {
-          EmailDTO emailDTO =new EmailDTO();
-          if (vaccination != null) {
-          if (!getPatientsWithMatchingLocationName(vaccination).isEmpty()) {
-              for (String account : getPatientsWithMatchingLocationName(vaccination)) {
-                  emailDTO.setTo(account);
-              }
-          }
-      }
+    public Boolean SendEmailTBByLocation(Vaccination vaccination) {
+        try {
+            EmailDTO emailDTO = new EmailDTO();
+            if (vaccination != null) {
+                if (!getPatientsWithMatchingLocationName(vaccination).isEmpty()) {
+                    for (String account : getPatientsWithMatchingLocationName(vaccination)) {
+                        emailDTO.setTo(account);
+                    }
+                }
+            }
             emailDTO.setSubject(vaccination.getDescription());
             Map<String, Object> props = new HashMap<>();
             props.put("description", vaccination.getDescription());
 
-          props.put("vaccinationType", vaccination.getVaccinationType().getName());
-          props.put("vaccineName", vaccination.getVaccine().getName());
-          props.put("times", vaccination.getTimes());
-          props.put("age", vaccination.getVaccine().getAge());
+            props.put("vaccinationType", vaccination.getVaccinationType().getName());
+            props.put("vaccineName", vaccination.getVaccine().getName());
+            props.put("times", vaccination.getTimes());
+            props.put("age", vaccination.getVaccine().getAge());
 
-          props.put("startTime", vaccination.getStartTime());
-          props.put("endTime", vaccination.getEndTime());
-          props.put("duration", vaccination.getDuration());
-          props.put("locationDetail", vaccination.getLocation().getLocationDetail());
-          props.put("registrationLink", "dangkitiemchung/" + vaccination.getId());
+            props.put("startTime", vaccination.getStartTime());
+            props.put("endTime", vaccination.getEndTime());
+            props.put("duration", vaccination.getDuration());
+            props.put("locationDetail", vaccination.getLocation().getLocationDetail());
+            props.put("registrationLink", "dangkitiemchung/" + vaccination.getId());
             emailDTO.setProps(props);
             sendHtmlMail(emailDTO, "/admin/vaccination/notification_email");
-      return true;
-      } catch (MessagingException exp) {
+            return true;
+        } catch (MessagingException exp) {
             exp.printStackTrace();
         }
-            return false;
-  }
+        return false;
+    }
 
     /**
      * TLINH
      * send an account activation email with the objects passed to the email form
      */
+
     @Override
     public Boolean SendEmail(IAccountDetailDTO detailDTO) {
-
         try {
             EmailDTO emailDTO = new EmailDTO();
             emailDTO.setTo(detailDTO.getEmail());
@@ -135,7 +145,8 @@ public class EmailService implements IEmailService {
             props.put("guardianName", detailDTO.getPatientGuardianName());
             props.put("guardianPhone", detailDTO.getPatientGuardianPhone());
             emailDTO.setProps(props);
-            sendHtmlMail(emailDTO, "admin/Email/form_email");
+            sendHtmlMail(emailDTO, "Admin/Email/form_email");
+
             return true;
         } catch (MessagingException exp) {
             exp.printStackTrace();
@@ -143,6 +154,39 @@ public class EmailService implements IEmailService {
         return false;
     }
 
+    @Override
+    public Boolean SendEmailCompleted(IVaccinationHistoryDTO ivaccinationHistoryDTO) {
+
+        try {
+            EmailDTO emailDTO = new EmailDTO();
+            InforEmployeeDTO employeeDTO = employeeService.getInforById(ivaccinationHistoryDTO.getEmployeeId());
+
+            emailDTO.setTo(ivaccinationHistoryDTO.getEmailPatient());
+            emailDTO.setSubject("THÔNG BÁO TIÊM CHỦNG THÀNH CÔNG");
+            Map<String, Object> props = new HashMap<>();
+            props.put("patientName", ivaccinationHistoryDTO.getPatientName());
+            props.put("birthday", ivaccinationHistoryDTO.getPatientBirth());
+            props.put("vaccination", ivaccinationHistoryDTO.getVaccinationDesc());
+            props.put("vaccine", ivaccinationHistoryDTO.getVaccineName());
+            props.put("dosage", ivaccinationHistoryDTO.getDosage());
+            props.put("duration", ivaccinationHistoryDTO.getDuration());
+            props.put("times", ivaccinationHistoryDTO.getVaccinationTimes());
+            props.put("regis", ivaccinationHistoryDTO.getRegisTimeFormatted());
+            props.put("employee", employeeDTO.getName());
+            props.put("employeePhone", employeeDTO.getPhone());
+            props.put("guardianName", ivaccinationHistoryDTO.getGuardianName());
+            props.put("guardianPhone", ivaccinationHistoryDTO.getGuardianPhone());
+            props.put("preStatus", ivaccinationHistoryDTO.getPreStatus());
+            props.put("status", ivaccinationHistoryDTO.getStatus());
+            props.put("lastTime", ivaccinationHistoryDTO.getLastTimeFormatted());
+            emailDTO.setProps(props);
+            sendHtmlMail(emailDTO, "Admin/Email/completed_form");
+            return true;
+        } catch (MessagingException exp) {
+            exp.printStackTrace();
+        }
+        return false;
+    }
 
     /**
      * TLINH
@@ -196,6 +240,7 @@ public class EmailService implements IEmailService {
         return false;
     }
 
+
     /**
      * TLINH
      * Hide email when checking password reset
@@ -224,4 +269,3 @@ public class EmailService implements IEmailService {
     }
 
 }
-

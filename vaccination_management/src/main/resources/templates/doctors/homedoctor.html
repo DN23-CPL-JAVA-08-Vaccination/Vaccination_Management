@@ -27,7 +27,7 @@
                         <div class="card  rounded-3 card-custom card-custom-1 ">
                             <div class="card-body text-black ">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="card-title"> Today </h5>
+                                    <h5 class="card-title"> Hôm nay </h5>
                                     <div class="icon-custom icon-custom-1">
                                         <i class="fa-regular fa-sun  icon-item"  ></i>
                                     </div>
@@ -44,14 +44,14 @@
                         <div class="card  rounded-3   card-custom card-custom-2 ">
                             <div class="card-body text-black ">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="card-title"> Vaccinations </h5>
+                                    <h5 class="card-title"> Tiêm chủng </h5>
                                     <div class="icon-custom icon-custom-2">
                                         <i class="fa-regular fa-calendar-days icon-item" ></i>
                                     </div>
                                 </div>
                                 <span th:text="${countVacc.getCompleteSchedule() != null ? countVacc.getCompleteSchedule() : 0 }"></span>
 
-                                <span class="card-text mb-1" th:text="${ ' / ' + countVacc.getAllSchedule() + ' case completed today.'}">
+                                <span class="card-text mb-1" th:text="${ ' / ' + countVacc.getAllSchedule() + ' ca đã hoàn thành hôm nay.'}">
                                 </span>
                                 <p class="card-text text-primary mt-1 " >
                                   Fighting!
@@ -63,7 +63,7 @@
                         <div class="card  rounded-3 card-custom card-custom-3 ">
                             <div class="card-body text-black ">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="card-title"> Total Vaccines </h5>
+                                    <h5 class="card-title"> Tất cả Vắc xin  </h5>
                                     <div class="icon-custom icon-custom-3">
                                         <i class="fa-solid fa-syringe icon-item" ></i>
                                     </div>
@@ -79,7 +79,7 @@
 
                     <div class="col-12 ">
                         <div class="d-flex justify-content-between align-items-center p-2 chart-custom ">
-                            <h5> Statistical chart </h5>
+                            <h5> Biểu đồ thống kê </h5>
                             <div class="d-flex justify-content-between align-items-center ">
 
                                 <select id="yearSelect" onchange="getChartData()" class="form-select me-xxl-5" aria-label="Default select example" >
@@ -121,7 +121,7 @@
         data: {
             labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug" , "Sep", "Oct", "Nov","Dev"],
             datasets: [{
-                label: 'Vaccinations ' + yearselect,
+                label: 'Số ca tiêm chủng ' + yearselect,
                 data:  /*[[${chartList}]]*/ [],
 
 
@@ -163,7 +163,8 @@
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
+
                     }
                 }]
             }

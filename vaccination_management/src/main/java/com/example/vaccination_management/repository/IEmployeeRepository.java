@@ -114,7 +114,8 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query(value = " UPDATE employee SET delete_flag = 1 WHERE (id = ?);", nativeQuery = true)
     void deleteEmployee(Integer id);
 
-
+    @Override
+    Employee getById(Integer integer);
 }
 
 

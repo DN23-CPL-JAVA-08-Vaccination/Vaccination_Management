@@ -17,6 +17,7 @@ public interface IVaccinationHistoryDTO {
     String getVaccinationDesc();
 
     String getVaccineName();
+    Integer getVaccineId();
 
     String getRegisTime();
 
@@ -24,8 +25,6 @@ public interface IVaccinationHistoryDTO {
 
     Integer getVaccinationTimes();
 
-    String getEmployeeName();
-    Integer getEmployeePhone();
 
     Integer getStatus();
 
@@ -36,6 +35,8 @@ public interface IVaccinationHistoryDTO {
     Double getDosage();
     String getDuration();
     Integer getAgePatient();
+    String getEmailPatient();
+    Integer getEmployeeId();
     Integer getCompleteSchedule();
     Integer getAllSchedule();
 

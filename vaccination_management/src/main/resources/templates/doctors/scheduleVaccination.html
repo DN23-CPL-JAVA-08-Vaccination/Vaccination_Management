@@ -20,16 +20,16 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Vaccination Schedule</h1>
+                <h1 class="mt-4">Lịch tiêm chủng hôm nay</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a th:href="@{/}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Schedule</li>
+                    <li class="breadcrumb-item active">Lịch</li>
                 </ol>
 
                 <div class="card mb-4">
                     <div class="card-header bg-gradient">
                         <i class="fas fa-table me-1"></i>
-                        Vaccination
+                        Tiêm chủng
                     </div>
                     <div class="card-body">
                         <form  th:action="@{/doctor/vaccination}" method="get" class="col-3 ms-auto">
@@ -43,13 +43,13 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
-                                <th>BirthDay</th>
-                                <th>Vaccination</th>
-                                <th>Vaccine</th>
-                                <th>RegisTime</th>
-                                <th>Times</th>
-                                <th>View</th>
+                                <th>Họ tên</th>
+                                <th>Sinh nhật</th>
+                                <th>Sự kiện TC</th>
+                                <th>Vắc xin</th>
+                                <th>Thời gian đăng ký</th>
+                                <th>Lần tiêm</th>
+                                <th>Xem chi tiết</th>
                             </tr>
                             </thead>
 
