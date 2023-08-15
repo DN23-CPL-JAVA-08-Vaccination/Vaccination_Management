@@ -113,10 +113,16 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Integer> {
     @Modifying
     @Query(value = " UPDATE employee SET delete_flag = 1 WHERE (id = ?);", nativeQuery = true)
     void deleteEmployee(Integer id);
-
+    /**
+     * Quangvt
+     * get Employee by id
+     */
     @Override
     Employee getById(Integer integer);
-
+    /**
+     * Quangvt
+     * count Employee
+     */
     @Query(value = "select count(e.id) from employee e \n" +
             "where e.delete_flag = 0 AND e.account_id IS NOT NULL;", nativeQuery = true)
     long countEmployee();
