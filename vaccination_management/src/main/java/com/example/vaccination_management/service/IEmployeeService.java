@@ -85,4 +85,6 @@ public interface IEmployeeService {
 
     Employee getEmployeeById(Integer id);
 
+    long countAllEmployee();
+
 }

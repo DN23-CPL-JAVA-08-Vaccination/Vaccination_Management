@@ -215,6 +215,11 @@ public class PatientService implements IPatientService {
 
     }
 
+    @Override
+    public  long countAllPatient(){
+        return iPatientRepository.countPatient();
+    }
+
 }
 
 

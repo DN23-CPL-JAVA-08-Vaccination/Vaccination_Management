@@ -218,8 +218,8 @@ public class AccountService implements IAccountService {
         return iAccountRP.getTotalAllAccount(roleId, userName);
     }
 
-
-
-
-
+    @Override
+    public long countAllAccount(){
+        return iAccountRP.countTotalAccount();
+    }
 }

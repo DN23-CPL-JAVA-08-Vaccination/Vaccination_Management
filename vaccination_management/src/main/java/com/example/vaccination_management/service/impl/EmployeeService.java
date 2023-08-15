@@ -276,4 +276,9 @@ public class EmployeeService implements IEmployeeService {
 
     }
 
+    @Override
+    public  long countAllEmployee(){
+        return employeeRepository.countEmployee();
+    };
+
 }

@@ -179,11 +179,12 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
      * TLINH
      * Count the number of id by username
      */
-    @Query(value = "SELECT count(a.id) FROM account a\n" +
+    @Query(value = "SELECT count(a.id) FROM account a \n" +
             "\tJOIN account_role ar ON ar.account_id = a.id \n" +
             "\tWHERE ar.role_id = ?1 AND a.username LIKE ?2", nativeQuery = true)
     long getTotalAllAccount(Integer roleId, String userName);
 
-
+    @Query(value = "SELECT count(account.id) FROM account WHERE account.enable_flag = 1 ;", nativeQuery = true)
+    long countTotalAccount();
 
 }

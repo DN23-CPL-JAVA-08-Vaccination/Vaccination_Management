@@ -72,4 +72,6 @@ public interface IAccountService {
 
     long getTotalAllAccount(Integer roleId, String userName);
 
+    long countAllAccount();
+
 }

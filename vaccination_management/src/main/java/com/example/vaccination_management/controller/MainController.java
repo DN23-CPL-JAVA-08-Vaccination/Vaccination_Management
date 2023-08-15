@@ -6,10 +6,7 @@ import com.example.vaccination_management.dto.InfoEmployeeAccountDTO;
 import com.example.vaccination_management.dto.InforEmployeeDTO;
 import com.example.vaccination_management.dto.InforPatientDTO;
 import com.example.vaccination_management.security.AccountDetailService;
-import com.example.vaccination_management.service.IEmployeeService;
-import com.example.vaccination_management.service.IPatientService;
-import com.example.vaccination_management.service.IVaccinationHistoryService;
-import com.example.vaccination_management.service.IVaccineService;
+import com.example.vaccination_management.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -39,8 +36,12 @@ public class MainController {
 
     @Autowired
     IVaccinationHistoryService iVaccinationHistoryService;
+
     @Autowired
     IVaccineService iVaccineService;
+
+    @Autowired
+    IAccountService accountService;
     private String getDefaultYear() {
         return String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
     }
@@ -53,10 +54,36 @@ public class MainController {
         return "redirect:/vaccine/list-vaccine";
     }
 
+    //    @GetMapping("/admin")
+//    public ModelAndView homeAdminPage() {
+//        ModelAndView modelAndView = new ModelAndView("Admin/home_admin");
+//        return modelAndView;
+//    }
+
     @GetMapping("/admin")
-    public ModelAndView homeAdminPage() {
-        ModelAndView modelAndView = new ModelAndView("Admin/home_admin");
-        return modelAndView;
+    public String homeAdmin(Model model, @RequestParam(defaultValue = "") String year) {
+        LocalDate today = LocalDate.now();
+        model.addAttribute("today", today);
+
+        IVaccinationHistoryDTO ivacci = iVaccinationHistoryService.countVaccination();
+        model.addAttribute("countVacc", ivacci);
+        long count = iVaccineService.count();
+        if (year.isEmpty()) {
+            year = getDefaultYear();
+        }
+        List<Integer> listChart = iVaccinationHistoryService.getDataForChart(year);
+
+        long countPatient = patientService.countAllPatient();
+        long countEmployee = employeeService.countAllEmployee();
+        long countAccount = accountService.countAllAccount();
+
+        model.addAttribute("chartList", listChart);
+        model.addAttribute("countVaccine", count);
+        model.addAttribute("countPatient", countPatient);
+        model.addAttribute("countEmployee", countEmployee);
+        model.addAttribute("countAccount", countAccount);
+
+        return "Admin/home_admin";
     }
 
     /**

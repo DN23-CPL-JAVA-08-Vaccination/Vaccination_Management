@@ -162,7 +162,8 @@ public interface IPatientRepository extends JpaRepository<Patient, Integer> {
     @Query(value = "SELECT count(patient.id) FROM patient WHERE (health_insurance LIKE %?1% OR name LIKE %?2% OR phone LIKE %?3%) AND account_id IS NULL", nativeQuery = true)
     long getTotalPatientAccountNull(String healthInsurance, String name, String phone);
 
-
+    @Query(value = "SELECT count(patient.id) FROM patient WHERE detele_flag = 0 AND account_id IS NOT NULL", nativeQuery = true)
+    long countPatient();
 }
 
 

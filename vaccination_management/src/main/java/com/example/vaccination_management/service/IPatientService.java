@@ -80,4 +80,6 @@ public interface IPatientService {
 
     long getTotalPatientAccountNull(String healthInsurance, String name, String phone);
 
+    long countAllPatient();
+
 }

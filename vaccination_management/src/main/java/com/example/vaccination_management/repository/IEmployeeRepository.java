@@ -116,6 +116,11 @@ public interface IEmployeeRepository extends JpaRepository<Employee, Integer> {
 
     @Override
     Employee getById(Integer integer);
+    
+    @Query(value = "select count(e.id) from employee e \n" +
+            "where e.delete_flag = 0 AND e.account_id IS NOT NULL;", nativeQuery = true)
+    long countEmployee();
+
 }
 
 
