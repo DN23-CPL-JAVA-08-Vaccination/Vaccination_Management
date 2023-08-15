@@ -1,9 +1,6 @@
 package com.example.vaccination_management.service;
 
-import com.example.vaccination_management.dto.EmployeeCreateDTO;
-import com.example.vaccination_management.dto.EmployeeListDTO;
-import com.example.vaccination_management.dto.InfoEmployeeAccountDTO;
-import com.example.vaccination_management.dto.InforEmployeeDTO;
+import com.example.vaccination_management.dto.*;
 import com.example.vaccination_management.entity.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -87,4 +84,5 @@ public interface IEmployeeService {
     long getTotalEmployee(String nameSearch);
 
     Employee getEmployeeById(Integer id);
+
 }
