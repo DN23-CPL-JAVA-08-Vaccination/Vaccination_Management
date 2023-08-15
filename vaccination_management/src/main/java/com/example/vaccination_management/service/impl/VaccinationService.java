@@ -45,7 +45,7 @@ public class VaccinationService implements IVaccinationService {
      */
     @Override
     public List<Vaccination> findVaccinationByVaccine(Vaccine vaccine) {
-        return iVaccinationRepository.findVaccinationByVaccine(vaccine);
+        return iVaccinationRepository.findVaccinationByVaccineAndDeleteFlagFalse(vaccine);
     }
 
     /**
@@ -54,7 +54,7 @@ public class VaccinationService implements IVaccinationService {
      */
     @Override
     public Vaccination findVaccinationById(int id) {
-        return iVaccinationRepository.findById(id).orElse(null);
+        return iVaccinationRepository.findById(id);
     }
 
     /**
@@ -72,7 +72,7 @@ public class VaccinationService implements IVaccinationService {
      */
     @Override
     public long getTotalVaccinationsByVaccine(Vaccine vaccine) {
-        return iVaccinationRepository.countByVaccine(vaccine);
+        return iVaccinationRepository.countByVaccineAndDeleteFlagFalse(vaccine);
     }
 
     /**
@@ -82,7 +82,7 @@ public class VaccinationService implements IVaccinationService {
     @Override
     public List<Vaccination> getVaccinationsByPageAndVaccine(int page, int size, Vaccine vaccine) {
         Pageable pageable = PageRequest.of(page,size);
-        Page<Vaccination> vaccinationPage = iVaccinationRepository.findVaccinationByVaccine(vaccine,pageable);
+        Page<Vaccination> vaccinationPage = iVaccinationRepository.findVaccinationByVaccineAndDeleteFlagFalse(vaccine,pageable);
         return vaccinationPage.getContent();
     }
 
@@ -92,7 +92,7 @@ public class VaccinationService implements IVaccinationService {
      */
     @Override
     public long getTotalVaccinations() {
-        return iVaccinationRepository.count();
+        return iVaccinationRepository.countByDeleteFlagFalse();
     }
 
     /**
@@ -102,7 +102,7 @@ public class VaccinationService implements IVaccinationService {
     @Override
     public List<Vaccination> getVaccinationByPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Vaccination> vaccinationPage = iVaccinationRepository.findAll(pageable);
+        Page<Vaccination> vaccinationPage = iVaccinationRepository.findByDeleteFlagFalse(pageable);
         return vaccinationPage.getContent();
     }
 

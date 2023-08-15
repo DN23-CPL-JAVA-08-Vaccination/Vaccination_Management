@@ -20,7 +20,7 @@ public class VaccineTypeService implements IVaccineTypeService {
      */
     @Override
     public List<VaccineType> showVaccineType() {
-        return iVaccineTypeRepository.findAll();
+        return iVaccineTypeRepository.findByDeleteFlagFalse();
     }
 
     /**

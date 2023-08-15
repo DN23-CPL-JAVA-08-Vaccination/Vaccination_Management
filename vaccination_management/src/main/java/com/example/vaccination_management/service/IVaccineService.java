@@ -20,8 +20,6 @@ public interface IVaccineService {
      */
     Vaccine findVaccineById(int id);
 
-//    List<Vaccine> findVaccineByVaccineType(VaccineType VaccineType);
-
     /**
      * LoanHTP
      * Retrieves a list of vaccines based on the provided page number and size for pagination.
@@ -57,12 +55,6 @@ public interface IVaccineService {
      * Retrieves a list of vaccines based on the provided page number, size, and vaccine type for pagination.
      */
     long getTotalVaccinesBySearch(String searchQuery);
-
-    /**
-     * LoanHTP
-     * Retrieves a list of vaccines based on the provided page number, size, and search query for pagination.
-     */
-    List<Vaccine> getVaccinesByPageAndVaccineTypeAndSearch(int page, int size, VaccineType vaccineType, String searchQuery);
 
     /**
      * LoanHTP

@@ -17,4 +17,10 @@ public interface IPatientService {
      * Retrieves a list of patients to display.
      */
     List<Patient> showPatient();
+
+    /**
+     * ThangLV
+     * Find Patient Bay username
+     */
+    Patient findPatientByUsername(String username);
 }
