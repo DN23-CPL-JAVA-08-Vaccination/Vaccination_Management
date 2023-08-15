@@ -3,6 +3,7 @@ package com.example.vaccination_management.controller;
 import com.example.vaccination_management.dto.IPatientDTO;
 import com.example.vaccination_management.dto.IVaccinationHistoryDTO;
 import com.example.vaccination_management.entity.Patient;
+import com.example.vaccination_management.security.AccountDetailService;
 import com.example.vaccination_management.service.IPatientService;
 import com.example.vaccination_management.service.IVaccinationHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,12 @@ public class PatientController {
 
     @Autowired
     ILocationService iLocation;
+
+    @Autowired
+    private AccountDetailService accountDetailService;
+
+    @Autowired
+    private IPatientService patientService;
 
     @GetMapping("/doctor/patient")
     public String getAllPatient(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size , @RequestParam(defaultValue = "", required = false) String strSearch) {
@@ -345,12 +352,16 @@ public class PatientController {
     }
 
 
-    @GetMapping("/user/patient/view_form_edit_patient/{id}")
-    public ModelAndView viewFormEditInformation(@PathVariable("id") Integer id){
+    @GetMapping("/user/patient/view_form_edit_patient")
+    public ModelAndView viewFormEditInformation(){
         ModelAndView modelAndView = new ModelAndView("/user/patient/edit_patient");
-        Optional<Patient> patient=iPatient.findById(id);
+
+        String username = accountDetailService.getCurrentUserName();
+
+        Patient entity = patientService.findPatientByUsername(username);
+
         PatientDTO patientDTO=new PatientDTO();
-        Patient entity = patient.get();
+
         BeanUtils.copyProperties(entity, patientDTO);
         String address = entity.getAddress();
         String regex = "(.*?)\\sQuận"; // Regex để tìm phần trước chữ "Quận"
@@ -371,6 +382,8 @@ public class PatientController {
         patientDTO.setLocation(extractedAddressPart1); // Gán địa chỉ tách được vào patientDTO
         patientDTO.setAddress(extractedAddressPart); // Gán địa chỉ tách được vào patientDTO
         patientDTO.setPhone(entity.getPhoneNumber());
+        patientDTO.setHealthInsurance(entity.getHealthInsurance());
+        patientDTO.setEnableFlag(entity.getAccount().getEnableFlag());
         patientDTO.setEmail(entity.getAccount().getEmail());
         patientDTO.setBirthday(LocalDate.parse(entity.getBirthday()));
         List<Location> listLocation=iLocation.findAll();
@@ -398,7 +411,7 @@ public class PatientController {
         redirectAttributes.addFlashAttribute("submitSuccess", true);
         //        Thiết lập thuộc tính "submitSuccess" trong RedirectAttributes
 //        Chuyển hướng về trang đăng ký tiêm chủng để hiển thị thông báo thành công
-        return "redirect:/user/patient/view_form_edit_patient/"+id;
+        return "redirect:/vaccination-history/patient";
     }
 
 }

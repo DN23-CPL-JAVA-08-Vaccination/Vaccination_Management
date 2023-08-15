@@ -51,7 +51,7 @@ public interface IPatientRepository extends JpaRepository<Patient, Integer> {
      * ThangLV
      * get Infor Patient by Username
      */
-    String SELECT_PATIENT_BY_USERNAME = "select p.id, p.name, p.phone, p.address, p.birthday,p.gender,p.detele_flag, p.health_insurance,p.guardian_name,p.guardian_phone, a.id as accountId, a.email,a.username, a.enable_flag from patient p\n" +
+    String SELECT_PATIENT_BY_USERNAME = "select p.id, p.name, p.phone, p.address, p.birthday,p.gender,p.detele_flag, p.health_insurance as healthInsurance,p.guardian_name,p.guardian_phone, a.id as accountId, a.email,a.username, a.enable_flag from patient p\n" +
             "    join account a on a.id = p.account_id\n" +
             "    where username = ?1";
     @Query(value = SELECT_PATIENT_BY_USERNAME, countQuery = SELECT_PATIENT_BY_USERNAME, nativeQuery = true)
