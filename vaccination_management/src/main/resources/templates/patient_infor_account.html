@@ -34,6 +34,20 @@
 
 <body>
 <th:block th:insert="header"></th:block>
+<section class="breadcrumbs">
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>Thông tin cá nhân</h2>
+            <ol>
+                <li><a href="index.html">Home</a></li>
+                <li>Thông tin tài khoản</li>
+            </ol>
+        </div>
+
+    </div>
+</section><!-- End Breadcrumbs Section -->
+
 <div class="container_add">
     <div class="d-flex justify-content-center">
         <div class="content_add col-xl-7 ">
@@ -160,7 +174,7 @@
                 <div class="">
                     <div style="display : flex;justify-content : space-evenly">
                         <div>
-                            <a type="button" class="btn btn-outline-info btn-padding-10">Cập nhật thông tin</a>
+                            <a type="button" class="btn btn-outline-info btn-padding-10" th:href="@{'/user/patient/view_form_edit_patient/'+ ${patientDTO.id}}">Cập nhật thông tin</a>
                         </div>
                         <div>
                             <a href="change_password.html" type="button"
@@ -173,6 +187,7 @@
         </div>
     </div>
 </div>
+
 <th:block th:insert="footer"></th:block>
 <div id="preloader"></div>
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i

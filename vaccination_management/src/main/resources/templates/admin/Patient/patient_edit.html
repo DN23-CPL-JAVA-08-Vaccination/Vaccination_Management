@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="" />
   <meta name="author" content="" />
-    <title>Title</title>
+    <title>Chỉnh sửa thông tin bệnh nhân</title>
 
   <script th:src="@{//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js}"></script>
   <script th:src="@{//code.jquery.com/jquery-1.11.1.min.js}"></script>
@@ -18,6 +18,31 @@
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+  <!-- Navbar Brand-->
+  <a class="navbar-brand ps-3" th:href="@{../index.html}">Start Bootstrap</a>
+  <!-- Sidebar Toggle-->
+  <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+  <!-- Navbar Search-->
+  <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+    <div class="input-group">
+      <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+      <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+    </div>
+  </form>
+  <!-- Navbar-->
+  <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" href="#!">Settings</a></li>
+        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+        <li><hr class="dropdown-divider" /></li>
+        <li><a class="dropdown-item" href="#!">Logout</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 <th:block th:insert="admin/nav"></th:block>
 <div id="layoutSidenav">
   <th:block th:insert="admin/sidenav"></th:block>
@@ -35,7 +60,7 @@
                       <h2 class="mb-0">Thông tin bệnh nhân</h2>
                     </div>
                     <div class="col-2">
-                      <a th:href="@{/admin/patient/view_patient}" class="btn-close float-end"></a>
+                      <a th:href="@{/admin/patient/view_patient}" th:data-toggle="modal" th:data-target="'#cancelModal'" class="btn-close float-end"></a>
                     </div>
                   </div>
                 </div>
@@ -52,14 +77,19 @@
                     <form>
 
                     <tr>
+                      <input th:field="*{id}"  id="id" class="form-input" type="hidden"  >
                       <td>Họ và tên : </td>
-                      <td><input th:field="*{name}"  id="name" class="form-input" type="text"  ><span style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span> </td>
+                      <td><input th:field="*{name}"  id="name" class="form-input" type="text"  > </br>
+                        <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                      </td>
 
                     </tr>
 
                     <tr>
                       <td>Ngày sinh : </td>
-                      <td><input th:field="*{birthday}"  id="birthday" class="form-input" type="date" onchange="showGuardianFields()"  > <span  style="color: red" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></span> </td>
+                      <td><input th:field="*{birthday}"  id="birthday" class="form-input" type="date" onchange="showGuardianFields()"  >
+                        <p  style="color: red" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></p>
+                      </td>
 
                     </tr>
                     <tr>
@@ -72,24 +102,45 @@
                                   <span style="margin-right: 20px;"></span>
                                   <input class="form-check-input" type="radio" value="false" name="gender" id="Female"
                                      th:checked="${patient.gender == false}" th:text="Nữ">
-                        <span  style="color: red" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></span>
+                          </br>
+                        <p  style="color: red" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></p>
                         </span>
                       </td>
 
                     </tr>
                     <tr>
                       <td>Số điện thoại : </td>
-                      <td><input th:field="*{phone}"  id="phone" class="form-input" type="text"  > <span  style="color: red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span> </td>
+                      <td><input th:field="*{phone}"  id="phone" class="form-input" type="text"  >
+                        </br>
+                        <p style="color: red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+                      </td>
 
                     </tr>
                     <tr>
                       <td>Địa chỉ : </td>
-                      <td><input th:field="*{address}"  id="address" class="form-input" type="text"  > <span  style="color: red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span> </td>
+                      <td><input th:field="*{address}"  id="address" class="form-input" type="text"  >
+                        </br>
+                        <p  style="color: red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+                      </td>
 
                     </tr>
                       <tr>
+                        <td>Quận : </td>
+                        <td>
+                          <select  id="typeId" name="typeId" th:field="${patient.location}">
+                            <option th:each="item:${listLocation}" th:value="${item.name}" th:text="${item.name}" th:selected="${patient.location == item.name}" >  </option>
+                          </select>
+                          </br>
+                          <p  style="color: red" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></p>
+                        </td>
+
+                      </tr>
+                      <tr>
                         <td>Email : </td>
-                        <td><input th:field="*{email}"  id="email" class="form-input" type="text"  > <span  style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span></td>
+                        <td><input th:field="*{email}"  id="email" class="form-input" type="text"  >
+                          </br>
+                          <p  style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                        </td>
 
                       </tr>
                     <tr>
@@ -98,12 +149,18 @@
                     </tr>
                     <tr  id="inputContainer" style="display: none;">
                       <td >Tên người giám hộ : </td>
-                      <td><input th:field="*{guardianName}"  id="input1" class="form-input" type="text"  ><span  style="color: red" th:if="${#fields.hasErrors('guardianName')}" th:errors="*{guardianName}"></span></td>
+                      <td><input th:field="*{guardianName}"  id="input1" class="form-input" type="text"  >
+                        </br>
+                        <p  style="color: red" th:if="${#fields.hasErrors('guardianName')}" th:errors="*{guardianName}"></p>
+                      </td>
 
                     </tr>
                     <tr id="option1Inputs" style="display: none;">
                       <td >Số điện thoại người giám hộ : </td>
-                      <td><input th:field="*{guardianPhone}"  id="input2" class="form-input" type="text"  ><span  style="color: red" th:if="${#fields.hasErrors('guardianPhone')}" th:errors="*{guardianPhone}"></span></td>
+                      <td><input th:field="*{guardianPhone}"  id="input2" class="form-input" type="text"  >
+                        </br>
+                        <p  style="color: red" th:if="${#fields.hasErrors('guardianPhone')}" th:errors="*{guardianPhone}"></p>
+                      </td>
 
                     </tr>
                     </form>
@@ -146,7 +203,7 @@
                   <div class="receipt-header receipt-header-mid receipt-footer">
                     <div class="container">
                         <div class="text-center">
-                          <p style="font-size: 15px; color: rgba(186,192,196,0.89)">Rows that contain (*) cannot be changed</p>
+                          <p style="font-size: 15px; color: rgba(186,192,196,0.89)">Những trường có (*) là không thay đổi được</p>
                           <button  type="button" class="btn btn-outline-success btn-sm" th:data-toggle="modal" th:data-target="'#editModal'">Lưu</button>
                           <button type="button" class="btn btn-outline-dark btn-sm" th:data-toggle="modal" th:data-target="'#cancelModal'">Thoát</button>
                       </div>

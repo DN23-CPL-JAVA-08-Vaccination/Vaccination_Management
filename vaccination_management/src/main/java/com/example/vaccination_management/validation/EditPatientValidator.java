@@ -10,6 +10,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -39,63 +40,74 @@ public class EditPatientValidator implements Validator {
         if (patientDTO.getName() == null || patientDTO.getName().trim().isEmpty()) {
             errors.rejectValue("name", "NameRequired", "Tên không được để trống!!!");
         } else if (!patientDTO.getName().matches("^[a-zA-Z\\p{L} ]+$")) {
-            errors.rejectValue("name", "InvalidCharacters", "Tên khng được chứa các kí tự đặc biệt và số!!!");
+            errors.rejectValue("name", "InvalidCharacters", "Tên không được chứa các kí tự đặc biệt và số!!!");
         } else if (patientDTO.getName().length() < 6) {
             errors.rejectValue("name", "NameNotLength", "Tên không được ít hơn 6 kí tự!!!");
-        }else if (patientDTO.getName().split(" ").length < 2) {
+        } else if (patientDTO.getName().split(" ").length < 2) {
             errors.rejectValue("name", "FullNameRequired", "Vui lòng nhập đầy đủ họ và tên!!!");
         }
 
         if (patientDTO.getBirthday() == null) {
             errors.rejectValue("birthday", "BirthdayRequired", "Ngày sinh không được để trống!");
-        } else if (patientDTO.getBirthday() != null && patientDTO.getBirthday().isAfter(currentDate)){
+        } else if (patientDTO.getBirthday() != null && patientDTO.getBirthday().isAfter(currentDate)) {
             errors.rejectValue("birthday", "InvalidDate", "Ngày sinh không đúng định dạng!!");
-        }else if (patientDTO.getBirthday().getYear() < 1900) {
+        } else if (patientDTO.getBirthday().getYear() < 1900) {
             errors.rejectValue("birthday", "InvalidYear", "Năm sinh không được nhỏ hơn 1900.!!");
         }
 
 
-        if (patientDTO.getAddress()==null||patientDTO.getAddress().trim().isEmpty()){
-            errors.rejectValue("address", "AddressRequired", "Địa chỉ là bắt buộc");
-        }else {
+        if (patientDTO.getAddress() == null || patientDTO.getAddress().trim().isEmpty()) {
+            errors.rejectValue("address", "AddressRequired", "Không được để trống!!!");
+        } else {
             if (!patientDTO.getAddress().matches("^[a-zA-Z\\p{L}0-9 ]+$")) {
                 errors.rejectValue("address", "InvalidCharacters", "Nhập sai địa chỉ!");
-            }else if (patientDTO.getAddress().length()<6){
+            } else if (patientDTO.getAddress().length() < 6) {
                 errors.rejectValue("address", "Invalid", "Địa chỉ không được ít hơn 6 kí tự!!");
             }
         }
-        if (patientDTO.getGender()==null){
+        if (patientDTO.getLocation() == null || patientDTO.getLocation().trim().isEmpty()){
+            errors.rejectValue("location", "LocationRequired", "Không được để trống!!!");
+        }
+
+        if (patientDTO.getGender() == null) {
             errors.rejectValue("gender", "GenderRequire", "Giới tính là trường bắt buộc");
         }
 
-        if (patientDTO.getPhone()==null||patientDTO.getPhone().trim().isEmpty()){
+        if (patientDTO.getPhone() == null || patientDTO.getPhone().trim().isEmpty()) {
             errors.rejectValue("phone", "PhoneRequire", "Số điện thoại là bắt buộc");
         } else {
-            if (!patientDTO.getPhone().matches(regex)){
+            if (!patientDTO.getPhone().matches(regex)) {
                 errors.rejectValue("phone", "PhoneFormat", "Số điện thoại sai!!");
             }
         }
 
-        if (patientDTO.getEmail()==null||patientDTO.getEmail().trim().isEmpty()){
-            errors.rejectValue("email","EmailRequire", "Email là trường bắt buộc!!");
-        }else {
-            if (!patientDTO.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")){
+        if (patientDTO.getEmail() == null || patientDTO.getEmail().trim().isEmpty()) {
+            errors.rejectValue("email", "EmailRequire", "Email là trường bắt buộc!!");
+        } else {
+            if (!patientDTO.getEmail().matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
                 errors.rejectValue("email", "EmailFormat", "Nhập email không đúng!!");
             }
         }
-        if (patientDTO.getGuardianName()!=null && !patientDTO.getGuardianName().trim().isEmpty()) {
-            if (!patientDTO.getGuardianName().matches("^[a-zA-Z\\p{L} ]+$")) {
-                errors.rejectValue("guardianName", "GuardianName", "Nhập đầy đủ họ và tên!!");
-            } else if (patientDTO.getGuardianName().length() < 6) {
-                errors.rejectValue("guardianName", "Guardian", "Không được ít hơn 6 kí tự!");
-            }
-        }
-
-        if (patientDTO.getGuardianPhone()!=null && !patientDTO.getGuardianPhone().trim().isEmpty()){
-            if (!patientDTO.getGuardianPhone().matches(regex)){
-                errors.rejectValue("guardianPhone", "GuardianPhone", "Số điện thoại không đúng!!");
+        if (patientDTO.getBirthday() != null) {
+            Period agePeriod = Period.between(patientDTO.getBirthday(), currentDate);
+            if (agePeriod.getYears() < 16) {
+                if (patientDTO.getGuardianName() == null || patientDTO.getGuardianName().trim().isEmpty()) {
+                    errors.rejectValue("guardianName", "GuardianNameb", "Không được để trống!!");
+                } else {
+                    if (!patientDTO.getGuardianName().matches("^[a-zA-Z\\p{L} ]+$")) {
+                        errors.rejectValue("guardianName", "GuardianName", "Nhập đầy đủ họ tên!!");
+                    } else if (patientDTO.getGuardianName().length() < 6) {
+                        errors.rejectValue("guardianName", "Guardian", "Tên không ít hơn 6 kí tự!");
+                    }
+                }
+                if (patientDTO.getGuardianPhone() == null || patientDTO.getGuardianPhone().trim().isEmpty()) {
+                    errors.rejectValue("guardianPhone", "GuardianPhoneb", "Không được để trống!!");
+                } else {
+                    if (!patientDTO.getGuardianPhone().matches(regex)) {
+                        errors.rejectValue("guardianPhone", "GuardianPhone", "Số điện thoại không đúng!!");
+                    }
+                }
             }
         }
     }
-
 }

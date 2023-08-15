@@ -68,7 +68,7 @@ public class RequiresAccountValidator implements Validator {
         if (patientDTO.getAddress()==null||patientDTO.getAddress().trim().isEmpty()){
             errors.rejectValue("address", "AddressRequired", "Không được để trống!!");
         }else {
-            if (!patientDTO.getAddress().matches("^[a-zA-Z\\p{L}0-9]+$")) {
+            if (!patientDTO.getAddress().matches("^[a-zA-Z\\p{L}0-9 ]+$")) {
                 errors.rejectValue("address", "InvalidCharacters", "Địa chỉ không đúng!");
             }else if (patientDTO.getAddress().length()<6){
                 errors.rejectValue("address", "Invalid", "Địa chỉ không ít hơn 6 kí tự!!");

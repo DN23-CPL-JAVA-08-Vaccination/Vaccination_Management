@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tables - SB Admin</title>
+        <title>Quản lý tài khoản</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link  th:href="@{/admin/css/styles.css}" rel="stylesheet" />
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -178,9 +178,9 @@
                         </ul>
                     </nav>
 
-                    <a th:href="@{/admin/patient/view_patient}" type="button" class="btn btn-outline-success" style="margin-left: 88%" > <i class="fas fa-circle-up"></i></a>
-                    <a th:href="@{/admin/patient/view_patientDelete}" type="button" class="btn btn-outline-danger" > <i class="fas fa-trash-can-arrow-up"></i></a>
-                    <a th:href="@{/admin/patient/view_patient_disable}" type="button" class="btn btn-outline-secondary" ><i class="fas fa-box-open"></i></a>
+                    <a th:href="@{/admin/patient/view_patient}" type="button" class="btn btn-outline-success"  th:class="(${actionFlag} == 'view_patient') ? 'btn btn-primary' : 'btn btn-outline-primary'" style="margin-left: 88%" > <i class="fas fa-circle-up"></i></a>
+                    <a th:href="@{/admin/patient/view_patientDelete}" type="button" class="" th:class="(${actionFlag} == 'view_patientDelete') ? 'btn btn-danger' : 'btn btn-outline-danger'"> <i class="fas fa-trash-can-arrow-up"></i></a>
+                    <a th:href="@{/admin/patient/view_patient_disable}" type="button" th:class="(${actionFlag} == 'view_patient_disable') ? 'btn btn-secondary' : 'btn btn-outline-secondary'" ><i class="fas fa-box-open"></i></a>
 
 
                     <!-- Modal -->

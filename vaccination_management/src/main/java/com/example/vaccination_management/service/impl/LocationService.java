@@ -21,4 +21,5 @@ public class LocationService implements ILocationService {
     public List<Location> findAll() {
         return iLocationRP.findAll();
     }
+
 }

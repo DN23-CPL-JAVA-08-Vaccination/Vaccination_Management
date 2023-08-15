@@ -12,7 +12,6 @@ public class CheckPasswordForgot implements Validator {
         return AccountDTO.class.equals(clazz);
     }
 
-
     @Override
     public void validate(Object target, Errors errors) {
         AccountDTO accountDTO = (AccountDTO) target;
@@ -23,15 +22,16 @@ public class CheckPasswordForgot implements Validator {
         if (accountDTO.getPassword() == null || accountDTO.getPassword().trim().isEmpty()){
             errors.rejectValue("password","passRequire","Vui lòng không để trống!!");
         }else {
-            String password = accountDTO.getPassword().trim();
-            if (password.length() < 8 || !password.matches(".*[A-Z].*") || !password.matches(".*\\d.*")) {
-                errors.rejectValue("password", "passInvalid", "Mật khẩu không hợp lệ!! Yêu cầu: nhiều hơn 8 kí tự gồm số và chữ, chứa ít nhất 1 chữ in hoa");
-            } else {
-                String repassword = accountDTO.getRePassword().trim();
-                if (!repassword.equals(password)) {
-                    errors.rejectValue("rePassword", "repassMismatch", "Mật khẩu nhập lại không giống với mật khẩu ban đầu");
+                String password = accountDTO.getPassword().trim();
+                if (password.length() < 8 || !password.matches(".*[A-Z].*") || !password.matches(".*\\d.*")) {
+                    errors.rejectValue("password", "passInvalid", "Mật khẩu không hợp lệ!! Yêu cầu: nhiều hơn 8 kí tự gồm số và chữ, chứa ít nhất 1 chữ in hoa");
+                } else {
+                    String repassword = accountDTO.getRePassword().trim();
+                    if (!repassword.equals(password)) {
+                        errors.rejectValue("rePassword", "repassMismatch", "Mật khẩu nhập lại không giống với mật khẩu ban đầu");
+                    }
                 }
-            }
+
         }
     }
 }

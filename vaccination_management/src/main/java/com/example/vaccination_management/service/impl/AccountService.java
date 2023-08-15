@@ -1,5 +1,6 @@
 package com.example.vaccination_management.service.impl;
 
+import com.example.vaccination_management.dto.IAccountDTO;
 import com.example.vaccination_management.entity.Account;
 import com.example.vaccination_management.repository.IAccountRepository;
 import com.example.vaccination_management.service.IAccountService;
@@ -7,13 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-import com.example.vaccination_management.dto.IAccountDTO;
+
 import com.example.vaccination_management.dto.IAccountDetailDTO;
 
 import com.example.vaccination_management.repository.IPatientRepository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 @Service
@@ -104,6 +106,9 @@ public class AccountService implements IAccountService {
         accountRepository.changePassword(password,username);
     }
 
+
+
+
     /**
      * TLINH
      * find account by id
@@ -114,7 +119,9 @@ public class AccountService implements IAccountService {
     }
 
 
-    
+
+
+
     /**
        * TLINH
        * update enable flag by id 
@@ -124,7 +131,11 @@ public class AccountService implements IAccountService {
         iAccountRP.updateEnableFlagById(enableFlag, id);
     }
 
-    
+    @Override
+    public void updatePasswordById(String Password, Integer id) {
+        iAccountRP.updatePasswordById(Password, id);
+    }
+
     /**
        * TLINH
        * delete patient by id and update account id = null
@@ -137,15 +148,16 @@ public class AccountService implements IAccountService {
 
 
     /**
-       * TLINH
-       * find all account by userName
+     * TLINH
+     * find all account by userName
      */
     @Override
-    public IAccountDTO findAllByUsername(String userName) {
+    public Account findAllByUsername(String userName) {
         return iAccountRP.findAllByUsername(userName);
     }
 
-    
+
+
     /**
        * TLINH
        * count is the number userName in table account
@@ -190,20 +202,23 @@ public class AccountService implements IAccountService {
        * TLINH
        * paging by username
      */
+
     @Override
-    public List<Account> getAccountByPage(String userName, Pageable pageable){
-        Page<Account> accountPage=iAccountRP.findAccountListPage(userName, pageable);
-        return accountPage.getContent();
+    public List<IAccountDTO> getAllAccountByPage(Integer roleId, String userName, Pageable pageable){
+        Page<IAccountDTO> accountDTOPage=iAccountRP.findAllAccount(roleId, userName, pageable);
+        return accountDTOPage.getContent();
     }
 
     /**
-       * TLINH
-       * count is the number username
+     * TLINH
+     * count is the number username
      */
     @Override
-    public long getTotalAccount(String userName){
-        return iAccountRP.getTotalAccount(userName);
+    public long getTotalAllAccount(Integer roleId, String userName) {
+        return iAccountRP.getTotalAllAccount(roleId, userName);
     }
+
+
 
 
 

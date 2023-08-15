@@ -67,7 +67,7 @@ public class EmailService implements IEmailService {
             props.put("guardianName", detailDTO.getPatientGuardianName());
             props.put("guardianPhone", detailDTO.getPatientGuardianPhone());
             emailDTO.setProps(props);
-            sendHtmlMail(emailDTO, "Admin/Email/form_email");
+            sendHtmlMail(emailDTO, "admin/Email/form_email");
             return true;
         } catch (MessagingException exp) {
             exp.printStackTrace();
@@ -97,7 +97,7 @@ public class EmailService implements IEmailService {
             props.put("guardianName", detailDTO.getPatientGuardianName());
             props.put("guardianPhone", detailDTO.getPatientGuardianPhone());
             emailDTO.setProps(props);
-            sendHtmlMail(emailDTO, "Admin/Email/form_email_deactivate");
+            sendHtmlMail(emailDTO, "admin/Email/form_email_deactivate");
             return true;
         } catch (MessagingException exp) {
             exp.printStackTrace();
