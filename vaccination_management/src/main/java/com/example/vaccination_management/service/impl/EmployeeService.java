@@ -74,7 +74,11 @@ public class EmployeeService implements IEmployeeService {
         accountService.addNewOfEmployee(account);
 
         Integer idAccount = accountService.findIdAccountByUserName(account.getUserName());
-        accountRoleService.insertAccountRole(idAccount, 2);
+        if (employeeDTO.getPosition().getId() == 1) {
+            accountRoleService.insertAccountRole(idAccount, 2);
+        } else if (employeeDTO.getPosition().getId() == 2) {
+            accountRoleService.insertAccountRole(idAccount, 1);
+        }
 
         employeeRepository.createNewEmployee(employeeDTO.getAddress(), employeeDTO.getBirthday(), false, employeeDTO.isGender()
                 , employeeDTO.getIdCard(), employeeDTO.getName(), employeeDTO.getPhone(), employeeDTO.getImage(), idAccount, employeeDTO.getPosition().getId());
@@ -230,10 +234,10 @@ public class EmployeeService implements IEmployeeService {
      */
     public void sendEmail(MailEmployeeDTO mailEmployeeDTO) {
         try {
-            EmailDTO emailDTO=new EmailDTO();
+            EmailDTO emailDTO = new EmailDTO();
             emailDTO.setTo(mailEmployeeDTO.getEmail());
             emailDTO.setSubject("THÔNG BÁO CẤP TÀI KHOẢN TIÊM CHỦNG ĐÀ NẴNG");
-            Map<String, Object> props= new HashMap<>();
+            Map<String, Object> props = new HashMap<>();
             props.put("name", mailEmployeeDTO.getName());
             props.put("password", mailEmployeeDTO.getPassword());
             props.put("username", mailEmployeeDTO.getIdCard());
