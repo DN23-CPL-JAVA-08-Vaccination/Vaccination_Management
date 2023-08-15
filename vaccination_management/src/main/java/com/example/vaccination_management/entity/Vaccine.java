@@ -163,7 +163,6 @@ public class Vaccine {
         this.image = image;
     }
 
-
     public Double getDosage() {
         return dosage;
     }

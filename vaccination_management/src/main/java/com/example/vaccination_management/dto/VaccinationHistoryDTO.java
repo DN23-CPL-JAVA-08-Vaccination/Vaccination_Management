@@ -157,23 +157,6 @@ public class VaccinationHistoryDTO {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    public String getGuardianName() {
-        return guardianName;
-    }
-
-    public void setGuardianName(String guardianName) {
-        this.guardianName = guardianName;
-    }
-
-    public String getGuardianPhone() {
-        return guardianPhone;
-    }
-
-    public void setGuardianPhone(String guardianPhone) {
-        this.guardianPhone = guardianPhone;
-    }
-
     public String getPreStatus() {
         return preStatus;
     }
@@ -224,5 +207,21 @@ public class VaccinationHistoryDTO {
         } catch (ParseException e) {
             return getLastTime();
         }
+    }
+
+    public String getGuardianName() {
+        return guardianName;
+    }
+
+    public void setGuardianName(String guardianName) {
+        this.guardianName = guardianName;
+    }
+
+    public String getGuardianPhone() {
+        return guardianPhone;
+    }
+
+    public void setGuardianPhone(String guardianPhone) {
+        this.guardianPhone = guardianPhone;
     }
 }

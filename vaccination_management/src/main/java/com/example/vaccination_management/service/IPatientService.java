@@ -2,6 +2,8 @@ package com.example.vaccination_management.service;
 
 import com.example.vaccination_management.dto.InforPatientDTO;
 import com.example.vaccination_management.dto.IPatientDTO;
+import com.example.vaccination_management.dto.PatientByUsernameDTO;
+import com.example.vaccination_management.dto.PatientLDTO;
 import com.example.vaccination_management.entity.Patient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +39,12 @@ public interface IPatientService {
      * Retrieves a list of patients to display.
      */
     List<Patient> showPatient();
+
+    /**
+     * ThangLV
+     * Find Patient Bay username
+     */
+    Patient findPatientByUsername(String username);
 
     void insertPatient(String name, Boolean gender, String phone, String address, LocalDate birthday, String healthInsurance, String guardianName, String guardianPhone, Boolean enableFlag, Integer accountId);
 

@@ -1,5 +1,6 @@
 package com.example.vaccination_management.repository;
 
+import com.example.vaccination_management.dto.PatientByUsernameDTO;
 import com.example.vaccination_management.dto.IVaccinationDTO;
 import com.example.vaccination_management.entity.Vaccination;
 import com.example.vaccination_management.entity.Vaccine;
@@ -50,5 +51,6 @@ public interface IVaccinationRepository extends JpaRepository<Vaccination, Integ
      * Counts the number of vaccination records associated with the specified vaccine.
      */
     long countByVaccine(Vaccine vaccine);
+
 
 }

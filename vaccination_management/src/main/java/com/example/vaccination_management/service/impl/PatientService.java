@@ -1,6 +1,9 @@
 package com.example.vaccination_management.service.impl;
 
 import com.example.vaccination_management.dto.InforPatientDTO;
+import com.example.vaccination_management.dto.PatientByUsernameDTO;
+import com.example.vaccination_management.dto.PatientLDTO;
+import com.example.vaccination_management.entity.Account;
 import com.example.vaccination_management.repository.IPatientRepository;
 import com.example.vaccination_management.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
 
 
 @Service
@@ -64,10 +66,39 @@ public class PatientService implements IPatientService {
 
     }
 
+    /**
+     * ThangLV
+     * get Infor Patient by Username
+     */
+    @Override
+    public Patient findPatientByUsername(String username) {
+        PatientByUsernameDTO patientByUsernameDTO = iPatientRepository.getPatientByUsername(username);
+        Patient patient = new Patient();
+        patient.setId(patientByUsernameDTO.getId());
+        patient.setName(patientByUsernameDTO.getName());
+        patient.setHealthInsurance(patientByUsernameDTO.getHealthInsurance());
+        patient.setGender(patientByUsernameDTO.getGender());
+        patient.setAddress(patientByUsernameDTO.getAddress());
+        patient.setPhoneNumber(patientByUsernameDTO.getPhone());
+        patient.setBirthday(patientByUsernameDTO.getBirthday());
+        patient.setGuardianName(patientByUsernameDTO.getGuardianName());
+        patient.setGuardianPhone(patientByUsernameDTO.getGuardianPhone());
+//        patient.setDeleteFlag(patientByUsernameDTO.getDeleteFlag());
+
+        Account account = new Account();
+        account.setId(patientByUsernameDTO.getAccountId());
+        account.setEmail(patientByUsernameDTO.getEmail());
+        account.setUserName(patientByUsernameDTO.getUsername());
+//        account.setEnableFlag(patientByUsernameDTO.getEnableFlag());
+
+        patient.setAccount(account);
+
+        return patient;
+    }
 
     /**
-       * TLINH
-       * insert patient information
+     * TLINH
+     * insert patient information
      */
     @Override
     public void insertPatient(String name, Boolean gender, String phone, String address, LocalDate birthday, String healthInsurance, String guardianName, String guardianPhone, Boolean enableFlag, Integer accountId) {
@@ -75,10 +106,9 @@ public class PatientService implements IPatientService {
     }
 
 
-
     /**
-       * TLINH
-       * find all patient by account is null
+     * TLINH
+     * find all patient by account is null
      */
     @Override
     public List<Patient> fillAllByAccountIDisNull() {
@@ -87,8 +117,8 @@ public class PatientService implements IPatientService {
 
 
     /**
-       * TLINH
-       * update delete flag by id
+     * TLINH
+     * update delete flag by id
      */
     @Override
     public void updateDeleteFlagById(Boolean deleteFlag, Integer id) {
@@ -97,8 +127,8 @@ public class PatientService implements IPatientService {
 
 
     /**
-       * TLINH
-       * find patient by id
+     * TLINH
+     * find patient by id
      */
     @Override
     public Optional<Patient> findById(Integer integer) {
@@ -107,8 +137,8 @@ public class PatientService implements IPatientService {
 
 
     /**
-       * TLINH
-       * edit patient
+     * TLINH
+     * edit patient
      */
     @Override
     public void upPatient(String name, LocalDate birthday, String address, Boolean gender, String phone, String guardianName, String guardianPhone, Integer id) {
@@ -116,10 +146,10 @@ public class PatientService implements IPatientService {
     }
 
 
-/**
-   * TLINH
-   * count is the number health insurance
- */
+    /**
+     * TLINH
+     * count is the number health insurance
+     */
     @Override
     public Integer finByHealthInsurance(String healthInsurance) {
         return iPatientRP.finByHealthInsurance(healthInsurance);
@@ -127,8 +157,8 @@ public class PatientService implements IPatientService {
 
 
     /**
-       * TLINH
-       * find all patientby delete flag=?
+     * TLINH
+     * find all patientby delete flag=?
      */
     @Override
     public List<Patient> findAllByDeleteFlag(Boolean deleteFlag) {
@@ -136,46 +166,45 @@ public class PatientService implements IPatientService {
     }
 
 
-
     /**
-       * TLINH
-       * search and pagination have deleflag =?
+     * TLINH
+     * search and pagination have deleflag =?
      */
     @Override
-    public List<Patient>getPatientByPage(String healthInsurance, String name, String phone, Boolean deleteFlag, Pageable pageable){
-        Page<Patient> patientPage=iPatientRP.findAllByHealthOrNameOrPhonePage(healthInsurance,name,phone,deleteFlag,pageable);
+    public List<Patient> getPatientByPage(String healthInsurance, String name, String phone, Boolean deleteFlag, Pageable pageable) {
+        Page<Patient> patientPage = iPatientRP.findAllByHealthOrNameOrPhonePage(healthInsurance, name, phone, deleteFlag, pageable);
         return patientPage.getContent();
     }
 
 
     /**
-       * TLINH
-       * count total patient
+     * TLINH
+     * count total patient
      */
     @Override
-    public long getTotalPatient(String healthInsurance, String name, String phone, Boolean deleteFlag){
-        return iPatientRP.getTotalPatient(healthInsurance,name,phone,deleteFlag);
+    public long getTotalPatient(String healthInsurance, String name, String phone, Boolean deleteFlag) {
+        return iPatientRP.getTotalPatient(healthInsurance, name, phone, deleteFlag);
     }
 
 
     /**
-       * TLINH
-       * search and pagination
+     * TLINH
+     * search and pagination
      */
     @Override
-    public List<Patient> getPatientByPageAccountNull(String healthInsurance, String name, String phone, Pageable pageable){
-        Page<Patient> patientPage=iPatientRP.findAllByNameAndNull(healthInsurance,name,phone,pageable);
+    public List<Patient> getPatientByPageAccountNull(String healthInsurance, String name, String phone, Pageable pageable) {
+        Page<Patient> patientPage = iPatientRP.findAllByNameAndNull(healthInsurance, name, phone, pageable);
         return patientPage.getContent();
     }
 
 
     /**
-       * TLINH
-        * count total patient
+     * TLINH
+     * count total patient
      */
     @Override
-    public long getTotalPatientAccountNull(String healthInsurance, String name, String phone){
-        return iPatientRP.getTotalPatientAccountNull(healthInsurance,name,phone);
+    public long getTotalPatientAccountNull(String healthInsurance, String name, String phone) {
+        return iPatientRP.getTotalPatientAccountNull(healthInsurance, name, phone);
     }
 }
 
