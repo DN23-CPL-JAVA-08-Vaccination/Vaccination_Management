@@ -11265,3 +11265,8 @@ body {
 .custom-modal .modal-footer {
     border-top: none;
 }
+
+.required-field {
+    color: #ff0000;
+    font-size: larger;
+}

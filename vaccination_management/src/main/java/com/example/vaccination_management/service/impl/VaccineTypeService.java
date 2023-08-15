@@ -24,11 +24,20 @@ public class VaccineTypeService implements IVaccineTypeService {
 
     /**
      * HuyLVN
-     * get all information of vaccine types, admin after login
+     * get information of vaccines have delete flag is false, admin after login
      */
     @Override
-    public List<VaccineType> getAllVaccineType() {
-        return iVaccineTypeRepository.findAll();
+    public List<VaccineType> getVaccinesTypeDeleteFlagFalse() {
+        return iVaccineTypeRepository.findByDeleteFlagFalse();
+    }
+
+    /**
+     * HuyLVN
+     * get information of vaccines have delete flag is false, admin after login
+     */
+    @Override
+    public List<VaccineType> getVaccinesTypeDeleteFlagTrue() {
+        return iVaccineTypeRepository.findByDeleteFlagTrue();
     }
 
     /**
@@ -61,6 +70,8 @@ public class VaccineTypeService implements IVaccineTypeService {
      */
     @Override
     public void saveVaccineType(VaccineType vaccineType) {
+        vaccineType.setDeleteFlag(false);
+
         iVaccineTypeRepository.save(vaccineType);
     }
 
@@ -69,7 +80,7 @@ public class VaccineTypeService implements IVaccineTypeService {
      * remove vaccine type from database, admin after login
      */
     @Override
-    public void deleteVaccineType(int vaccineTypeID) throws VaccineTypeNoFoundException {
+    public void destroyVaccineType(int vaccineTypeID) throws VaccineTypeNoFoundException {
         Long count = iVaccineTypeRepository.countById(vaccineTypeID);
 
         if (count == null || count == 0) {
@@ -100,5 +111,38 @@ public class VaccineTypeService implements IVaccineTypeService {
     public VaccineType findVaccineTypeById(int id) {
         return iVaccineTypeRepository.findById(id).orElse(null);
 
+    }
+     /**
+     * HuyLVN
+     * temporarily delete vaccine type and move them to recycle bin, admin after login
+     */
+    @Override
+    public void deleteVaccineType(int vaccineTypeID) {
+        Optional<VaccineType> vaccineTypeOptional = iVaccineTypeRepository.findById(vaccineTypeID);
+
+        if (vaccineTypeOptional.isPresent()) {
+            VaccineType vaccineType = vaccineTypeOptional.get();
+
+            vaccineType.setDeleteFlag(true);
+
+            iVaccineTypeRepository.save(vaccineType);
+        }
+    }
+
+    /**
+     * HuyLVN
+     * restore vaccine from recycle bin, admin after login
+     */
+    @Override
+    public void restoreVaccineType(int vaccineTypeID) {
+        Optional<VaccineType> vaccineTypeOptional = iVaccineTypeRepository.findById(vaccineTypeID);
+
+        if (vaccineTypeOptional.isPresent()) {
+            VaccineType vaccineType = vaccineTypeOptional.get();
+
+            vaccineType.setDeleteFlag(false);
+
+            iVaccineTypeRepository.save(vaccineType);
+        }
     }
 }

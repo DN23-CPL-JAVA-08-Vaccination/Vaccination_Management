@@ -14,12 +14,16 @@ public class VaccineType {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "delete_flag")
+    private boolean deleteFlag;
+
     public VaccineType() {
     }
 
-    public VaccineType(int id, String name) {
+    public VaccineType(int id, String name, boolean deleteFlag) {
         this.id = id;
         this.name = name;
+        this.deleteFlag = deleteFlag;
     }
 
     public int getId() {
@@ -36,5 +40,13 @@ public class VaccineType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
     }
 }

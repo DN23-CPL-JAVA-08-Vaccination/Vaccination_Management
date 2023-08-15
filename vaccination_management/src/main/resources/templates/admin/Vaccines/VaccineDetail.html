@@ -8,6 +8,7 @@
     <meta name="author" content="" />
     <title>Chi tiết [[${pageTitle}]]</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link th:href="@{/css/adminStyle_HuyLVN.css}" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -33,56 +34,56 @@
                         <i class="fa fa-info-circle" aria-hidden="true"></i>
                         Chi tiết
                         <a th:href="@{/admin/vaccines/newInventory/{id}(id=${vaccine.id})}"><button type="button" class="btn btn-outline-primary btn-sm" style="float: right"><i class="fa fa-plus" aria-hidden="true"></i></button></a>
+                        <a th:href="@{/admin/vaccines/recycleInventory/{id}(id=${vaccine.id})}"><button type="button" class="btn btn-outline-warning btn-sm" style="float: right; margin-right: 5px"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
                     </div>
                     <div th:if="${messages}" class="alert alert-success text-center">
                         [[${messages}]]
                     </div>
                     <div class="card-body">
-                        <div class="container" style="border: #343a40">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <img th:src="${vaccine.image}" class="img-fluid" style="height: 100%">
+                        <div class="row">
+                            <div class="col-md-4" >
+                                <img th:src="${vaccine.image}" class="img-fluid" style="height: 100%;">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Tên Vaccine: </label>
+                                    <div class="col-sm-8" th:text="${vaccine.name}"></div>
+                                    <hr>
                                 </div>
-                                <div class="col-sm-8">
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Tên Vaccine: </label>
-                                        <div class="col-sm-8" th:text="${vaccine.name}"></div>
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Mã định danh: </label>
-                                        <div class="col-sm-8" th:text="${vaccine.code}"></div>
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Mô tả: </label>
-                                        <div class="col-sm-8" th:text="${vaccine.description}"></div>
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Đơn giá: </label>
-                                        <div class="col-sm-8" th:text="${vaccine.price}"></div>
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Thời hạn tác dụng: </label>
-                                        <div class="col-sm-8" th:text="${vaccine.duration}"></div>
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Liều lượng (ml): </label>
-                                        <div class="col-sm-8" th:text="${vaccine.dosage}"></div>
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Ngày tạo: </label>
-                                        <div class="col-sm-8" th:text="${vaccine.createDate}"></div>
-                                        <hr>
-                                    </div>
-                                    <div class="row">
-                                        <label class="col-sm-3" style="font-weight: bold">Ngày cập nhật: </label>
-                                        <div class="col-sm-8" th:text="${vaccine.updateDate}"></div>
-                                    </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Mã định danh: </label>
+                                    <div class="col-sm-8" th:text="${vaccine.code}"></div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Mô tả: </label>
+                                    <div class="col-sm-8" th:text="${vaccine.description}"></div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Đơn giá: </label>
+                                    <div class="col-sm-8" th:text="${price}"></div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Thời hạn tác dụng: </label>
+                                    <div class="col-sm-8" th:text="${vaccine.duration}"></div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Liều lượng (ml): </label>
+                                    <div class="col-sm-8" th:text="${vaccine.dosage}"></div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Ngày tạo: </label>
+                                    <div class="col-sm-8" th:text="${vaccine.createDate}"></div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Ngày cập nhật: </label>
+                                    <div class="col-sm-8" th:text="${vaccine.updateDate}"></div>
+                                    <hr>
                                 </div>
                             </div>
                         </div>
@@ -90,9 +91,10 @@
                         <table id="datatablesSimple" style="padding-top: 15px">
                             <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>Tên lô hàng</th>
                                 <th>Số lượng</th>
                                 <th>Nhà cung cấp</th>
+                                <th>Địa chỉ</th>
                                 <th>Ngày sản xuất</th>
                                 <th>Hạn sử dụng</th>
                                 <th></th>
@@ -101,9 +103,10 @@
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>ID</th>
+                                <th>Tên lô hàng</th>
                                 <th>Số lượng</th>
                                 <th>Nhà cung cấp</th>
+                                <th>Địa chỉ</th>
                                 <th>Ngày sản xuất</th>
                                 <th>Hạn sử dụng</th>
                                 <th></th>
@@ -112,9 +115,10 @@
                             </tfoot>
                             <tbody>
                             <tr th:each = "inventory : ${inventoryList}">
-                                <td th:text="${inventory.id}"></td>
+                                <td th:text="${inventory.inventoryName}"></td>
                                 <td th:text="${inventory.quantity}"></td>
                                 <td th:text="${inventory.supplier}"></td>
+                                <td th:text="${inventory.address}"></td>
                                 <td th:text="${inventory.productionDate}"></td>
                                 <td th:text="${inventory.expirationDate}"></td>
                                 <td><a th:href="@{/admin/vaccines/editInventory/{id}(id=${inventory.id})}"><button type="button" class="btn btn-outline-success"><i class="fa fa-pencil-square" aria-hidden="true"></i></button></a></td>
@@ -133,7 +137,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p>Nếu bạn xóa lô hàng này, nó sẽ biến mất mãi mãi. Bạn có chắc chắn muốn tiếp tục không?</p>
+                                                    <p>Nếu bạn xóa lô hàng này, nó sẽ được chuyển vào kho hết hạn. Bạn có chắc chắn muốn tiếp tục không?</p>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
@@ -157,6 +161,8 @@
 <script th:src="@{/js/adminScripts.js}"></script>
 <script th:src="@{/js/DatabaseSimple.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

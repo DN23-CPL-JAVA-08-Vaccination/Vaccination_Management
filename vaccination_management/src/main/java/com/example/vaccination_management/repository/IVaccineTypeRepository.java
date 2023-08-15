@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 
 public interface IVaccineTypeRepository extends JpaRepository<VaccineType, Integer> {
 
@@ -30,4 +32,15 @@ public interface IVaccineTypeRepository extends JpaRepository<VaccineType, Integ
     )
     Page<VaccineType> getAllVaccineType(String strSearch, Pageable pageable);
 
+    /**
+     * HuyLVN
+     * query the vaccine type information that has the deleteFlag field as false from the database
+     */
+    List<VaccineType> findByDeleteFlagFalse();
+
+    /**
+     * HuyLVN
+     * query the vaccine type information that has the deleteFlag field as true from the database
+     */
+    List<VaccineType> findByDeleteFlagTrue();
 }

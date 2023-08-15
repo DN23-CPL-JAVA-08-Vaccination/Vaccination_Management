@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Cập nhật thông tin [[${pageTitle}]]</title>
+    <title>Thêm mới loại Vaccine</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link th:href="@{/css/adminStyle_HuyLVN.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -20,52 +20,34 @@
         <main>
             <div class="container-fluid px-4">
                 <h1 class="mt-4">
-                    <i class="fa fa-pencil-square" aria-hidden="true"></i>
-                    [[${pageTitle}]]
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                    Thêm loại Vaccine
                 </h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item">Dashboard</li>
-                    <li class="breadcrumb-item"><a th:href="@{/admin/vaccineTypes/}">Loại Vaccine</a></li>
-                    <li class="breadcrumb-item active">Cập nhật [[${pageTitle}]]</li>
+                    <li class="breadcrumb-item"><a th:href="@{/admin/vaccineTypes}">Vaccine Type</a></li>
+                    <li class="breadcrumb-item active">Thêm loại Vaccine</li>
                 </ol>
                 <div class="card mb-4">
                     <div class="card-header">
-                        <i class="fa fa-pencil-square" aria-hidden="true"></i>
-                        Cập nhật
+                        <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                        Thêm
                     </div>
 
                     <div class="card-body">
-                        <form th:action="@{/admin/vaccineTypes/saveVaccineType}" method="post" th:object="${vaccineType}" style="max-width: 1000px; margin: 0 auto; border-radius: 25%">
-                            <input type="hidden" th:field="*{id}">
+                        <form th:action="@{/admin/vaccineTypes/saveVaccineType}" method="post" th:object="${newVaccineType}" style="max-width: 1000px; margin: 0 auto; border-radius: 25%">
                             <div class="border border-secondary rounded p-3">
                                 <div class="form-group row" style="padding: 5px">
-                                    <label class="col-sm-4 col-form-label">Tên loại Vaccine: </label>
+                                    <label class="col-sm-4 col-form-label">Tên loại Vaccine<span
+                                            class="required-field">(*)</span>: </label>
                                     <div class="col-sm-8">
-                                        <input type="text" th:field="*{name}" class="form-control" placeholder="Tên loại Vaccine" required/>
+                                        <input type="text" th:field="*{name}" class="form-control" placeholder="Tên loại vaccine"/>
+                                        <span style="color: red" th:if="${#fields.hasErrors('name')}"
+                                              th:errors="*{name}"></span>
                                     </div>
                                 </div>
                                 <div class="text-center" style="padding-top: 20px">
-                                    <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#updateModal">Cập nhật</button>
-                                    <!-- Modal -->
-                                    <div class="modal fade custom-modal" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header" style="background-color: #28a745">
-                                                    <h5 class="modal-title" id="updateModalLabel">Cập nhật thông tin loại Vaccine?</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body" style="text-align: left">
-                                                    <p>Bạn phải đảm bảo mọi thông tin đã được nhập đầy đủ. Nếu bạn cập nhật loại vaccine, thông tin được nhập sẽ thay đổi trong CSDL. Bạn có chắc chắn muốn tiếp tục không?</p>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Trở lại</button>
-                                                    <button type="submit" class="btn btn-outline-success">Xác nhận</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <button type="submit" class="btn btn-outline-primary">Thêm</button>
 
                                     <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#exitModal">Thoát</button>
                                     <div class="modal fade custom-modal" id="exitModal" tabindex="-1" role="dialog" aria-labelledby="exitModalLabel">
@@ -78,10 +60,10 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body" style="text-align: left">
-                                                    <p>Nếu bạn thoát khỏi quá trình cập nhật loại vaccine, mọi thông tin được nhập sẽ bị hủy. Bạn có chắc chắn muốn tiếp tục không?</p>
+                                                    <p>Nếu bạn thoát khỏi quá trình tạo loại vaccine, mọi thông tin được nhập sẽ bị hủy. Bạn có chắc chắn muốn tiếp tục không?</p>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Trở lại</button>
+                                                    <button type="button" class="btn btn-outline-success" data-dismiss="modal">Trở lại</button>
                                                     <button type="button" class="btn btn-outline-secondary"  onclick="cancelForm()">Xác nhận</button>
                                                 </div>
                                             </div>

@@ -9,9 +9,15 @@ import java.util.List;
 public interface IInventoryService {
     /**
      * HuyLVN
-     * get all information of inventories, admin after login
+     * get all information of inventories has delete flag is false, admin after login
      */
     public List<Inventory> getAllInventories();
+
+    /**
+     * HuyLVN
+     * get all information of inventories has delete flag is true, admin after login
+     */
+    public List<Inventory> getInventoryInRecycle(Vaccine vaccine);
 
     /**
      * HuyLVN
@@ -41,5 +47,7 @@ public interface IInventoryService {
      * HuyLVN
      * remove inventory from database, admin after login
      */
-    public void deleteInventory(int inventoryID) throws InventoryNotFoundException;
+    public void destroyInventory(int inventoryID) throws InventoryNotFoundException;
+
+    public void deleteInventory(int inventoryID);
 }

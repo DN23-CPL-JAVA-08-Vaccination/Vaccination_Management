@@ -12,9 +12,15 @@ public interface IVaccineTypeService {
 
     /**
      * HuyLVN
-     * get all information of vaccine types, admin after login
+     * get information of vaccines have delete flag is false, admin after login
      */
-    public List<VaccineType> getAllVaccineType();
+    public List<VaccineType> getVaccinesTypeDeleteFlagFalse();
+
+    /**
+     * HuyLVN
+     * get information of vaccines have delete flag is false, admin after login
+     */
+    public List<VaccineType> getVaccinesTypeDeleteFlagTrue();
 
     /**
      * HuyLVN
@@ -26,7 +32,13 @@ public interface IVaccineTypeService {
      * HuyLVN
      * remove vaccine type from database, admin after login
      */
-    public void deleteVaccineType(int vaccineTypeID) throws VaccineTypeNoFoundException;
+    public void destroyVaccineType(int vaccineTypeID) throws VaccineTypeNoFoundException;
+
+    /**
+     * HuyLVN
+     * restore vaccine type from recycle bin, admin after login
+     */
+    public void restoreVaccineType(int vaccineTypeID);
 
     /**
      * HuyLVN
@@ -49,5 +61,12 @@ public interface IVaccineTypeService {
      * Retrieves a list of vaccine types to display.
      */
     VaccineType findVaccineTypeById(int id);
+
+
+    /**
+     * HuyLVN
+     * temporarily delete vaccine type and move them to recycle bin, admin after login
+     */
+    public void deleteVaccineType(int vaccineTypeID);
 
 }
