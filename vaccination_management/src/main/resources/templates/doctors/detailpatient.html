@@ -34,48 +34,27 @@
                             <p class="ps-4   w-75"> Số điện thoại :</p>
                             <p class="ps-4   w-75"> Địa chỉ :</p>
                         </div>
-                    </div>
-                    <div class="col-6  mt-4 p-3  ">
-
-                        <div>
-                            <p>
-                                Tình trạng sức khoẻ:
-                                <span th:text="${patient.getHealthInsurance()}"></span>
-                            </p>
-                            <p>
-                                Người giám hộ:
-                                <span th:text="${patient.getGuardianName()}"></span>
-                            </p>
-                            <p>
-                                Số điện thoại người giám hộ:
-                                <span th:text="${patient.getGuardianPhone()}"></span>
-                            </p>
-
-                            <div class="col-4">
-                                <p th:text="${patient.getName()}"></p>
-                                <p th:text="${patient.getBirthday()}"></p>
-                                <p th:if="${patient.isGender()}">Nam</p>
-                                <p th:if="${!patient.isGender()}">Nữ </p>
-                                <p th:text="${patient.getPhoneNumber()}"></p>
-                                <p th:text="${patient.getAddress()}"></p>
-                            </div>
-
-
-                            <div class="col-2 text-bold">
-                                <p class="ps-4 "> BHYT : </p>
-                                <p class="ps-4 "> Người giám hộ :</p>
-                                <p class="ps-4 "> Số điện thoại : </p>
-                            </div>
-                            <div class="col-4">
-                                <p th:text="${patient.getHealthInsurance()}"></p>
-                                <p th:text="${patient.getGuardianName()}"></p>
-                                <p th:text="${patient.getGuardianPhone()}"></p>
-                            </div>
-
-
+                        <div class="col-4">
+                            <p th:text="${patient.getName()}"></p>
+                            <p th:text="${patient.getBirthday()}"></p>
+                            <p th:if="${patient.isGender()}">Nam</p>
+                            <p th:if="${!patient.isGender()}">Nữ </p>
+                            <p th:text="${patient.getPhoneNumber()}"></p>
+                            <p th:text="${patient.getAddress()}"></p>
                         </div>
-
+                        <div class="col-2 text-bold">
+                            <p class="ps-4 "> BHYT : </p>
+                            <p class="ps-4 "> Người giám hộ :</p>
+                            <p class="ps-4 "> Số điện thoại : </p>
+                        </div>
+                        <div class="col-4">
+                            <p th:text="${patient.getHealthInsurance()}"></p>
+                            <p th:text="${patient.getGuardianName()}"></p>
+                            <p th:text="${patient.getGuardianPhone()}"></p>
+                        </div>
                     </div>
+
+
                     <div class="row">
                         <div class="card mb-4">
                             <div class="card-header">

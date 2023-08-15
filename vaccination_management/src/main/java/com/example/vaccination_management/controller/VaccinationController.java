@@ -1,49 +1,31 @@
 package com.example.vaccination_management.controller;
 
 import com.example.vaccination_management.dto.*;
-import com.example.vaccination_management.entity.VaccinationHistory;
-import com.example.vaccination_management.entity.VaccinationStatus;
+import com.example.vaccination_management.entity.*;
 import com.example.vaccination_management.security.AccountDetailService;
 import com.example.vaccination_management.service.*;
 import com.example.vaccination_management.utils.Validation;
-import com.example.vaccination_management.dto.VaccinationHistoryDTO;
-import com.example.vaccination_management.entity.*;
-import com.example.vaccination_management.service.IPatientService;
-import com.example.vaccination_management.service.IVaccinationHistoryService;
-import com.example.vaccination_management.service.IVaccinationService;
-import com.example.vaccination_management.service.IVaccineTypeService;
-import com.example.vaccination_management.validator.VaccinationValidator;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import com.example.vaccination_management.validation.VaccinationEventValidator;
-
-import org.springframework.validation.BindingResult;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.example.vaccination_management.dto.IVaccinationDTO;
-import com.example.vaccination_management.dto.IVaccinationHistoryDTO;
+import com.example.vaccination_management.validator.VaccinationValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
-
-import java.util.List;
-
+import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-
-
-import static com.example.vaccination_management.utils.DateUtils.calculateAge;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import static com.example.vaccination_management.utils.DateUtils.calculateAge;
 
 
 @RequestMapping("/")
@@ -269,8 +251,10 @@ public class VaccinationController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<IVaccinationHistoryDTO> vaccinations = iVaccinationHistoryService.getVaccinationSchedule('%' + strSearch + '%', pageable);
+        boolean hsnext =   vaccinations.hasNext();
         model.addAttribute("vaccinationList", vaccinations);
         return "doctors/scheduleVaccination";
+
     }
 
     /**

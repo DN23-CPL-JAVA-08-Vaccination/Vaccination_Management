@@ -109,12 +109,18 @@
                                        th:href="@{/doctor/history(page=${historyList.totalPages - 1})}"
                                        th:if="${historyList.totalPages - historyList.number > 3}">${historyList.totalPages}</a>
                                 </li>
-                                <li class="page-item me-3">
+                                <li class="page-item ">
                                     <a class="page-link"
                                        th:href="@{/doctor/history(page=${historyList.number + 1})}"
                                        th:if="${historyList.hasNext()}">Next</a>
                                 </li>
+
+
+
+
                             </ul>
+
+
                         </nav>
                     </div>
                 </div>

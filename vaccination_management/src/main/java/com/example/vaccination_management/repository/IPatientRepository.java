@@ -59,8 +59,7 @@ public interface IPatientRepository extends JpaRepository<Patient, Integer> {
 
 
 
-    @Override
-    Patient getById(Integer integer);
+    Patient getPatientById(Integer Id);
 
     /**
      * LoanHTP

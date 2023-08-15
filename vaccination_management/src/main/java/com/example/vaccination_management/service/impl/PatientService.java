@@ -50,7 +50,7 @@ public class PatientService implements IPatientService {
 
     @Override
     public Patient getPatientById(Integer id) {
-        return iPatientRepository.getById(id);
+        return iPatientRepository.getPatientById(id);
     }
 
     /**
