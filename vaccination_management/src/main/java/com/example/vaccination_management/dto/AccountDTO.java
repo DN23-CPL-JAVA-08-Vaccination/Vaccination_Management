@@ -1,28 +1,44 @@
 package com.example.vaccination_management.dto;
 
+import lombok.*;
+
+
 public class AccountDTO {
-    private int id;
+    private Integer id;
+    private String email;
+    private Boolean enableFlag;
+    private String password;
     private String username;
-    private String currentPassword;
-    private String newPassword;
-    private String confirmPassword;
+    private String verificationCode;
+    private String rePassword;
+
+    public String getRePassword() {
+        return rePassword;
+    }
+
+    public void setRePassword(String rePassword) {
+        this.rePassword = rePassword;
+    }
+
+
 
     public AccountDTO() {
     }
 
-    public AccountDTO(int id, String username, String currentPassword, String newPassword, String confirmPassword) {
+    public AccountDTO(Integer id, String username, String verificationCode, String password, String email, Boolean enableFlag) {
         this.id = id;
         this.username = username;
-        this.currentPassword = currentPassword;
-        this.newPassword = newPassword;
-        this.confirmPassword = confirmPassword;
+        this.verificationCode = verificationCode;
+        this.password = password;
+        this.email = email;
+        this.enableFlag = enableFlag;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -34,27 +50,35 @@ public class AccountDTO {
         this.username = username;
     }
 
-    public String getCurrentPassword() {
-        return currentPassword;
+    public String getVerificationCode() {
+        return verificationCode;
     }
 
-    public void setCurrentPassword(String currentPassword) {
-        this.currentPassword = currentPassword;
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 
-    public String getNewPassword() {
-        return newPassword;
+    public String getPassword() {
+        return password;
     }
 
-    public void setNewPassword(String newPassword) {
-        this.newPassword = newPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
+    public String getEmail() {
+        return email;
     }
 
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Boolean getEnableFlag() {
+        return enableFlag;
+    }
+
+    public void setEnableFlag(Boolean enableFlag) {
+        this.enableFlag = enableFlag;
     }
 }

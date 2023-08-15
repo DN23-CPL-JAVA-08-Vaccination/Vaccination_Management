@@ -17,6 +17,7 @@ public class VaccinationHistory {
     @Column(name = "dosage")
     private Double dosage;
 
+
     @Column(name = "start_time", columnDefinition = "Datetime")
     private String startTime;
 
@@ -25,6 +26,7 @@ public class VaccinationHistory {
 
     @Column(name = "delete_flag")
     private boolean deleteFlag;
+
 
     @Column(name = "vaccination_times")
     private int vaccinationTimes;

@@ -54,14 +54,15 @@ public class EmployeeController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("name").descending());
         List<EmployeeListDTO> employeeListDTOS = employeeService.getEmployeeByPage('%' + searchName + '%', pageable);
-        model.addAttribute("employeeListDTOS", employeeListDTOS);
         long totalEmployee = employeeService.getTotalEmployee('%' + searchName + '%');
         int totalPages = (int) Math.ceil((double) totalEmployee / size);
 
+
+        model.addAttribute("employeeListDTOS", employeeListDTOS);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("searchName", searchName);
         model.addAttribute("currentPage", page);
-        return "admin/employee/list";
+        return "Admin/employee/list";
     }
 
 
@@ -115,7 +116,7 @@ public class EmployeeController {
         this.currentPhone = employeeCreateDTO.getPhone();
         model.addAttribute("employeeCreateDTO", employeeCreateDTO);
         model.addAttribute("positionList", positionService.findAll());
-        return "admin/employee/update";
+        return "Admin/employee/update";
     }
 
     /**

@@ -1,6 +1,6 @@
 package com.example.vaccination_management.validation;
 
-import com.example.vaccination_management.dto.AccountDTO;
+import com.example.vaccination_management.dto.ChangeAccountDTO;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -26,22 +26,22 @@ public class ChangePasswordValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        AccountDTO accountDTO = (AccountDTO) target;
-        if (accountDTO.getCurrentPassword().equals("")) {
+        ChangeAccountDTO changeAccountDTO = (ChangeAccountDTO) target;
+        if (changeAccountDTO.getCurrentPassword().equals("")) {
             errors.rejectValue(fieldCurrentPassword, "currentPassword.null", "Mật khẩu hiện tại không được để trống.");
-        } else if (accountDTO.getCurrentPassword().length() < 6 || accountDTO.getCurrentPassword().length() > 15) {
+        } else if (changeAccountDTO.getCurrentPassword().length() < 6 || changeAccountDTO.getCurrentPassword().length() > 15) {
             errors.rejectValue(fieldCurrentPassword, "currentPassword.length", "Mật khẩu hiện tại từ 6 đến 15 ký tự.");
         }
-        if (accountDTO.getNewPassword().equals("")) {
+        if (changeAccountDTO.getNewPassword().equals("")) {
             errors.rejectValue(fieldNewPassword, "newPassword.null", "Mật khẩu mới không được để trống.");
-        } else if (!Pattern.compile(patternNewPassword).matcher(accountDTO.getNewPassword()).find()) {
+        } else if (!Pattern.compile(patternNewPassword).matcher(changeAccountDTO.getNewPassword()).find()) {
             errors.rejectValue(fieldNewPassword, "newPassword.pattern", "Mật khẩu mới từ 6 -15 ký tự, gồm chữ thường, chữ hoa, ký tự đặc biệt.");
-        } else if (accountDTO.getCurrentPassword().equals(accountDTO.getNewPassword())) {
+        } else if (changeAccountDTO.getCurrentPassword().equals(changeAccountDTO.getNewPassword())) {
             errors.rejectValue(fieldNewPassword, "newPassword.checkMatches", "Mật khẩu mới không được trùng mật khẩu hiện tại.");
         }
-        if (accountDTO.getConfirmPassword().equals("")) {
+        if (changeAccountDTO.getConfirmPassword().equals("")) {
             errors.rejectValue(fieldConfirmPassword, "confirmPassword.null", "Vui lòng xác nhận lại mật khẩu.");
-        } else if (!accountDTO.getNewPassword().equals(accountDTO.getConfirmPassword())) {
+        } else if (!changeAccountDTO.getNewPassword().equals(changeAccountDTO.getConfirmPassword())) {
             errors.rejectValue(fieldConfirmPassword, "confirmPassword.null", "Mật khẩu không khớp.");
         }
     }

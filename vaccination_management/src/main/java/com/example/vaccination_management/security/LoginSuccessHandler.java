@@ -44,7 +44,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         }
 
         if (hasUserRole) {
-            redirectStrategy.sendRedirect(request, response, "");
+            redirectStrategy.sendRedirect(request, response, "/");
         } else if (hasEmployeeRole) {
             redirectStrategy.sendRedirect(request, response, "/doctor");
         } else if (hasAdminRole) {
