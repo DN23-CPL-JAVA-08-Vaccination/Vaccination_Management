@@ -9,8 +9,14 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-
 public interface IVaccineService {
+
+     /**
+     * VuongLV
+     * get all information of Vaccine, admin after login
+     */
+    List<Vaccine> findAll();
+
     /**
      * HuyLVN
      * get information of vaccines have delete flag is false, admin after login

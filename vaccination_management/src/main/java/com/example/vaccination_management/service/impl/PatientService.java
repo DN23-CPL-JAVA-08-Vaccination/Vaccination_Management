@@ -1,17 +1,21 @@
 package com.example.vaccination_management.service.impl;
 
+
 import com.example.vaccination_management.dto.InforPatientDTO;
 import com.example.vaccination_management.dto.PatientByUsernameDTO;
 import com.example.vaccination_management.entity.Account;
+
 import com.example.vaccination_management.entity.Patient;
 import com.example.vaccination_management.repository.IPatientRepository;
 import com.example.vaccination_management.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.example.vaccination_management.dto.IPatientDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
+
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,10 +26,13 @@ import java.util.Optional;
 public class PatientService implements IPatientService {
 
     @Autowired
-    private IPatientRepository iPatientRP;
-
-    @Autowired
     private IPatientRepository iPatientRepository;
+
+
+    @Override
+    public List<Patient> finAll() {
+        return iPatientRepository.findAll();
+    }
 
     /**
      * ThangLV
@@ -101,7 +108,7 @@ public class PatientService implements IPatientService {
      */
     @Override
     public void insertPatient(String name, Boolean gender, String phone, String address, LocalDate birthday, String healthInsurance, String guardianName, String guardianPhone, Boolean enableFlag, Integer accountId) {
-        iPatientRP.insertPatient(name, gender, phone, address, birthday, healthInsurance, guardianName, guardianPhone, enableFlag, accountId);
+        iPatientRepository.insertPatient(name, gender, phone, address, birthday, healthInsurance, guardianName, guardianPhone, enableFlag, accountId);
     }
 
 
@@ -111,7 +118,7 @@ public class PatientService implements IPatientService {
      */
     @Override
     public List<Patient> fillAllByAccountIDisNull() {
-        return iPatientRP.fillAllByAccountIDisNull();
+        return iPatientRepository.fillAllByAccountIDisNull();
     }
 
 
@@ -121,7 +128,7 @@ public class PatientService implements IPatientService {
      */
     @Override
     public void updateDeleteFlagById(Boolean deleteFlag, Integer id) {
-        iPatientRP.updateDeleteFlagById(deleteFlag, id);
+        iPatientRepository.updateDeleteFlagById(deleteFlag, id);
     }
 
 
@@ -131,7 +138,7 @@ public class PatientService implements IPatientService {
      */
     @Override
     public Optional<Patient> findById(Integer integer) {
-        return iPatientRP.findById(integer);
+        return iPatientRepository.findById(integer);
     }
 
 
@@ -141,7 +148,7 @@ public class PatientService implements IPatientService {
      */
     @Override
     public void upPatient(String name, LocalDate birthday, String address, Boolean gender, String phone, String guardianName, String guardianPhone, Integer id) {
-        iPatientRP.upPatient(name, birthday, address, gender, phone, guardianName, guardianPhone, id);
+        iPatientRepository.upPatient(name, birthday, address, gender, phone, guardianName, guardianPhone, id);
     }
 
 
@@ -151,7 +158,8 @@ public class PatientService implements IPatientService {
      */
     @Override
     public Integer finByHealthInsurance(String healthInsurance) {
-        return iPatientRP.finByHealthInsurance(healthInsurance);
+        return iPatientRepository.finByHealthInsurance(healthInsurance);
+
     }
 
 
@@ -161,7 +169,7 @@ public class PatientService implements IPatientService {
      */
     @Override
     public List<Patient> findAllByDeleteFlag(Boolean deleteFlag) {
-        return iPatientRP.findAllByDeleteFlag(deleteFlag);
+        return iPatientRepository.findAllByDeleteFlag(deleteFlag);
     }
 
 
@@ -171,7 +179,8 @@ public class PatientService implements IPatientService {
      */
     @Override
     public List<Patient> getPatientByPage(String healthInsurance, String name, String phone, Boolean deleteFlag, Pageable pageable) {
-        Page<Patient> patientPage = iPatientRP.findAllByHealthOrNameOrPhonePage(healthInsurance, name, phone, deleteFlag, pageable);
+        Page<Patient> patientPage = iPatientRepository.findAllByHealthOrNameOrPhonePage(healthInsurance, name, phone, deleteFlag, pageable);
+
         return patientPage.getContent();
     }
 
@@ -182,7 +191,8 @@ public class PatientService implements IPatientService {
      */
     @Override
     public long getTotalPatient(String healthInsurance, String name, String phone, Boolean deleteFlag) {
-        return iPatientRP.getTotalPatient(healthInsurance, name, phone, deleteFlag);
+        return iPatientRepository.getTotalPatient(healthInsurance, name, phone, deleteFlag);
+
     }
 
 
@@ -192,7 +202,7 @@ public class PatientService implements IPatientService {
      */
     @Override
     public List<Patient> getPatientByPageAccountNull(String healthInsurance, String name, String phone, Pageable pageable) {
-        Page<Patient> patientPage = iPatientRP.findAllByNameAndNull(healthInsurance, name, phone, pageable);
+        Page<Patient> patientPage = iPatientRepository.findAllByNameAndNull(healthInsurance, name, phone, pageable);
         return patientPage.getContent();
     }
 
@@ -203,7 +213,8 @@ public class PatientService implements IPatientService {
      */
     @Override
     public long getTotalPatientAccountNull(String healthInsurance, String name, String phone) {
-        return iPatientRP.getTotalPatientAccountNull(healthInsurance, name, phone);
+        return iPatientRepository.getTotalPatientAccountNull(healthInsurance, name, phone);
+
     }
 
 }

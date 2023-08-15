@@ -16,6 +16,9 @@ import java.util.List;
 @Repository
 public interface IVaccinationRepository extends JpaRepository<Vaccination, Integer> {
 
+
+    List<Vaccination> findByDeleteFlagTrue();
+
     @Query(
             value = "SELECT vac.id, vac.description, vac.date , vac.end_time as endTime, vac.start_time as startTime, vac.times,\n" +
                     "loc.name as locationName , vaccine.name as vaccineName , typ.name as vaccineTypeName\n" +
@@ -45,6 +48,7 @@ public interface IVaccinationRepository extends JpaRepository<Vaccination, Integ
      * Retrieves a pageable list of vaccinations that have not been marked for deletion.
      */
     Page<Vaccination> findByDeleteFlagFalse(Pageable pageable);
+
 
     /**
      *LoanHTP

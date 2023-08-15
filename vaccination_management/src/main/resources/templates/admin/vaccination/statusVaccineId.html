@@ -1,0 +1,273 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+    <div class="row">
+
+        <div class="receipt-main col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+            <div class="row">
+                <!--        <div class="receipt-header">-->
+                <!--          <div class="col-xs-6 col-sm-6 col-md-6">-->
+                <!--            <div class="receipt-left">-->
+                <!--              <img class="img-responsive" alt="iamgurdeeposahan" src="http://bootsnipp.com/img/avatars/bcf1c0d13e5500875fdd5a7e8ad9752ee16e7462.jpg" style="width: 71px; border-radius: 43px;">-->
+                <!--            </div>-->
+                <!--          </div>-->
+                <!--&lt;!&ndash;          <div class="col-xs-6 col-sm-6 col-md-6 text-right">&ndash;&gt;-->
+                <!--&lt;!&ndash;            <div class="receipt-right">&ndash;&gt;-->
+                <!--&lt;!&ndash;              <h5>TechiTouch.</h5>&ndash;&gt;-->
+                <!--&lt;!&ndash;              <p>+91 12345-6789 <i class="fa fa-phone"></i></p>&ndash;&gt;-->
+                <!--&lt;!&ndash;              <p>info@gmail.com <i class="fa fa-envelope-o"></i></p>&ndash;&gt;-->
+                <!--&lt;!&ndash;              <p>Australia <i class="fa fa-location-arrow"></i></p>&ndash;&gt;-->
+                <!--&lt;!&ndash;            </div>&ndash;&gt;-->
+                <!--&lt;!&ndash;          </div>&ndash;&gt;-->
+                <!--&lt;!&ndash;        </div>&ndash;&gt;-->
+                <!--      </div>-->
+
+                <div class="row">
+                    <div class="receipt-header receipt-header-mid">
+                        <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+                            <div class="receipt-right">
+                                <h5  th:text="${vaccinationHistory.patient.account.userName}"></h5>
+                                <!--              <h5  th:text="${vaccinationHT.patient.name}">Gurdeep Singh <small>  |   Lucky Number : 156</small></h5>-->
+                                <p ><b>Số điện thoại :</b> <span th:text="${vaccinationHistory.patient.phoneNumber}"></span></p>
+                                <!--              <p><b>Email :</b> <span th:text="${vaccinationHistory.patient.}"></span></p>-->
+                                <p><b>Email :</b> <span th:text="${vaccinationHistory.patient.account.getEmail()}"></span></p>
+                                <p><b>Địa chỉ cư trú :</b> <span th:text="${vaccinationHistory.patient.address}"></span></p>
+                            </div>
+                        </div>
+                        <!--          <div class="col-xs-4 col-sm-4 col-md-4">-->
+                        <!--            <div class="receipt-left">-->
+                        <!--              <h3 style="padding-top: 6px"><b> Medical record </b></h3>-->
+                        <!--            </div>-->
+                        <!--          </div>-->
+                    </div>
+                </div>
+
+                <div >
+                    <form th:action="@{/Update_Status_VaccinationHistory}" method="post" th:object="${vaccinationHistory}">
+
+                    <table class="table table-bordered">
+
+
+                            <thead>
+                            <tr>
+                                <th>Tiêu đề</th>
+                                <th>Thông tin</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <input type="hidden" th:field="${vaccinationHistory.id}">
+                            <tr>
+                                <td class="col-md-4">Tên người tiêm chủng</td>
+                                <td class="col-md-8" th:text="${vaccinationHistory.patient.name}"></td>
+                            </tr>
+
+<!--                            <tr>-->
+                            <!--                                <td class="col-md-4">Giới tính</td>-->
+                            <!--                                <td class="col-md-8" th:text="${vaccinationHistory.patient.gender}"></td>-->
+                            <!--                            </tr>-->
+
+                            <tr>
+                                <td class="col-md-4"> người giám hộ </td>
+                                <td class="col-md-8" th:text="${vaccinationHistory.patient.guardianName}"></td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4"> Mã bảo hiểm </td>
+                                <td class="col-md-8" th:text="${vaccinationHistory.patient.healthInsurance}"></td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4"> Thời gian tiêm chủng </td>
+                                <td class="col-md-8" th:text="${vaccinationHistory.vaccination.times}"> giờ</td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4"> Địa chỉ yêu cầu tiêm chủng </td>
+
+                                <td class="col-md-8" th:text="${vaccinationHistory.vaccination.location.name}"></td>
+                            </tr>
+                            <tr>
+                                <td class="col-md-4"> Tuổi(<span th:text="${vaccinationHistory.vaccination.vaccine.getAge()}"></span>)</td>
+                           <td> <span th:text="${T(java.time.LocalDate).now().getYear() - T(java.time.LocalDate).parse(vaccinationHistory.patient.getBirthday()).getYear()}"></span></td>
+<!--                                <td class="col-md-8" th:text="${vaccinationHistory.patient.getBirthday()}"></td>-->
+                            </tr>
+                            <tr>
+                                <td class="col-md-4"><strong>Vaccine </strong></td>
+                                <td class="col-md-8" th:text="${vaccinationHistory.vaccination.vaccine.name}"></td>
+                            </tr>
+
+
+                            <!--            <td class="col-md-4"><strong>Status </strong></td>-->
+
+                            <!--            <td class="col-md-8">-->
+                            <!--              <select class="form-select" name="addressId" aria-label="Default select example" th:model="${vaccinationHistory.vaccinationStatus.id}">-->
+                            <!--                <option th:each="vaccinationService : ${VaccinationServiceList}" th:value="${vaccinationService.id}" th:text="${vaccinationService.name}">-->
+                            <!--                </option>-->
+                            <!--              </select>-->
+
+                            <!--              <select-->
+                            <!--                      class="form-select"-->
+                            <!--                                          defaultValue="<%= defaultValue %>"-->
+                            <!--                                          aria-label="Default select example"-->
+                            <!--                      name="addressId" th:model="${vaccinationHistory.vaccinationStatus.id}">-->
+
+                            <!--                <option th:each="VaccinationServiceList : ${VaccinationServiceList}" th:value="${VaccinationServiceList.id}" th:text="${VaccinationServiceList.name}"></option>-->
+                            <!--              </select>-->
+                            </td>
+
+                            </tbody>
+
+                    </table>
+                        <input class="hover" style="width: 100%; height: 33px; border-radius: 5px; font-size: 13px; box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); border: 1px solid #ccc;"
+                               type="datetime-local" id="startTime" th:field="*{startTime}"
+                               th:min="${formattedNow}"    />
+<!--                        <span style="display: none" th:text="${vaccinationHistory.getEndTime()}"></span>-->
+                    <select class="hover" style="outline: none;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;border-radius: 10px;width: 250px;height: 35px;    margin-left: 45px;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;" id="vaccinationStatusList" name="vaccinationStatusList.id" th:required="required" th:field="${vaccinationHistory.vaccinationStatus.id}">
+                        <option th:each="vaccinationStatusList : ${vaccinationStatusList}" th:value="${vaccinationStatusList.id}"
+                                th:text="${vaccinationStatusList.name}" th:selected="${vaccinationStatusList.id==vaccinationHistory.vaccinationStatus.id}" required>
+                        </option>
+                    </select>
+                        <style>
+                            .hover:hover{
+                                outline: none;box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);border: 1px solid #ccc;border-radius: 10px;width: 250px;height: 35px
+                            }
+
+                        </style>
+
+                    <button style="width: 170px;height: 40px;font-size: 16px;margin-top: -5px;border-radius: 15px" class="btn btn-primary" type="submit">Cập nhật trang thái</button>
+                    </form>
+                </div>
+
+                <!--        <form th:action="@{ ${vaccinationHistory.id}}" method="post" th:object="${vaccinationHistory}">-->
+                <!--          <div class="row">-->
+                <!--            <div class="col-md-4"><strong>Status</strong></div>-->
+                <!--            <div class="col-md-8">-->
+                <!--              <select class="form-select" name="addressId" aria-label="Default select example" th:model="${vaccinationHistory.vaccinationStatus.id}">-->
+                <!--                <option th:each="vaccinationStatus : ${vaccinationStatusList}" th:value="${vaccinationStatus.id}"  th:selected="${vaccinationStatus.id == vaccinationHistory.vaccinationStatus.id}">-->
+                <!--                  <span th:text="${vaccinationStatus.name}"></span>-->
+                <!--                </option>-->
+                <!--              </select>-->
+                <!--              &lt;!&ndash;              <button type="submit">Update Product</button>&ndash;&gt;-->
+                <!--            </div>-->
+                <!--          </div>-->
+
+                <!--        </form>-->
+                <div class="row">
+                    <div class="receipt-header receipt-header-mid receipt-footer">
+                        <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+                            <div class="receipt-right">
+<!--                                <p><b>Date :</b> 15 Aug 2016</p>-->
+                                <h5 style="color: rgb(140, 140, 140);">Lưu ý: phải thỏa mãn tất cả các điều kiện!</h5>
+                            </div>
+                        </div>
+                        <div class="col-xs-4 col-sm-4 col-md-4">
+                            <div class="receipt-left">
+<!--                                <h1>Signature</h1>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        function confirmUpdate() {
+            if (confirm('Are you sure you want to update the vaccination status?')) {
+                return true; // Proceed with the form submission
+            } else {
+                return false; // Cancel the form submission and stay on the same page
+            }
+        }
+    </script>
+    <style>
+        .text-danger strong {
+            color: #9f181c;
+        }
+        .receipt-main {
+            background: #ffffff none repeat scroll 0 0;
+            border-bottom: 12px solid #333333;
+            border-top: 12px solid #9f181c;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            padding: 40px 30px !important;
+            position: relative;
+            box-shadow: 0 1px 21px #acacac;
+            color: #333333;
+            font-family: open sans;
+        }
+        .receipt-main p {
+            color: #333333;
+            font-family: open sans;
+            line-height: 1.42857;
+        }
+        .receipt-footer h1 {
+            font-size: 15px;
+            font-weight: 400 !important;
+            margin: 0 !important;
+        }
+        .receipt-main::after {
+            background: #414143 none repeat scroll 0 0;
+            content: "";
+            height: 5px;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: -13px;
+        }
+        .receipt-main thead {
+            background: #414143 none repeat scroll 0 0;
+        }
+        .receipt-main thead th {
+            color:#fff;
+        }
+        .receipt-right h5 {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0 0 7px 0;
+        }
+        .receipt-right p {
+            font-size: 12px;
+            margin: 0px;
+        }
+        .receipt-right p i {
+            text-align: center;
+            width: 18px;
+        }
+        .receipt-main td {
+            padding: 9px 20px !important;
+        }
+        .receipt-main th {
+            padding: 13px 20px !important;
+        }
+        .receipt-main td {
+            font-size: 13px;
+            font-weight: initial !important;
+        }
+        .receipt-main td p:last-child {
+            margin: 0;
+            padding: 0;
+        }
+        .receipt-main td h2 {
+            font-size: 20px;
+            font-weight: 900;
+            margin: 0;
+            text-transform: uppercase;
+        }
+        .receipt-header-mid .receipt-left h1 {
+            font-weight: 100;
+            margin: 34px 0 0;
+            text-align: right;
+            text-transform: uppercase;
+        }
+        .receipt-header-mid {
+            margin: 24px 0;
+            overflow: hidden;
+        }
+
+        #container {
+            background-color: #dcdcdc;
+        }
+    </style>

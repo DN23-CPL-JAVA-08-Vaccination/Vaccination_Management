@@ -1,37 +1,44 @@
 package com.example.vaccination_management.service.impl;
 
 import com.example.vaccination_management.entity.Vaccine;
-import com.example.vaccination_management.entity.VaccineType;
-import com.example.vaccination_management.exception.VaccineNotFoundException;
 import com.example.vaccination_management.repository.IVaccineRepository;
-import com.example.vaccination_management.repository.IVaccineTypeRepository;
 import com.example.vaccination_management.service.IVaccineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.vaccination_management.entity.VaccineType;
+import com.example.vaccination_management.exception.VaccineNotFoundException;
+import com.example.vaccination_management.repository.IVaccineTypeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Optional;
 
 import com.example.vaccination_management.dto.IVaccineDTO;
 import org.springframework.data.domain.PageRequest;
-
-
 import java.util.List;
-
 
 @Service
 public class VaccineService implements IVaccineService {
-
 
     @Autowired
     private IVaccineRepository iVaccineRepository;
 
     @Autowired
     private IVaccineTypeRepository iVaccineTypeRepository;
+
+     /**
+     * VuongLV
+     * get all information of Vaccine, admin after login
+     */
+    @Override
+    public List<Vaccine> findAll() {
+        return iVaccineRepository.findAll();
+    }
+
+
 
     /**
      * HuyLVN
@@ -283,6 +290,4 @@ public class VaccineService implements IVaccineService {
     public long getTotalVaccinesByVaccineTypeAndSearch(VaccineType vaccineType, String searchQuery) {
         return iVaccineRepository.countByVaccineTypeAndNameAndDeleteFlagFalseContainingIgnoreCase(vaccineType, searchQuery);
     }
-
-
 }

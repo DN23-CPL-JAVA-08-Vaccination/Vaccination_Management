@@ -1,21 +1,31 @@
 package com.example.vaccination_management.service.impl;
 
-import com.example.vaccination_management.dto.AccountDTO;
-import com.example.vaccination_management.dto.EmailDTO;
-import com.example.vaccination_management.dto.IAccountDetailDTO;
+import com.example.vaccination_management.entity.Patient;
+import com.example.vaccination_management.entity.Vaccination;
+import com.example.vaccination_management.repository.IAccountRepository;
+import com.example.vaccination_management.repository.IPatientRepository;
 import com.example.vaccination_management.service.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.util.StringUtils;
+import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+
+import com.example.vaccination_management.dto.AccountDTO;
+import com.example.vaccination_management.dto.EmailDTO;
+import com.example.vaccination_management.dto.IAccountDetailDTO;
+import org.thymeleaf.util.StringUtils;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 
 @Service
 public class EmailService implements IEmailService {
@@ -25,11 +35,25 @@ public class EmailService implements IEmailService {
 
     @Autowired
     private SpringTemplateEngine templateEngine;
+    //test email
+    @Autowired
+    private IAccountRepository iAccountRepository;
 
-    
+    @Autowired
+    private IPatientRepository iPatientRepository;
+
+
+//    @Autowired
+//    public EmailService(JavaMailSender mailSender) {
+//        this.mailSender = mailSender;
+//    }
+
+
+
+
     /**
-       * TLINH
-       * set html interface for email
+     * TLINH
+     * set html interface for email
      */
     public void sendHtmlMail(EmailDTO emailDTO, String templateName) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
@@ -40,23 +64,67 @@ public class EmailService implements IEmailService {
         helper.setTo(emailDTO.getTo());
         helper.setSubject(emailDTO.getSubject());
         helper.setText(html, true);
-            mailSender.send(message);
-
-
+        mailSender.send(message);
     }
 
+
+    public List<String> getPatientsWithMatchingLocationName(Vaccination vaccination) {
+        List<Patient> patients = iPatientRepository.findAll();
+        String locationName = vaccination.getLocation().getName();
+        List<String> matchingPatientNames = new ArrayList<>();
+        for (Patient patient : patients) {
+            if (patient.getAddress().toLowerCase().contains(locationName.toLowerCase())) {
+                matchingPatientNames.add(patient.getAccount().getEmail());
+            }
+        }
+        return matchingPatientNames;
+    }
+    @Override
+  public Boolean SendEmailTBByLocation(Vaccination vaccination){
+      try {
+          EmailDTO emailDTO =new EmailDTO();
+          if (vaccination != null) {
+          if (!getPatientsWithMatchingLocationName(vaccination).isEmpty()) {
+              for (String account : getPatientsWithMatchingLocationName(vaccination)) {
+                  emailDTO.setTo(account);
+              }
+          }
+      }
+            emailDTO.setSubject(vaccination.getDescription());
+            Map<String, Object> props = new HashMap<>();
+            props.put("description", vaccination.getDescription());
+
+          props.put("vaccinationType", vaccination.getVaccinationType().getName());
+          props.put("vaccineName", vaccination.getVaccine().getName());
+          props.put("times", vaccination.getTimes());
+          props.put("age", vaccination.getVaccine().getAge());
+
+          props.put("startTime", vaccination.getStartTime());
+          props.put("endTime", vaccination.getEndTime());
+          props.put("duration", vaccination.getDuration());
+          props.put("locationDetail", vaccination.getLocation().getLocationDetail());
+          props.put("registrationLink", "dangkitiemchung/" + vaccination.getId());
+            emailDTO.setProps(props);
+            sendHtmlMail(emailDTO, "/admin/vaccination/notification_email");
+      return true;
+      } catch (MessagingException exp) {
+            exp.printStackTrace();
+        }
+            return false;
+  }
+
     /**
-       * TLINH
-       * send an account activation email with the objects passed to the email form
+     * TLINH
+     * send an account activation email with the objects passed to the email form
      */
     @Override
-    public Boolean SendEmail(IAccountDetailDTO detailDTO){
+    public Boolean SendEmail(IAccountDetailDTO detailDTO) {
 
         try {
-             EmailDTO emailDTO=new EmailDTO();
-             emailDTO.setTo(detailDTO.getEmail());
-             emailDTO.setSubject("XÁC NHẬP CẤP TÀI KHOẢN TIÊM CHỦNG ĐÀ NẴNG");
-            Map<String, Object> props= new HashMap<>();
+            EmailDTO emailDTO = new EmailDTO();
+            emailDTO.setTo(detailDTO.getEmail());
+            emailDTO.setSubject("XÁC NHẬP CẤP TÀI KHOẢN TIÊM CHỦNG ĐÀ NẴNG");
+            Map<String, Object> props = new HashMap<>();
             props.put("verification_code", detailDTO.getPatientHealthInsurance());
             props.put("password", detailDTO.getPassword());
             props.put("username", detailDTO.getPatientName());
@@ -75,19 +143,19 @@ public class EmailService implements IEmailService {
         return false;
     }
 
-    
+
     /**
-       * TLINH
-       * send an account deactivation email with the objects passed to the email form
+     * TLINH
+     * send an account deactivation email with the objects passed to the email form
      */
     @Override
-    public Boolean SendEmailDeactivate(IAccountDetailDTO detailDTO){
+    public Boolean SendEmailDeactivate(IAccountDetailDTO detailDTO) {
 
         try {
-            EmailDTO emailDTO=new EmailDTO();
+            EmailDTO emailDTO = new EmailDTO();
             emailDTO.setTo(detailDTO.getEmail());
             emailDTO.setSubject("Thông báo hủy  kích hoạt tài khoản tiêm chủng Đà Nẵng");
-            Map<String, Object> props= new HashMap<>();
+            Map<String, Object> props = new HashMap<>();
             props.put("verification_code", detailDTO.getPatientHealthInsurance());
             props.put("username", detailDTO.getPatientName());
             props.put("address", detailDTO.getAddress());
@@ -106,17 +174,17 @@ public class EmailService implements IEmailService {
     }
 
     /**
-       * TLINH
-       * Send an email with a link forgot password
+     * TLINH
+     * Send an email with a link forgot password
      */
 
     @Override
-    public Boolean SendEmailForgotPassword(AccountDTO accountDTO){
+    public Boolean SendEmailForgotPassword(AccountDTO accountDTO) {
         try {
-            EmailDTO emailDTO=new EmailDTO();
+            EmailDTO emailDTO = new EmailDTO();
             emailDTO.setTo(accountDTO.getEmail());
             emailDTO.setSubject("Xác nhận lấy lại mật khẩu");
-            Map<String, Object> props= new HashMap<>();
+            Map<String, Object> props = new HashMap<>();
             props.put("username", accountDTO.getUsername());
             props.put("verification_code", accountDTO.getVerificationCode());
             emailDTO.setProps(props);
@@ -133,7 +201,7 @@ public class EmailService implements IEmailService {
      * Hide email when checking password reset
      */
     @Override
-    public String hideEmail(String email){
+    public String hideEmail(String email) {
         if (email == null || email.isEmpty()) {
             return "";
         }
@@ -155,6 +223,5 @@ public class EmailService implements IEmailService {
         return hiddenUsername + "@" + hiddenDomain;
     }
 
-
-
 }
+

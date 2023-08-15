@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -36,6 +37,7 @@ public class Vaccine {
     @Column(name = "update_date", columnDefinition = "Datetime")
     private String updateDate;
 
+
     @Column(name = "price")
     private Double price;
 
@@ -59,6 +61,7 @@ public class Vaccine {
     }
 
     public Vaccine(int id, String name, String code, String description, boolean deleteFlag, String createDate, String updateDate, Double price, String duration, String age, String image, Double dosage, VaccineType vaccineType) {
+
         this.id = id;
         this.name = name;
         this.code = code;

@@ -14,6 +14,23 @@ public class VaccinationStatusService implements IVaccinationStatusService {
     @Autowired
     private IVaccinationStatusRepository iVaccinationStatusRepository;
 
+
+    @Autowired
+    public VaccinationStatusService(IVaccinationStatusRepository iVaccinationStatusRepository) {
+        this.iVaccinationStatusRepository = iVaccinationStatusRepository;
+    }
+
+    @Override
+    public VaccinationStatus findById(int id) {
+        return iVaccinationStatusRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<VaccinationStatus> finAll() {
+        return iVaccinationStatusRepository.findAll();
+    }
+
+
     /**
      * LoanHTP
      * Retrieves a list of all available vaccination status records.

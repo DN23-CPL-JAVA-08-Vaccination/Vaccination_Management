@@ -176,4 +176,6 @@ public class VaccinationHistory {
     public void setVaccinationStatus(VaccinationStatus vaccinationStatus) {
         this.vaccinationStatus = vaccinationStatus;
     }
+
+
 }

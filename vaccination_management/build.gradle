@@ -37,6 +37,8 @@ dependencies {
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+    implementation 'org.springframework.boot:spring-boot-configuration-processor'
+
 
     implementation group: 'org.springframework.security', name: 'spring-security-web', version: '5.4.2'
     implementation group: 'org.springframework.security', name: 'spring-security-config', version: '5.4.2'
@@ -53,6 +55,4 @@ compileJava.options.encoding = 'UTF-8'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
-
 }
-

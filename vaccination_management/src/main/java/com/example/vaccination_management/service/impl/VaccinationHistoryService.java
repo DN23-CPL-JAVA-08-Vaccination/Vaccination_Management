@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.PageRequest;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -141,7 +142,7 @@ public class VaccinationHistoryService implements IVaccinationHistoryService {
      */
     @Override
     public VaccinationHistory findVaccinationHistoryById(int id) {
-        return iVaccinationHistoryRepository.findById(id).orElse(null);
+        return iVaccinationHistoryRepository.findById(id);
     }
 
     /**

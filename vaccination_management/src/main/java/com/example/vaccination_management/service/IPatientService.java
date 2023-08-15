@@ -1,5 +1,9 @@
 package com.example.vaccination_management.service;
 
+import com.example.vaccination_management.entity.Patient;
+
+import java.util.List;
+
 import com.example.vaccination_management.dto.InforPatientDTO;
 import com.example.vaccination_management.dto.IPatientDTO;
 import com.example.vaccination_management.dto.PatientByUsernameDTO;
@@ -14,8 +18,9 @@ import java.util.List;
 import java.util.Optional;
 
 
-
 public interface IPatientService {
+
+    List<Patient> finAll();
 
     /**
      * ThangLV
@@ -64,9 +69,10 @@ public interface IPatientService {
 
 
     Integer finByHealthInsurance(String healthInsurance);
+
     List<Patient> findAllByDeleteFlag(Boolean deleteFlag);
 
-    List<Patient>getPatientByPage(String healthInsurance, String name, String phone, Boolean deleteFlag, Pageable pageable);
+    List<Patient> getPatientByPage(String healthInsurance, String name, String phone, Boolean deleteFlag, Pageable pageable);
 
     long getTotalPatient(String healthInsurance, String name, String phone, Boolean deleteFlag);
 

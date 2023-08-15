@@ -8,7 +8,6 @@ import com.example.vaccination_management.service.*;
 import com.example.vaccination_management.utils.Validation;
 import com.example.vaccination_management.dto.VaccinationHistoryDTO;
 import com.example.vaccination_management.entity.*;
-import com.example.vaccination_management.repository.*;
 import com.example.vaccination_management.service.IPatientService;
 import com.example.vaccination_management.service.IVaccinationHistoryService;
 import com.example.vaccination_management.service.IVaccinationService;
@@ -16,20 +15,29 @@ import com.example.vaccination_management.service.IVaccineTypeService;
 import com.example.vaccination_management.validator.VaccinationValidator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import com.example.vaccination_management.validation.VaccinationEventValidator;
+
+import org.springframework.validation.BindingResult;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.example.vaccination_management.dto.IVaccinationDTO;
+import com.example.vaccination_management.dto.IVaccinationHistoryDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.time.LocalDateTime;
 import java.util.List;
+
 
 import static com.example.vaccination_management.utils.DateUtils.calculateAge;
 
@@ -39,11 +47,18 @@ import java.sql.Timestamp;
 @Controller
 public class VaccinationController {
 
-    @Autowired
-    private IVaccinationHistoryService iVaccinationHistoryService;
 
     @Autowired
-    private IVaccinationService vaccinationService;
+    private IVaccineService vaccineService;
+
+    @Autowired
+    private ILocationService iLocationService;
+
+    @Autowired
+    private IVaccinationTypeService iVaccinationTypeService;
+
+    @Autowired
+    private IVaccinationHistoryService iVaccinationHistoryService;
 
     @Autowired
     private IVaccineStatusService iVaccineStatusService;
@@ -55,19 +70,13 @@ public class VaccinationController {
     private IVaccinationService iVaccinationService;
 
     @Autowired
-    private IVaccinationHistoryRepository iVaccinationHistoryRepository;
+    private IPatientService patientService;
 
     @Autowired
-    private IVaccineService vaccineService;
+    private VaccinationEventValidator vaccinationEventValidator;
 
     @Autowired
     private IVaccineTypeService vaccineTypeService;
-
-    @Autowired
-    private IVaccineTypeRepository iVaccineTypeRepository;
-
-    @Autowired
-    private IPatientService patientService;
 
     @Autowired
     private IVaccinationHistoryService iVaccinationHistory;
@@ -78,13 +87,172 @@ public class VaccinationController {
     @Autowired
     private AccountDetailService accountDetailService;
 
+    @Autowired IEmailService iEmail;
+
+    /**
+     * VuongVV
+     * add information of Vaccination, admin after login
+     */
+    @GetMapping("/admin/AddVaccination")
+    public String getAllVaccination(Model model) {
+        List<Vaccine> vaccineList = vaccineService.findAll();
+        model.addAttribute("vaccineList", vaccineList);
+
+        List<Location> locationList = iLocationService.findAll();
+        model.addAttribute("locationList", locationList);
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        String formattedNow = now.format(formatter);
+        model.addAttribute("formattedNow", formattedNow);
+        List<VaccinationType> vaccineTypeList = iVaccinationTypeService.finAll();
+        model.addAttribute("vaccineTypeList", vaccineTypeList);
+        //create
+        model.addAttribute("vaccination", new Vaccination());
+        model.addAttribute("location", new Location());
+        model.addAttribute("vaccinationType", new VaccinationType());
+        model.addAttribute("vaccine", new Vaccine());
+        return "admin/vaccination/addVaccination";
+    }
+
+    /**
+     * VuongVV
+     * update information of Vaccination, admin after login
+     */
+    @PostMapping("/admin/AddVaccination")
+    public String savePersonWithAddress(@Validated @ModelAttribute("vaccination") Vaccination vaccination,
+                                        RedirectAttributes redirectAttributes, Model model, BindingResult result) {
+
+        vaccinationEventValidator.validate(vaccination, result);
+        if (result.hasErrors()) {
+            //    redirectAttributes.addFlashAttribute("error", "lỗi khi update");// sửa lại mess cho hợp lí
+            List<Vaccine> vaccineList = vaccineService.findAll();
+            model.addAttribute("vaccineList", vaccineList);
+            List<Location> locationList = iLocationService.findAll();
+            model.addAttribute("locationList", locationList);
+            List<VaccinationType> vaccineTypeList = iVaccinationTypeService.finAll();
+            model.addAttribute("vaccineTypeList", vaccineTypeList);
+            return "admin/vaccination/addVaccination";
+        }
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        String formattedNow = now.format(formatter);
+        model.addAttribute("formattedNow", formattedNow);
+        redirectAttributes.addFlashAttribute("submitSuccess", true);
+        iVaccinationService.saveVaccinationService(vaccination, vaccination.getLocation(), vaccination.getVaccinationType(), vaccination.getVaccine());
+
+        return "redirect:/admin/AddVaccination";
+
+    }
+
+    /**
+     * VuongVV
+     * get information of Vaccination, admin after login
+     */
+    @GetMapping("/admin/ListVaccination")
+    public String GetAllVaccination(@RequestParam(value = "page", defaultValue = "0") int page,
+                                    @RequestParam(value = "size", defaultValue = "10") int size, Model model) {
+
+
+        int startRow = page * size + 1;
+        model.addAttribute("startRow", startRow);
+//             List<Vaccination> listVaccination = iVaccinationService.getDeletedVaccinations(page,size);
+//             model.addAttribute("listVaccination", listVaccination);
+        // Tính tổng số lượng vaccines
+        List<Vaccination> deletedVaccinations = iVaccinationService.getVaccinationByPageV(page, size);
+
+        model.addAttribute("listVaccination", deletedVaccinations);
+
+        List<Vaccination> deletedVaccinationTrue = iVaccinationService.getDeletedVaccinations();
+
+        int deletedVaccinationsCount = deletedVaccinationTrue.size();
+        long totalVaccination = iVaccinationService.getTotalVaccination() - deletedVaccinationsCount;
+
+        // Tính tổng số trang
+        int totalPages = (int) Math.ceil((double) totalVaccination / size);
+        model.addAttribute("totalPages", totalPages);
+
+        model.addAttribute("currentPage", page);
+        return "admin/vaccination/listVaccination";
+    }
+
+    /**
+     * VuongVV
+     * deleteFlag Notification by id of Vaccination, admin after login
+     */
+    @GetMapping("/admin/ListDeleteVaccination")
+    public String GetDeleteVaccination(@RequestParam(value = "page", defaultValue = "0") int page,
+                                       @RequestParam(value = "size", defaultValue = "10") int size, Model model) {
+        List<Vaccination> deletedVaccinations = iVaccinationService.getDeletedVaccinations();
+        model.addAttribute("deletedVaccinations", deletedVaccinations);
+        int startRow = page * size + 1;
+        model.addAttribute("startRow", startRow);
+        List<Vaccination> listVaccination = iVaccinationService.getVaccinationByPageV(page, size);
+        model.addAttribute("listVaccination", listVaccination);
+
+        // Tính tổng số lượng vaccines
+        long totalVaccination = iVaccinationService.getTotalVaccination();
+
+        // Tính tổng số trang
+        int totalPages = (int) Math.ceil((double) totalVaccination / size);
+        model.addAttribute("totalPages", totalPages);
+
+        model.addAttribute("currentPage", page); // Thêm dong nay đe truyen vào trang
+        return "admin/vaccination/listDeVaccination";
+    }
+
+    /**
+     * VuongVV
+     * delete Notification by id of Vaccination, admin after login
+     */
+    @GetMapping("/admin/deleteNotification/{id}")
+    public String deleteAccount(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
+        boolean deleted = iVaccinationService.deleteNotificationVaccination(id);
+
+        if (deleted) {
+            redirectAttributes.addFlashAttribute("message", "<span style='background-color: #18d26e'> Đã xoá thành công!</span> ");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "<span style='background-color: red'> Xoá thất bại </span>");
+        }
+        return "redirect:/admin/ListDeleteVaccination"; // Chuyển hướng về trang danh sách tài khoản sau khi xóa
+    }
+
+    /**
+     * VuongVV
+     * send Email vaccination notification by location of Vaccination , admin after login
+     */
+    @GetMapping("/admin/endMailAddress/{id}")
+    public String sendEmailAdress(@PathVariable("id") Integer id,RedirectAttributes redirectAttributes){
+        Vaccination vaccination=iVaccinationService.finById(id);
+        Boolean isEmail = iEmail.SendEmailTBByLocation(vaccination);
+        if(isEmail){
+            redirectAttributes.addFlashAttribute("submitSuccess", true);
+            redirectAttributes.addFlashAttribute("messageEm","Email đã gửi thành công khu vực "+vaccination.getLocation().getName());
+        }else{
+            redirectAttributes.addFlashAttribute("messageEm","Gửi thất bại không tìm thấy email");
+        }
+
+
+
+        return "redirect:/admin/ListVaccination";
+    }
+    @GetMapping("/admin/softDeleteVaccination/{id}")
+    public String softDeleteVaccination(@PathVariable int id,RedirectAttributes redirectAttributes) {
+        iVaccinationService.softDeleteVaccination(id);
+        redirectAttributes.addFlashAttribute("submitSuccess", true);
+        redirectAttributes.addFlashAttribute("messageEm","Bỏ vào thùng rác thành công ?");
+
+        return "redirect:/admin/ListVaccination"; // Thay đổi đường dẫn tương ứng
+    }
+
     /**
      * QuangVT
      * get information of vaccination schedule
      */
     @GetMapping("/doctor/vaccination")
 
-    public String schedule(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "", required = false) String strSearch) {
+    public String schedule(Model model, @RequestParam(defaultValue = "0") int page,
+                           @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "", required = false) String strSearch) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
         Page<IVaccinationHistoryDTO> vaccinations = iVaccinationHistoryService.getVaccinationSchedule('%' + strSearch + '%', pageable);
@@ -129,7 +297,8 @@ public class VaccinationController {
      * update information of accination history by ID,
      */
     @PostMapping("/doctor/vaccination/view")
-    public String update(@Validated @ModelAttribute("vaccinationObject") VaccinationHistoryDTO vaccinationHistoryDTO,
+    public String update(@Validated @ModelAttribute("vaccinationObject") VaccinationHistoryDTO
+                                 vaccinationHistoryDTO,
                          BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
         VaccinationStatus vaccinationStatus = iVaccineStatusService.getById(vaccinationHistoryDTO.getStatus());
         VaccinationHistory vaccinationHistory = iVaccinationHistoryService.getById(vaccinationHistoryDTO.getId());
@@ -157,7 +326,8 @@ public class VaccinationController {
      * get information of accination history completed
      */
     @GetMapping("/doctor/history")
-    public String history(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+    public String history(Model model, @RequestParam(defaultValue = "0") int page,
+                          @RequestParam(defaultValue = "10") int size,
                           RedirectAttributes redirectAttributes, @RequestParam(defaultValue = "", required = false) String strSearch) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("lastTime").descending());
         Page<IVaccinationHistoryDTO> history = iVaccinationHistoryService.getHistoryVaccination('%' + strSearch + '%', pageable);
@@ -173,7 +343,8 @@ public class VaccinationController {
     }
 
     @GetMapping("/doctor/event")
-    public String getVaccinationEvent(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "", required = false) String strSearch) {
+    public String getVaccinationEvent(Model model, @RequestParam(defaultValue = "0") int page,
+                                      @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "", required = false) String strSearch) {
         Pageable pageable = PageRequest.of(page, size);
         Page<IVaccinationDTO> vaccinations = iVaccinationService.getAllVaccination('%' + strSearch + '%', pageable);
         model.addAttribute("vaccinationList", vaccinations);
@@ -181,7 +352,8 @@ public class VaccinationController {
     }
 
     @GetMapping("/doctor/event/view")
-    public String getEventDetails(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "", required = false) String strSearch) {
+    public String getEventDetails(Model model, @RequestParam(defaultValue = "0") int page,
+                                  @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "", required = false) String strSearch) {
 
         return "doctors/detailevent";
     }
@@ -205,6 +377,7 @@ public class VaccinationController {
 
         // Lấy danh sách vaccination theo trang
         List<Vaccination> vaccinationList = iVaccinationService.getVaccinationByPage(page, size);
+
 
         List<VaccineType> vaccineTypes = vaccineTypeService.showVaccineType();
         model.addAttribute("vaccineTypes", vaccineTypes);
