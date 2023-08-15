@@ -85,6 +85,14 @@ public interface IEmployeeService {
      * get total Employee by Name
      */
     long getTotalEmployee(String nameSearch);
-
+    /**
+     * Quangvt
+     * get Employee by id
+     */
     Employee getEmployeeById(Integer id);
+    /**
+     * Quangvt
+     * count all Employee
+     */
+    long countAllEmployee();
 }

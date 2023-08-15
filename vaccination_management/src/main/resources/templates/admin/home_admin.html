@@ -1,337 +1,256 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th=”http://www.thymeleaf.org”>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
-    <title>Dashboard - Admin</title>
+    <title>Tables - SB Admin</title>
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
-    <link th:href="@{/css/styles-admin-thanglv.css}" rel="stylesheet"/>
+    <link th:href="@{/css/adminStyle.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/custom-css.css}">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <script src=" http://code.jquery.com/jquery-1.9.1.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
 </head>
 <body class="sb-nav-fixed">
 <th:block th:insert="admin/nav"></th:block>
 <div id="layoutSidenav">
     <th:block th:insert="admin/sidenav"></th:block>
-
     <div id="layoutSidenav_content">
         <main>
-            <div class="container-fluid px-4">
-                <h1 class="mt-4">Dashboard</h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item active">Dashboard</li>
-                </ol>
-                <div class="row">
-                    <div class="col-xl-3 col-md-6">
-                        <div class="card bg-primary text-white mb-4">
-                            <div class="card-body">Primary Card</div>
-                            <div class="card-footer d-flex align-items-center justify-content-between">
-                                <a class="small text-white stretched-link" href="#">View Details</a>
-                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+            <div class="m-5 ">
+                <div class="row mb-4">
+                    <div class="col-sm-4">
+                        <div class="card  rounded-3 card-custom card-custom-1 ">
+                            <div class="card-body text-black ">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title"> Hôm nay </h5>
+                                    <div class="icon-custom icon-custom-1">
+                                        <i class="fa-regular fa-sun  icon-item"  ></i>
+                                    </div>
+                                </div>
+                                <p class="card-text mb-1 "  th:text="${today} "> </p>
+                                <p class="card-text" >Trung tâm tiêm chủng Vaccine Đà Nẵng </p>
+
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-md-6">
-                        <div class="card bg-warning text-white mb-4">
-                            <div class="card-body">Warning Card</div>
-                            <div class="card-footer d-flex align-items-center justify-content-between">
-                                <a class="small text-white stretched-link" href="#">View Details</a>
-                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+
+
+                    <div class="col-sm-4">
+                        <div class="card  rounded-3   card-custom card-custom-2 ">
+                            <div class="card-body text-black ">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title"> Tiêm chủng </h5>
+                                    <div class="icon-custom icon-custom-2">
+                                        <i class="fa-regular fa-calendar-days icon-item" ></i>
+                                    </div>
+                                </div>
+                                <span th:text="${countVacc.getCompleteSchedule() != null ? countVacc.getCompleteSchedule() : 0 }"></span>
+
+                                <span class="card-text mb-1" th:text="${ ' / ' + countVacc.getAllSchedule() + ' ca đã hoàn thành hôm nay.'}">
+                                </span>
+                                <p class="card-text text-primary mt-1 " >
+                                    Fighting!
+                                </p>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-md-6">
-                        <div class="card bg-success text-white mb-4">
-                            <div class="card-body">Success Card</div>
-                            <div class="card-footer d-flex align-items-center justify-content-between">
-                                <a class="small text-white stretched-link" href="#">View Details</a>
-                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                    <div class="col-sm-4">
+                        <div class="card  rounded-3 card-custom card-custom-3 ">
+                            <div class="card-body text-black ">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title"> Tất cả Vắc xin  </h5>
+                                    <div class="icon-custom icon-custom-3">
+                                        <i class="fa-solid fa-syringe icon-item" ></i>
+                                    </div>
+                                </div>
+                                <p class="card-text  mb-1" th:text="${countVaccine + ' vaccine.'}"></p>
+                                <a class="card-text" th:href="@{/admin/vaccines}" >Xem thêm thông tin..</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-3 col-md-6">
-                        <div class="card bg-danger text-white mb-4">
-                            <div class="card-body">Danger Card</div>
-                            <div class="card-footer d-flex align-items-center justify-content-between">
-                                <a class="small text-white stretched-link" href="#">View Details</a>
-                                <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
-                <div class="row">
-                    <div class="col-xl-6">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-chart-area me-1"></i>
-                                Area Chart Example
+                <div class="row mt-xxl-5 ">
+
+                    <div class="col-12 ">
+                        <div class="d-flex justify-content-between align-items-center p-2 chart-custom ">
+                            <h5> Biểu đồ thống kê </h5>
+                            <div class="d-flex justify-content-between align-items-center ">
+
+                                <select id="yearSelect" onchange="getChartData()" class="form-select me-xxl-5" aria-label="Default select example" >
+                                </select>
+                                <button id="downloadChart" class="border-0 bg-white me-5" > <i class="fa-solid fa-download fa-xl " style="color: #3538ad;"></i></button>
+
+
                             </div>
-                            <div class="card-body">
-                                <canvas id="myAreaChart" width="100%" height="40"></canvas>
+                        </div>
+
+                    </div>
+                    <div class="col-9 mt-3">
+                        <canvas id="myChart" ></canvas>
+                    </div>
+                    <div class="col-3 mt-2">
+                        <div class="card  rounded-3 card-custom card-custom-1 m-3 ">
+                            <div class="card-body text-black ">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title"> Bác sĩ </h5>
+                                    <div class="icon-custom icon-custom-1">
+                                        <i class="fa-solid fa-user-doctor icon-item" ></i>
+                                    </div>
+                                </div>
+                                <p class="card-text mb-1 "  th:text="${ 'Số lượng : ' + countEmployee} "> </p>
+                                <a class="card-text text-decoration-none" th:href="@{/admin/employee}">Xem thêm thông tin..</a>
+
+                            </div>
+                        </div>
+
+                        <div class="card  rounded-3 card-custom card-custom-2 m-3 mt-5  ">
+                            <div class="card-body text-black ">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title"> Bệnh nhân </h5>
+                                    <div class="icon-custom icon-custom-2">
+                                        <i class="fa-solid fa-users-medical icon-item"></i>
+                                    </div>
+                                </div>
+                                <p class="card-text mb-1 "  th:text="${ 'Số lượng : ' + countPatient} "> </p>
+                                <a class="card-text text-decoration-none" th:href="@{/admin/patient/view_patient}" >Xem thêm thông tin..</a>
+
+                            </div>
+                        </div>
+
+                        <div class="card  rounded-3 card-custom card-custom-3 m-3 mt-5  ">
+                            <div class="card-body text-black ">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title"> Tài khoản </h5>
+                                    <div class="icon-custom icon-custom-3">
+                                        <i class="fa-solid fa-users-medical icon-item"></i>
+                                    </div>
+                                </div>
+                                <p class="card-text mb-1 "  th:text="${ countAccount +' Tài khoản đang hoạt động. '} "> </p>
+                                <a class="card-text text-decoration-none" th:href="@{/admin/account/view_account}" >Xem thêm thông tin..</a>
+
                             </div>
                         </div>
                     </div>
-                    <div class="col-xl-6">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-chart-bar me-1"></i>
-                                Bar Chart Example
-                            </div>
-                            <div class="card-body">
-                                <canvas id="myBarChart" width="100%" height="40"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <i class="fas fa-table me-1"></i>
-                        DataTable Example
-                    </div>
-                    <form class="row g-3">
-                        <div class="col-md-6">
-                            <label for="inputEmail4" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="inputEmail4">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="inputPassword4" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="inputPassword4">
-                        </div>
-                        <div class="col-12">
-                            <label for="inputAddress" class="form-label">Address</label>
-                            <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St">
-                        </div>
-                        <div class="col-12">
-                            <label for="inputAddress2" class="form-label">Address 2</label>
-                            <input type="text" class="form-control" id="inputAddress2"
-                                   placeholder="Apartment, studio, or floor">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="inputCity" class="form-label">City</label>
-                            <input type="text" class="form-control" id="inputCity">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="inputState" class="form-label">State</label>
-                            <select id="inputState" class="form-select">
-                                <option selected>Choose...</option>
-                                <option>...</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label for="inputZip" class="form-label">Zip</label>
-                            <input type="text" class="form-control" id="inputZip">
-                        </div>
-                        <div class="col-12">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="gridCheck">
-                                <label class="form-check-label" for="gridCheck">
-                                    Check me out
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary">Sign in</button>
-                        </div>
-                    </form>
-                    <div class="card-body">
-                        <table id="datatablesSimple">
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                            </tr>
-                            </thead>
-                            <tfoot>
-                            <tr>
-                                <th>Name</th>
-                                <th>Position</th>
-                                <th>Office</th>
-                                <th>Age</th>
-                                <th>Start date</th>
-                                <th>Salary</th>
-                            </tr>
-                            </tfoot>
-                            <tbody>
-                            <tr>
-                                <td>Sakura Yamamoto</td>
-                                <td>Support Engineer</td>
-                                <td>Tokyo</td>
-                                <td>37</td>
-                                <td>2009/08/19</td>
-                                <td>$139,575</td>
-                            </tr>
-                            <tr>
-                                <td>Thor Walton</td>
-                                <td>Developer</td>
-                                <td>New York</td>
-                                <td>61</td>
-                                <td>2013/08/11</td>
-                                <td>$98,540</td>
-                            </tr>
-                            <tr>
-                                <td>Finn Camacho</td>
-                                <td>Support Engineer</td>
-                                <td>San Francisco</td>
-                                <td>47</td>
-                                <td>2009/07/07</td>
-                                <td>$87,500</td>
-                            </tr>
-                            <tr>
-                                <td>Serge Baldwin</td>
-                                <td>Data Coordinator</td>
-                                <td>Singapore</td>
-                                <td>64</td>
-                                <td>2012/04/09</td>
-                                <td>$138,575</td>
-                            </tr>
-                            <tr>
-                                <td>Zenaida Frank</td>
-                                <td>Software Engineer</td>
-                                <td>New York</td>
-                                <td>63</td>
-                                <td>2010/01/04</td>
-                                <td>$125,250</td>
-                            </tr>
-                            <tr>
-                                <td>Zorita Serrano</td>
-                                <td>Software Engineer</td>
-                                <td>San Francisco</td>
-                                <td>56</td>
-                                <td>2012/06/01</td>
-                                <td>$115,000</td>
-                            </tr>
-                            <tr>
-                                <td>Jennifer Acosta</td>
-                                <td>Junior Javascript Developer</td>
-                                <td>Edinburgh</td>
-                                <td>43</td>
-                                <td>2013/02/01</td>
-                                <td>$75,650</td>
-                            </tr>
-                            <tr>
-                                <td>Cara Stevens</td>
-                                <td>Sales Assistant</td>
-                                <td>New York</td>
-                                <td>46</td>
-                                <td>2011/12/06</td>
-                                <td>$145,600</td>
-                            </tr>
-                            <tr>
-                                <td>Hermione Butler</td>
-                                <td>Regional Director</td>
-                                <td>London</td>
-                                <td>47</td>
-                                <td>2011/03/21</td>
-                                <td>$356,250</td>
-                            </tr>
-                            <tr>
-                                <td>Lael Greer</td>
-                                <td>Systems Administrator</td>
-                                <td>London</td>
-                                <td>21</td>
-                                <td>2009/02/27</td>
-                                <td>$103,500</td>
-                            </tr>
-                            <tr>
-                                <td>Jonas Alexander</td>
-                                <td>Developer</td>
-                                <td>San Francisco</td>
-                                <td>30</td>
-                                <td>2010/07/14</td>
-                                <td>$86,500</td>
-                            </tr>
-                            <tr>
-                                <td>Shad Decker</td>
-                                <td>Regional Director</td>
-                                <td>Edinburgh</td>
-                                <td>51</td>
-                                <td>2008/11/13</td>
-                                <td>$183,000</td>
-                            </tr>
-                            <tr>
-                                <td>Michael Bruce</td>
-                                <td>Javascript Developer</td>
-                                <td>Singapore</td>
-                                <td>29</td>
-                                <td>2011/06/27</td>
-                                <td>$183,000</td>
-                            </tr>
-                            <tr>
-                                <td>Donna Snider</td>
-                                <td>Customer Support</td>
-                                <td>New York</td>
-                                <td>27</td>
-                                <td>2011/01/25</td>
-                                <td>$112,000</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+
+
+
                 </div>
             </div>
         </main>
-        <footer class="py-4 bg-light mt-auto">
-            <div class="container-fluid px-4">
-                <div class="d-flex align-items-center justify-content-between small">
-                    <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                    <div>
-                        <a href="#">Privacy Policy</a>
-                        &middot;
-                        <a href="#">Terms &amp; Conditions</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <th:block th:insert="admin/footer_admin"></th:block>
     </div>
 </div>
 
-<script th:src="@{/js/scripts.js}"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script>
+    const startYear = 2015;
+    const endYear = new Date().getFullYear() ;
+    const yearSelect = document.getElementById("yearSelect");
+    for (let year = endYear; year >= startYear; year--) {
+        const option = document.createElement("option");
+        option.value = year;
+        option.text = year;
+        yearSelect.appendChild(option);
+    }
+</script>
+
+
 
 <script th:inline="javascript">
+    var yearselect = document.getElementById("yearSelect").value;
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug" , "Sep", "Oct", "Nov","Dev"],
+            datasets: [{
+                label: 'Số ca tiêm chủng ' + yearselect,
+                data:  /*[[${chartList}]]*/ [],
 
-    toastr.options = {
-        "closeButton": false,
-        "debug": false,
-        "newestOnTop": false,
-        "progressBar": true,
-        "positionClass": "toast-top-right",
-        "preventDuplicates": false,
-        "onclick": null,
-        "showDuration": "300",
-        "hideDuration": "1000",
-        "timeOut": "5000",
-        "extendedTimeOut": "1000",
-        "showEasing": "swing",
-        "hideEasing": "linear",
-        "showMethod": "fadeIn",
-        "hideMethod": "fadeOut"
-    }
 
-    var str = [[${msg}]];
-    if (str != null) {
-        if (str.includes("Đổi mật khẩu")) {
-            if (str.includes("thành công")) {
-                toastr.success(str, "Thông báo");
-            } else {
-                toastr.error("Đổi mật khẩu thất bại !", "Thông báo");
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(215,203,108,0.2)',
+                    'rgba(204,109,98,0.2)',
+                    'rgba(135,217,81,0.2)',
+                    'rgba(65,133,180,0.2)',
+                    'rgba(65,13,108,0.2)',
+                    'rgba(213,139,62,0.2)',
+                    'rgba(24,217,195,0.2)',
+                    'rgba(231,53,229,0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(215,203,108,1)',
+                    'rgba(204,109,98,1)',
+                    'rgba(135,217,81,1)',
+                    'rgba(65,133,180,1)',
+                    'rgba(65,13,108,1)',
+                    'rgba(213,139,62,1)',
+                    'rgba(24,217,195,1)',
+                    'rgba(231,53,229,1)'
+                ],
+                borderWidth: 1,
+
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+
+                    }
+                }]
             }
         }
+    });
+    function getChartData() {
+        var year = document.getElementById("yearSelect").value;
+        if (year != "") {
+            const url = `/chart-data?year=${year}`;
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", url);
+            xhr.onload = function() {
+                const data = JSON.parse(xhr.responseText);
+                myChart.data.datasets[0].label = 'Vaccinations ' + year;
+                myChart.data.datasets[0].data = data;
+                // Vẽ lại biểu đồ
+                myChart.update();
+            };
+            xhr.send();
+        }
     }
+    const downloadButton = document.getElementById("downloadChart");
+    downloadButton.addEventListener("click", function() {
+        // Chuyển đổi biểu đồ thành hình ảnh PNG
+        const canvas = document.getElementById("myChart");
+        const dataURL = canvas.toDataURL("image/png");
+
+        // Tải hình ảnh về máy
+        saveAs(dataURL, "chart"+ yearselect +".png");
+    });
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script src="/js/scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+<script src="/js/datatables-simple-demo.js"></script>
 </body>
 </html>

@@ -177,6 +177,11 @@ public class PatientService implements IPatientService {
     public long getTotalPatientAccountNull(String healthInsurance, String name, String phone){
         return iPatientRP.getTotalPatientAccountNull(healthInsurance,name,phone);
     }
+
+    @Override
+    public  long countAllPatient(){
+        return iPatientRepository.countPatient();
+    }
 }
 
 

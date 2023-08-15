@@ -3,13 +3,9 @@ package com.example.vaccination_management.controller;
 
 import com.example.vaccination_management.dto.IVaccinationHistoryDTO;
 import com.example.vaccination_management.dto.InfoEmployeeAccountDTO;
-import com.example.vaccination_management.dto.InforEmployeeDTO;
 import com.example.vaccination_management.dto.InforPatientDTO;
 import com.example.vaccination_management.security.AccountDetailService;
-import com.example.vaccination_management.service.IEmployeeService;
-import com.example.vaccination_management.service.IPatientService;
-import com.example.vaccination_management.service.IVaccinationHistoryService;
-import com.example.vaccination_management.service.IVaccineService;
+import com.example.vaccination_management.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
@@ -17,8 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -41,6 +35,8 @@ public class MainController {
     IVaccinationHistoryService iVaccinationHistoryService;
     @Autowired
     IVaccineService iVaccineService;
+    @Autowired
+    IAccountService iAccountService;
     private String getDefaultYear() {
         return String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
     }
@@ -53,11 +49,6 @@ public class MainController {
         return "redirect:/vaccine/list-vaccine";
     }
 
-    @GetMapping("/admin")
-    public ModelAndView homeAdminPage() {
-        ModelAndView modelAndView = new ModelAndView("admin/home_admin");
-        return modelAndView;
-    }
 
     /**
      * QuangVT
@@ -80,6 +71,37 @@ public class MainController {
         model.addAttribute("countVaccine", count);
 
         return "doctors/homedoctor";
+    }
+    /**
+     * QuangVT
+     * get information for dashboard
+     */
+    @GetMapping("/admin")
+    public String homeAdmin(Model model, @RequestParam(defaultValue = "") String year) {
+        LocalDate today = LocalDate.now();
+        model.addAttribute("today", today);
+
+        IVaccinationHistoryDTO ivacci = iVaccinationHistoryService.countVaccination();
+        model.addAttribute("countVacc", ivacci);
+        long count = iVaccineService.count();
+        if (year.isEmpty()) {
+            year = getDefaultYear();
+        }
+        List<Integer> listChart = iVaccinationHistoryService.getDataForChart(year);
+
+        long countPatient = patientService.countAllPatient();
+        long countEmployee = employeeService.countAllEmployee();
+        long countAccount = iAccountService.countAllAccount();
+
+
+
+        model.addAttribute("chartList", listChart);
+        model.addAttribute("countVaccine", count);
+        model.addAttribute("countPatient", countPatient);
+        model.addAttribute("countEmployee", countEmployee);
+        model.addAttribute("countAccount", countAccount);
+
+        return "Admin/home_admin";
     }
 
     /**

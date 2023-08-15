@@ -202,9 +202,20 @@ public class EmployeeService implements IEmployeeService {
     public long getTotalEmployee(String name) {
         return employeeRepository.getTotalEmployee(name);
     }
-
+    /**
+     * Quangvt
+     * get  Employee by Id
+     */
     @Override
     public Employee getEmployeeById(Integer id){
         return   employeeRepository.getById(id);
     }
+    /**
+     * Quangvt
+     * count all employee
+     */
+    @Override
+    public  long countAllEmployee(){
+        return employeeRepository.countEmployee();
+    };
 }

@@ -162,5 +162,11 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
      */
     @Query(value = "SELECT count(account.id) FROM account WHERE account.username LIKE ?", nativeQuery = true)
     long getTotalAccount(String userName);
+    /**
+     * VTQuang
+     * Count the number of àccount active
+     */
+    @Query(value = "SELECT count(account.id) FROM account WHERE account.enable_flag = 1 ;", nativeQuery = true)
+    long countTotalAccount();
 
 }

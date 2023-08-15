@@ -203,6 +203,16 @@ public class AccountService implements IAccountService {
         return iAccountRP.getTotalAccount(userName);
     }
 
+    /**
+     * VTquang
+     * count all account active
+     */
+
+    @Override
+    public long countAllAccount(){
+        return iAccountRP.countTotalAccount();
+    }
+
 
 
 }

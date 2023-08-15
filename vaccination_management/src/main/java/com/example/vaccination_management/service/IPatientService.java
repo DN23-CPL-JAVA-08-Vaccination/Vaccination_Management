@@ -65,4 +65,9 @@ public interface IPatientService {
     List<Patient> getPatientByPageAccountNull(String healthInsurance, String name, String phone, Pageable pageable);
 
     long getTotalPatientAccountNull(String healthInsurance, String name, String phone);
+    /**
+     * Quangvt
+     * Count all patient
+     */
+    long countAllPatient();
 }

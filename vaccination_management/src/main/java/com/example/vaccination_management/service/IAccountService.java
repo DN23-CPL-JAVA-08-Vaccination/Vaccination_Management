@@ -65,4 +65,9 @@ public interface IAccountService {
     List<Account> getAccountByPage(String userName, Pageable pageable);
 
     long getTotalAccount(String userName);
+    /**
+     * Quangvt
+     * count all account active
+     */
+    long countAllAccount();
 }
