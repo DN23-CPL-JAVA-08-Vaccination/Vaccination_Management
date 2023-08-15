@@ -1,13 +1,14 @@
 package com.example.vaccination_management.repository;
 
+
 import com.example.vaccination_management.dto.InforPatientDTO;
 import com.example.vaccination_management.dto.IPatientDTO;
+
 import com.example.vaccination_management.dto.PatientByUsernameDTO;
 import com.example.vaccination_management.entity.Patient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 

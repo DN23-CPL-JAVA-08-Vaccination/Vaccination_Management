@@ -4,6 +4,7 @@ import com.example.vaccination_management.entity.Patient;
 import com.example.vaccination_management.entity.VaccinationHistory;
 import com.example.vaccination_management.entity.VaccinationStatus;
 import com.example.vaccination_management.repository.IPatientRepository;
+import com.example.vaccination_management.security.AccountDetailService;
 import com.example.vaccination_management.service.impl.PatientService;
 import com.example.vaccination_management.service.impl.VaccinationHistoryService;
 import com.example.vaccination_management.service.impl.VaccinationStatusService;
@@ -33,18 +34,22 @@ public class VaccinationHistoryController {
     @Autowired
     private VaccinationStatusService vaccinationStatusService;
 
+    @Autowired
+    private AccountDetailService accountDetailService;
+
     /**
      * LoanHTP
      * Displays the vaccination history of a patient along with filtering options by vaccination status.
      */
-    @GetMapping("/patient/{patient_id}")
+    @GetMapping("/patient")
     public String listVaccinationHistoryByPatient(Model model,
-                                                  @PathVariable("patient_id") int patient_id,
                                                   @RequestParam(value = "vaccination_status_id", required = false) Integer vaccination_status_id,
                                                   @RequestParam(value = "page", defaultValue = "0") int page,
-                                                  @RequestParam(value = "size", defaultValue = "10") int size,
+                                                  @RequestParam(value = "size", defaultValue = "5") int size,
                                                   HttpServletRequest request) {
-        Patient patient = iPatientRepository.findPatientById(patient_id);
+
+        String username = accountDetailService.getCurrentUserName();
+        Patient patient = patientService.findPatientByUsername(username);;
 
         // Lấy danh sách vaccinationStatus từ vaccinationStatusService
         List<VaccinationStatus> vaccinationStatusList = vaccinationStatusService.getAllVaccinationStatus();
@@ -53,9 +58,9 @@ public class VaccinationHistoryController {
         // Lấy danh sách vaccination history theo vaccination_status và patient
         Page<VaccinationHistory> vaccinationHistories;
         if (vaccination_status_id != null) {
-            vaccinationHistories = vaccinationHistoryService.listVaccinationHistoryByPatientAndStatusPaged(patient_id, vaccination_status_id, PageRequest.of(page, size));
+            vaccinationHistories = vaccinationHistoryService.listVaccinationHistoryByPatientAndStatusPaged(patient.getId(), vaccination_status_id, PageRequest.of(page, size));
         } else {
-            vaccinationHistories = vaccinationHistoryService.listVaccinationHistoryByPatientPaged(patient_id, PageRequest.of(page, size));
+            vaccinationHistories = vaccinationHistoryService.listVaccinationHistoryByPatientPaged(patient.getId(), PageRequest.of(page, size));
         }
         model.addAttribute("vaccinationHistories", vaccinationHistories);
 
@@ -101,4 +106,5 @@ public class VaccinationHistoryController {
             return "/user/patient/view-vaccination-history2";
         }
     }
+
 }

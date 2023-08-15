@@ -24,6 +24,7 @@ public class VaccineType {
         this.id = id;
         this.name = name;
         this.deleteFlag = deleteFlag;
+
     }
 
     public int getId() {

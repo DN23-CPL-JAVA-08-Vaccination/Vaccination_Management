@@ -10,6 +10,7 @@ import com.example.vaccination_management.service.impl.InventoryService;
 
 import com.example.vaccination_management.dto.IVaccineDTO;
 import com.example.vaccination_management.service.IVaccineService;
+import com.example.vaccination_management.service.impl.VaccineService;
 import com.example.vaccination_management.validation.VaccineValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

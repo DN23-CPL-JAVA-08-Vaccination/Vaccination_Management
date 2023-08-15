@@ -34,64 +34,7 @@
 </head>
 
 <body>
-
-<<<<<<< HEAD
 <th:block th:insert="header"></th:block>
-=======
-<!-- ======= Top Bar ======= -->
-<div id="topbar" class="d-flex align-items-center fixed-top">
-    <div class="container d-flex justify-content-between">
-        <div class="contact-info d-flex align-items-center">
-            <i class="bi bi-envelope"></i> <a href="mailto:contact@example.com">contact@example.com</a>
-            <i class="bi bi-phone"></i> +1 5589 55488 55
-        </div>
-        <div class="d-none d-lg-flex social-links align-items-center">
-            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></i></a>
-        </div>
-    </div>
-</div>
-
-<!-- ======= Header ======= -->
-<header id="header" class="fixed-top">
-    <div class="container d-flex align-items-center">
-        <h1 class="logo me-auto"><a href="index.html">Medilab</a></h1>
-        <nav id="navbar" class="navbar order-last order-lg-0">
-            <ul>
-                <li><a class="nav-link scrollto " href="#hero">Home</a></li>
-                <li><a class="nav-link scrollto" href="#about">About</a></li>
-                <li><a class="nav-link scrollto" href="#services">Services</a></li>
-                <li><a class="nav-link scrollto" href="#departments">Departments</a></li>
-                <li><a class="nav-link scrollto" href="#doctors">Doctors</a></li>
-                <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
-                    <ul>
-                        <li><a href="#">Drop Down 1</a></li>
-                        <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i class="bi bi-chevron-right"></i></a>
-                            <ul>
-                                <li><a href="#">Deep Drop Down 1</a></li>
-                                <li><a href="#">Deep Drop Down 2</a></li>
-                                <li><a href="#">Deep Drop Down 3</a></li>
-                                <li><a href="#">Deep Drop Down 4</a></li>
-                                <li><a href="#">Deep Drop Down 5</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Drop Down 2</a></li>
-                        <li><a href="#">Drop Down 3</a></li>
-                        <li><a href="#">Drop Down 4</a></li>
-                    </ul>
-                </li>
-                <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-            </ul>
-            <i class="bi bi-list mobile-nav-toggle"></i>
-        </nav><!-- .navbar -->
-        <a href="#appointment" class="appointment-btn scrollto"><span class="d-none d-md-inline">Make an</span>
-            Appointment</a>
-    </div>
-</header><!-- End Header -->
->>>>>>> dang_ky_tiem_loanhtp
-
 <main id="main">
     <!-- ======= Vaccinations Register ======= -->
     <section class="breadcrumbs">
@@ -116,50 +59,70 @@
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="tre-em" role="tabpanel" aria-labelledby="tre-em-tab" th:if="${age < 16}">
+                        <div class="tab-pane fade show active" id="tre-em" role="tabpanel" aria-labelledby="tre-em-tab"
+                             th:if="${age < 16}">
                             <h3 class="register-heading">Đăng ký tiêm chủng</h3>
-                            <form th:action="@{/vaccination/register}" method="post" th:object="${vaccinationHistoryDTO}" class="vaccination-form">
+                            <form th:action="@{/vaccination/register}" method="post"
+                                  th:object="${vaccinationHistoryDTO}" class="vaccination-form">
                                 <div class="form-group" hidden>
-                                    <input type="text" id="vaccination-id2"  class="form-control" th:field="*{vaccination.id}"/>
+                                    <input type="text" id="vaccination-id2" class="form-control"
+                                           th:field="*{vaccination.id}"/>
                                 </div>
                                 <div class="row register-form">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="name2" class="form-label">Họ và tên của bạn</label>
-                                            <input type="text" id="name2" name="name2" class="form-control" th:field="*{patient.name}" readonly="readonly"/>
+                                            <input type="text" id="name2" name="name2" class="form-control"
+                                                   th:field="*{patient.name}" readonly="readonly"/>
                                         </div>
                                         <div class="form-group">
                                             <label for="startTime2" class="form-label">Ngày bắt đầu</label>
-                                            <input type="text" id="startTime2" name="startTime2" class="form-control" th:field="*{vaccination.startTime}" readonly="readonly"/>
+                                            <input type="text" id="startTime2" name="startTime2" class="form-control"
+                                                   th:field="*{vaccination.startTime}" readonly="readonly"/>
                                         </div>
                                         <div class="form-group">
-                                            <label for="endTime2" class="form-label">Chọn ngày và giờ tiêm<span class="required-field">(*)</span></label>
-                                            <input type="datetime-local" id="endTime2" name="endTime2" class="form-control" th:field="*{endTime}">
-                                            <span style="color: red" th:if="${#fields.hasErrors('endTime')}" th:errors="*{endTime}"></span>
+                                            <label for="endTime2" class="form-label">Chọn ngày và giờ tiêm<span
+                                                    class="required-field">(*)</span></label>
+                                            <input type="datetime-local" id="endTime2" name="endTime2"
+                                                   class="form-control" th:field="*{endTime}">
+                                            <span style="color: red" th:if="${#fields.hasErrors('endTime')}"
+                                                  th:errors="*{endTime}"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="guardianName" class="form-label">Họ và tên người giám hộ<span class="required-field">(*)</span></label>
-                                            <input type="text" id="guardianName" name="guardianName" class="form-control" th:field="*{guardianName}"/>
-                                            <span style="color: red" th:if="${#fields.hasErrors('guardianName')}" th:errors="*{guardianName}"></span>
+                                            <label for="guardianName" class="form-label">Họ và tên người giám hộ<span
+                                                    class="required-field">(*)</span></label>
+                                            <input type="text" id="guardianName" name="guardianName"
+                                                   class="form-control" th:field="*{guardianName}"/>
+                                            <span style="color: red" th:if="${#fields.hasErrors('guardianName')}"
+                                                  th:errors="*{guardianName}"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="vaccination_times2" class="form-label">Đợt tiêm</label>
-                                            <input type="text" id="vaccination_times2" name="vaccination_times2" th:field="*{vaccinationTimes}" readonly="readonly" class="form-control"/>
+                                            <input type="text" id="vaccination_times2" name="vaccination_times2"
+                                                   th:field="*{vaccinationTimes}" readonly="readonly"
+                                                   class="form-control"/>
                                         </div>
                                         <div class="form-group">
                                             <label for="endTime-vaccination2" class="form-label">Ngày kết thúc</label>
-                                            <input type="text" id="endTime-vaccination2" name="endTime-vaccination2" class="form-control" th:field="*{vaccination.endTime}" readonly="readonly"/>
+                                            <input type="text" id="endTime-vaccination2" name="endTime-vaccination2"
+                                                   class="form-control" th:field="*{vaccination.endTime}"
+                                                   readonly="readonly"/>
                                         </div>
                                         <div class="form-group">
                                             <label for="location2" class="form-label">Địa điểm tiêm</label>
-                                            <input type="text" id="location2" name="location2" th:field="*{vaccination.location.name}" readonly="readonly" class="form-control"/>
+                                            <input type="text" id="location2" name="location2"
+                                                   th:field="*{vaccination.location.name}" readonly="readonly"
+                                                   class="form-control"/>
                                         </div>
                                         <div class="form-group">
-                                            <label for="guardianPhone" class="form-label">Số điện thoại người giám hộ<span class="required-field">(*)</span></label>
-                                            <input type="text" id="guardianPhone" name="guardianPhone" class="form-control" th:field="*{guardianPhone}"/>
-                                            <span style="color: red" th:if="${#fields.hasErrors('guardianPhone')}" th:errors="*{guardianPhone}"></span>
+                                            <label for="guardianPhone" class="form-label">Số điện thoại người giám
+                                                hộ<span class="required-field">(*)</span></label>
+                                            <input type="text" id="guardianPhone" name="guardianPhone"
+                                                   class="form-control" th:field="*{guardianPhone}"/>
+                                            <span style="color: red" th:if="${#fields.hasErrors('guardianPhone')}"
+                                                  th:errors="*{guardianPhone}"></span>
                                         </div>
                                         <input th:field="*{vaccinationId}" type="hidden">
                                         <input type="submit" value="Đăng ký" class="btnRegister"/>
@@ -168,50 +131,71 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="tab-pane fade show" id="nguoi-lon" role="tabpanel" aria-labelledby="nguoi-lon-tab" th:if="${age >= 16}">
+                        <div class="tab-pane fade show" id="nguoi-lon" role="tabpanel" aria-labelledby="nguoi-lon-tab"
+                             th:if="${age >= 16}">
                             <h3 class="register-heading">Đăng ký tiêm chủng</h3>
-                            <form th:action="@{/vaccination/register}" method="post" th:object="${vaccinationHistoryDTO}" class="vaccination-form" onsubmit="validateForm(event);">
+                            <form th:action="@{/vaccination/register}" method="post"
+                                  th:object="${vaccinationHistoryDTO}" class="vaccination-form"
+                                  onsubmit="validateForm(event);">
                                 <div class="form-group" hidden>
-                                    <input type="text" id="vaccination-id"  class="form-control" th:field="*{vaccination.id}"/>
+                                    <input type="text" id="vaccination-id" class="form-control"
+                                           th:field="*{vaccination.id}"/>
                                 </div>
                                 <div class="row register-form">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="name" class="form-label">Họ và tên của bạn</label>
-                                            <input type="text" id="name" name="name" class="form-control" th:field="*{patient.name}" readonly="readonly"/>
+                                            <input type="text" id="name" name="name" class="form-control"
+                                                   th:field="*{patient.name}" readonly="readonly"/>
                                         </div>
                                         <div class="form-group">
                                             <label for="startTime" class="form-label">Ngày bắt đầu</label>
-                                            <input type="text" id="startTime" name="startTime" class="form-control" th:field="*{vaccination.startTime}" readonly="readonly"/>
+                                            <input type="text" id="startTime" name="startTime" class="form-control"
+                                                   th:field="*{vaccination.startTime}" readonly="readonly"/>
                                         </div>
                                         <div class="form-group">
-                                            <label for="endTime" class="form-label">Chọn ngày và giờ tiêm<span class="required-field">(*)</span></label>
-                                            <input type="datetime-local" id="endTime" name="endTime" class="form-control" th:field="*{endTime}">
-                                            <span style="color: red" th:if="${#fields.hasErrors('endTime')}" th:errors="*{endTime}"></span>
+                                            <label for="endTime" class="form-label">Chọn ngày và giờ tiêm<span
+                                                    class="required-field">(*)</span></label>
+                                            <input type="datetime-local" id="endTime" name="endTime"
+                                                   class="form-control" th:field="*{endTime}">
+                                            <span style="color: red" th:if="${#fields.hasErrors('endTime')}"
+                                                  th:errors="*{endTime}"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label for="guardianName2" class="form-label">Họ và tên người giám hộ</label>
-                                            <input type="text" id="guardianName2" name="guardianName2" class="form-control" th:field="*{guardianName}"/>
-                                            <span style="color: red" th:if="${#fields.hasErrors('guardianName')}" th:errors="*{guardianName}"></span>
+                                            <label for="guardianName2" class="form-label">Họ và tên người giám
+                                                hộ</label>
+                                            <input type="text" id="guardianName2" name="guardianName2"
+                                                   class="form-control" th:field="*{guardianName}"/>
+                                            <span style="color: red" th:if="${#fields.hasErrors('guardianName')}"
+                                                  th:errors="*{guardianName}"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="vaccination_times" class="form-label">Đợt tiêm</label>
-                                            <input type="text" id="vaccination_times" name="vaccination_times" th:field="*{vaccinationTimes}" readonly="readonly" class="form-control"/>
+                                            <input type="text" id="vaccination_times" name="vaccination_times"
+                                                   th:field="*{vaccinationTimes}" readonly="readonly"
+                                                   class="form-control"/>
                                         </div>
                                         <div class="form-group">
                                             <label for="endTime-vaccination" class="form-label">Ngày kết thúc</label>
-                                            <input type="text" id="endTime-vaccination" name="endTime-vaccination" class="form-control" readonly="readonly" th:field="*{vaccination.endTime}"/>
+                                            <input type="text" id="endTime-vaccination" name="endTime-vaccination"
+                                                   class="form-control" readonly="readonly"
+                                                   th:field="*{vaccination.endTime}"/>
                                         </div>
                                         <div class="form-group">
                                             <label for="location" class="form-label">Địa điểm tiêm</label>
-                                            <input type="text" id="location" name="location" th:field="*{vaccination.location.name}" readonly="readonly" class="form-control"/>
+                                            <input type="text" id="location" name="location"
+                                                   th:field="*{vaccination.location.name}" readonly="readonly"
+                                                   class="form-control"/>
                                         </div>
                                         <div class="form-group">
-                                            <label for="guardianPhone2" class="form-label">Số điện thoại người giám hộ</label>
-                                            <input type="text" id="guardianPhone2" name="guardianPhone2" class="form-control" th:field="*{guardianPhone}"/>
-                                            <span style="color: red" th:if="${#fields.hasErrors('guardianPhone')}" th:errors="*{guardianPhone}"></span>
+                                            <label for="guardianPhone2" class="form-label">Số điện thoại người giám
+                                                hộ</label>
+                                            <input type="text" id="guardianPhone2" name="guardianPhone2"
+                                                   class="form-control" th:field="*{guardianPhone}"/>
+                                            <span style="color: red" th:if="${#fields.hasErrors('guardianPhone')}"
+                                                  th:errors="*{guardianPhone}"></span>
                                         </div>
                                         <input th:field="*{vaccinationId}" type="hidden">
                                         <input type="submit" value="Đăng ký" class="btnRegister" id="registerForm"/>
@@ -229,76 +213,8 @@
 
 </main><!-- End #main -->
 
-<!-- ======= Footer ======= -->
-<<<<<<< HEAD
 <th:block th:insert="footer"></th:block>
-<!-- End Footer -->
-=======
-<footer id="footer">
-    <div class="footer-top">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 footer-contact">
-                    <h3>Medilab</h3>
-                    <p>
-                        A108 Adam Street <br>
-                        New York, NY 535022<br>
-                        United States <br><br>
-                        <strong>Phone:</strong> +1 5589 55488 55<br>
-                        <strong>Email:</strong> info@example.com<br>
-                    </p>
-                </div>
-                <div class="col-lg-2 col-md-6 footer-links">
-                    <h4>Useful Links</h4>
-                    <ul>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Services</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 footer-links">
-                    <h4>Our Services</h4>
-                    <ul>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Product Management</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Marketing</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Graphic Design</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-4 col-md-6 footer-newsletter">
-                    <h4>Join Our Newsletter</h4>
-                    <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
-                    <form action="" method="post">
-                        <input type="email" name="email"><input type="submit" value="Subscribe">
-                    </form>
-                </div>
 
-            </div>
-        </div>
-    </div>
-
-    <div class="container d-md-flex py-4">
-        <div class="me-md-auto text-center text-md-start">
-            <div class="copyright">
-                &copy; Copyright <strong><span>Medilab</span></strong>. All Rights Reserved
-            </div>
-            <div class="credits">
-                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-            </div>
-        </div>
-        <div class="social-links text-center text-md-right pt-3 pt-md-0">
-            <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
-            <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
-            <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
-            <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
-            <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
-        </div>
-    </div>
-</footer><!-- End Footer -->
->>>>>>> dang_ky_tiem_loanhtp
 
 <div id="preloader"></div>
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i

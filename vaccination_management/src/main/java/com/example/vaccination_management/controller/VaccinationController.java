@@ -9,7 +9,10 @@ import com.example.vaccination_management.utils.Validation;
 import com.example.vaccination_management.dto.VaccinationHistoryDTO;
 import com.example.vaccination_management.entity.*;
 import com.example.vaccination_management.repository.*;
+import com.example.vaccination_management.service.IPatientService;
 import com.example.vaccination_management.service.IVaccinationHistoryService;
+import com.example.vaccination_management.service.IVaccinationService;
+import com.example.vaccination_management.service.IVaccineTypeService;
 import com.example.vaccination_management.validator.VaccinationValidator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +43,9 @@ public class VaccinationController {
     private IVaccinationHistoryService iVaccinationHistoryService;
 
     @Autowired
+    private IVaccinationService vaccinationService;
+
+    @Autowired
     private IVaccineStatusService iVaccineStatusService;
 
     @Autowired
@@ -49,9 +55,6 @@ public class VaccinationController {
     private IVaccinationService iVaccinationService;
 
     @Autowired
-    private IVaccinationService vaccinationService;
-
-    @Autowired
     private IVaccinationHistoryRepository iVaccinationHistoryRepository;
 
     @Autowired
@@ -59,6 +62,9 @@ public class VaccinationController {
 
     @Autowired
     private IVaccineTypeService vaccineTypeService;
+
+    @Autowired
+    private IVaccineTypeRepository iVaccineTypeRepository;
 
     @Autowired
     private IPatientService patientService;
@@ -192,13 +198,13 @@ public class VaccinationController {
         // Tương tự như trong listVaccinationByVaccine, tính toán và truyền thông tin vào model
         // Lấy danh sách vaccine và tính tổng số lượng vaccination
         List<Vaccine> vaccines = vaccineService.showVaccines();
-        long totalVaccination = vaccinationService.getTotalVaccinations();
+        long totalVaccination = iVaccinationService.getTotalVaccinations();
 
         // Tính tổng số trang
         int totalPages = (int) Math.ceil((double) totalVaccination / size);
 
         // Lấy danh sách vaccination theo trang
-        List<Vaccination> vaccinationList = vaccinationService.getVaccinationByPage(page, size);
+        List<Vaccination> vaccinationList = iVaccinationService.getVaccinationByPage(page, size);
 
         List<VaccineType> vaccineTypes = vaccineTypeService.showVaccineType();
         model.addAttribute("vaccineTypes", vaccineTypes);
@@ -227,14 +233,14 @@ public class VaccinationController {
         model.addAttribute("vaccine", vaccine);
 
         //tính tổng số lượng vaccination cho loại vaccine
-        long totalVaccination = vaccinationService.getTotalVaccinationsByVaccine(vaccine);
+        long totalVaccination = iVaccinationService.getTotalVaccinationsByVaccine(vaccine);
 
         //tính tổng số trang
         int totalPages = (int) Math.ceil((double) totalVaccination / size);
         model.addAttribute("totalPages", totalPages);
 
         //lấy danh sách vaccination theo trang và vaccine
-        List<Vaccination> vaccinationList = vaccinationService.getVaccinationsByPageAndVaccine(page, size, vaccine);
+        List<Vaccination> vaccinationList = iVaccinationService.getVaccinationsByPageAndVaccine(page, size, vaccine);
         model.addAttribute("vaccinationList", vaccinationList);
 
         List<VaccineType> vaccineTypes = vaccineTypeService.showVaccineType();
@@ -251,13 +257,15 @@ public class VaccinationController {
     @GetMapping("/vaccination/form-vaccination/{vaccination_id}")
     public String showVaccinationForm(Model model,
                                       @PathVariable("vaccination_id") int vaccination_id) {
-        Vaccination vaccination = vaccinationService.findVaccinationById(vaccination_id);
+        Vaccination vaccination = iVaccinationService.findVaccinationById(vaccination_id);
         model.addAttribute("vaccinationL", vaccination);
+
 
         String username = accountDetailService.getCurrentUserName();
 
         Patient patient = patientService.findPatientByUsername(username);
 //        Patient patient = patientService.findPatientById(2);//set patient_id = 1
+
         model.addAttribute("patient", patient);
 
         // Tính tuổi từ ngày sinh của bệnh nhân và thêm vào model
@@ -285,40 +293,37 @@ public class VaccinationController {
         return "/user/vaccination/vaccination-form-register";
     }
 
-
-    /**
-     * LoanHTP
-     * Calculates the age of a patient based on their birthday.
-     */
-    @PostMapping("/vaccination/register")
-    public String registerVaccination(CreateVaccinationHistoryDTO vaccination_id,
-                                      Model model,
-                                      BindingResult bindingResult,
-                                      RedirectAttributes redirectAttributes) {
-        String username = accountDetailService.getCurrentUserName();
-
-        Patient patientGet = patientService.findPatientByUsername(username);
-
+     /**
+         * LoanHTP
+         * Displays the vaccination registration form for a specific vaccination.
+         */
+     @PostMapping("/register")
+     public String registerVaccination(@ModelAttribute("vaccinationHistoryDTO")
+                                               CreateVaccinationHistoryDTO vaccinationHistoryDTO,
+                                       Model model,
+                                       BindingResult bindingResult,
+                                       RedirectAttributes redirectAttributes){
 //        Patient patientGet = patientService.findPatientById(2);
-        vaccination_id.setPatient(patientGet);
-        LocalDateTime endTime = LocalDateTime.parse(vaccination_id.getEndTime());
-        LocalDateTime startTime = LocalDateTime.now();
-        int idStatus = 1;
-        Vaccination vaccination = vaccinationService.findVaccinationById(vaccination_id.getVaccinationId());
-        vaccination_id.setVaccination(vaccination);
-        int age = calculateAge(patientGet.getBirthday());
-        model.addAttribute("age", age);
-        vaccinationValidator.validate(vaccination_id, bindingResult);
-        if (bindingResult.hasErrors()) {
-            return "/user/vaccination/vaccination-form-register";
-        }
-        iVaccinationHistory.insertVaccinationHTR(false, vaccination_id.getDosage(), endTime, vaccination_id.getGuardianName(), vaccination_id.getGuardianPhone(), startTime, vaccination_id.getVaccinationTimes(), patientGet.getId(), vaccination_id.getVaccinationId(), idStatus);
+         String username = accountDetailService.getCurrentUserName();
+         Patient patientGet = patientService.findPatientByUsername(username);
+         vaccinationHistoryDTO.setPatient(patientGet);
+         LocalDateTime endTime= LocalDateTime.parse(vaccinationHistoryDTO.getEndTime());
+         LocalDateTime startTime = LocalDateTime.now();
+         int idStatus= 1;
+         Vaccination vaccination = iVaccinationService.findVaccinationById(vaccinationHistoryDTO.getVaccinationId());
+         vaccinationHistoryDTO.setVaccination(vaccination);
+         int age = calculateAge(patientGet.getBirthday());
+         model.addAttribute("age", age);
+         vaccinationValidator.validate(vaccinationHistoryDTO,bindingResult);
+         if(bindingResult.hasErrors()){
+             return "/user/vaccination/vaccination-form-register";
+         }
+         iVaccinationHistory.insertVaccinationHTR(false, vaccinationHistoryDTO.getDosage(), endTime, vaccinationHistoryDTO.getGuardianName(), vaccinationHistoryDTO.getGuardianPhone(), startTime, vaccinationHistoryDTO.getVaccinationTimes(), patientGet.getId(), vaccinationHistoryDTO.getVaccinationId(), idStatus);
 
-        // Thiết lập thuộc tính "submitSuccess" trong RedirectAttributes
-        redirectAttributes.addFlashAttribute("submitSuccess", true);
-        return "redirect:/vaccination/form-vaccination/" + vaccination_id.getVaccinationId();
+         // Thiết lập thuộc tính "submitSuccess" trong RedirectAttributes
+         redirectAttributes.addFlashAttribute("submitSuccess", true);
+         return "redirect:/vaccination/form-vaccination/" + vaccinationHistoryDTO.getVaccinationId();
 //        return "/user/vaccination/vaccination-form-register";
+     }
+
     }
-
-
-}

@@ -2,13 +2,12 @@ package com.example.vaccination_management.service.impl;
 
 import com.example.vaccination_management.dto.InforPatientDTO;
 import com.example.vaccination_management.dto.PatientByUsernameDTO;
-import com.example.vaccination_management.dto.PatientLDTO;
 import com.example.vaccination_management.entity.Account;
+import com.example.vaccination_management.entity.Patient;
 import com.example.vaccination_management.repository.IPatientRepository;
 import com.example.vaccination_management.service.IPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.example.vaccination_management.dto.IPatientDTO;
-import com.example.vaccination_management.entity.Patient;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -206,6 +205,7 @@ public class PatientService implements IPatientService {
     public long getTotalPatientAccountNull(String healthInsurance, String name, String phone) {
         return iPatientRP.getTotalPatientAccountNull(healthInsurance, name, phone);
     }
+
 }
 
 

@@ -215,7 +215,7 @@ public class VaccineService implements IVaccineService {
     @Override
     public List<Vaccine> getVaccinesByPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Vaccine> vaccinePage = iVaccineRepository.findAll(pageable);
+        Page<Vaccine> vaccinePage = iVaccineRepository.findByDeleteFlagFalse(pageable);
         return vaccinePage.getContent();
     }
 
@@ -225,7 +225,7 @@ public class VaccineService implements IVaccineService {
      */
     @Override
     public long getTotalVaccines() {
-        return iVaccineRepository.count();
+        return iVaccineRepository.countByNameAndDeleteFlagFalseContainingIgnoreCase();
     }
 
     /**
@@ -234,17 +234,16 @@ public class VaccineService implements IVaccineService {
      */
     @Override
     public long getTotalVaccinesByVaccineType(VaccineType vaccineType) {
-        return iVaccineRepository.countByVaccineType(vaccineType);
+        return iVaccineRepository.countByVaccineTypeAndDeleteFlagFalse(vaccineType);
     }
 
     /**
      * LoanHTP
      * Retrieves a paginated list of vaccines based on the provided page number, size, and vaccine type for pagination.
      */
-    @Override
     public List<Vaccine> getVaccinesByPageAndVaccineType(int page, int size, VaccineType vaccineType) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Vaccine> vaccinePage = iVaccineRepository.findByVaccineType(vaccineType, pageable);
+        Page<Vaccine> vaccinePage = iVaccineRepository.findByVaccineTypeAndDeleteFlagFalse(vaccineType, pageable);
         return vaccinePage.getContent();
     }
 
@@ -255,7 +254,7 @@ public class VaccineService implements IVaccineService {
     @Override
     public List<Vaccine> getVaccinesByPageAndSearch(int page, int size, String searchQuery) {
         Pageable pageable = PageRequest.of(page, size);
-        return iVaccineRepository.findByNameContainingIgnoreCase(searchQuery, pageable).getContent();
+        return iVaccineRepository.findByNameAndDeleteFlagFalseContainingIgnoreCase(searchQuery, pageable).getContent();
     }
 
     /**
@@ -264,17 +263,16 @@ public class VaccineService implements IVaccineService {
      */
     @Override
     public long getTotalVaccinesBySearch(String searchQuery) {
-        return iVaccineRepository.countByNameContainingIgnoreCase(searchQuery);
+        return iVaccineRepository.countByNameAndDeleteFlagFalseContainingIgnoreCase(searchQuery);
     }
 
     /**
      * LoanHTP
      * Retrieves a paginated list of vaccines based on the provided page number, size, vaccine type, and search query for pagination.
      */
-    @Override
     public List<Vaccine> getVaccinesByPageAndVaccineTypeAndSearch(int page, int size, VaccineType vaccineType, String searchQuery) {
         Pageable pageable = PageRequest.of(page, size);
-        return iVaccineRepository.findByVaccineTypeAndNameContainingIgnoreCase(vaccineType, searchQuery, pageable).getContent();
+        return iVaccineRepository.findByVaccineTypeAndNameAndDeleteFlagFalseContainingIgnoreCase(vaccineType, searchQuery, pageable).getContent();
     }
 
     /**
@@ -283,7 +281,7 @@ public class VaccineService implements IVaccineService {
      */
     @Override
     public long getTotalVaccinesByVaccineTypeAndSearch(VaccineType vaccineType, String searchQuery) {
-        return iVaccineRepository.countByVaccineTypeAndNameContainingIgnoreCase(vaccineType, searchQuery);
+        return iVaccineRepository.countByVaccineTypeAndNameAndDeleteFlagFalseContainingIgnoreCase(vaccineType, searchQuery);
     }
 
 

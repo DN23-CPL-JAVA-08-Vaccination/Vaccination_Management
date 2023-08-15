@@ -1,6 +1,5 @@
 package com.example.vaccination_management.repository;
 
-import com.example.vaccination_management.entity.VaccinationType;
 import com.example.vaccination_management.entity.VaccineType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,4 +42,8 @@ public interface IVaccineTypeRepository extends JpaRepository<VaccineType, Integ
      * query the vaccine type information that has the deleteFlag field as true from the database
      */
     List<VaccineType> findByDeleteFlagTrue();
+
+    @Query("SELECT vt FROM VaccineType vt WHERE vt.deleteFlag = false")
+    List<VaccineType> findByDeleteFlagsFalse();
+
 }

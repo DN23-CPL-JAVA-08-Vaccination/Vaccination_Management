@@ -73,4 +73,5 @@ public interface IPatientService {
     List<Patient> getPatientByPageAccountNull(String healthInsurance, String name, String phone, Pageable pageable);
 
     long getTotalPatientAccountNull(String healthInsurance, String name, String phone);
+
 }
