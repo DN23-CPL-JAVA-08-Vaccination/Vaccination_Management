@@ -88,7 +88,7 @@
                                                 <span class="action-buttons">
                                                     <div>
                                                     <a th:href="@{'/admin/account/detail/'+ ${account.id}}" type="button" style="color: black;"><i class="far fa-eye"></i></a></div>
-                                                    <a type="button" th:if="${account.accountEnableFlag == true } "  style="color: green;"  th:data-toggle="modal" th:data-target="'#unEnableFlagModal-' + ${account.id}" th:data-id="${account.id}"><i class="fas fa-envelope-open-text"></i></a>
+                                                    <a type="button" th:if="${account.accountEnableFlag == true} "  style="color: green;"  th:data-toggle="modal" th:data-target="'#unEnableFlagModal-' + ${account.id}" th:data-id="${account.id}"><i class="fas fa-envelope-open-text"></i></a>
                                                     <a type="button" th:if="${account.accountEnableFlag == false}"  style="color: rgba(47,49,47,0.96); " th:data-toggle="modal" th:data-target="'#enableFlagModal-' + ${account.id}" th:data-id="${account.id}"><i class="fas fa-envelope-open-text"></i></a>
                                                 </span>
                                             </td>
