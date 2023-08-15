@@ -1,6 +1,5 @@
 package com.example.vaccination_management.repository;
 
-
 import com.example.vaccination_management.entity.VaccinationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 

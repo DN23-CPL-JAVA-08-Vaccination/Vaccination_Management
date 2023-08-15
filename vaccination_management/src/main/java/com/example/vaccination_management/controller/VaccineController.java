@@ -7,12 +7,17 @@ import com.example.vaccination_management.entity.VaccineType;
 import com.example.vaccination_management.exception.VaccineNotFoundException;
 import com.example.vaccination_management.service.IVaccineTypeService;
 import com.example.vaccination_management.service.impl.InventoryService;
+
 import com.example.vaccination_management.dto.IVaccineDTO;
 import com.example.vaccination_management.service.IVaccineService;
+import com.example.vaccination_management.service.impl.VaccineService;
+import com.example.vaccination_management.validation.VaccineValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
@@ -28,6 +33,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 @RequestMapping("/")
@@ -48,6 +55,8 @@ public class VaccineController {
     @Autowired
     private IVaccineTypeRepository iVaccineTypeRepository;
 
+    @Autowired
+    private VaccineValidator vaccineValidator;
 
     /**
      * HuyLVN
@@ -81,7 +90,7 @@ public class VaccineController {
      */
     @GetMapping("/admin/vaccines/newVaccine")
     public String showNewForm(Model model, ModelMap modelMap) {
-        List<VaccineType> vaccineTypeList = vaccineTypeService.getAllVaccineType();
+        List<VaccineType> vaccineTypeList = vaccineTypeService.getVaccinesTypeDeleteFlagFalse();
 
         model.addAttribute("newVaccine", new Vaccine());
         modelMap.addAttribute("typeList", vaccineTypeList);
@@ -93,11 +102,23 @@ public class VaccineController {
      * HuyLVN
      * get information from the form to save to the database
      */
-    @PostMapping("/admin/vaccines/saveVaccine")
-    public String addVaccine(Vaccine newVaccine, RedirectAttributes redirectAttributes) {
-        vaccineService.saveVaccine(newVaccine);
-        redirectAttributes.addFlashAttribute("messages", "The vaccine has been created successfully");
+    @PostMapping("/admin/vaccines/newVaccine")
+    public String addVaccine(@Validated @ModelAttribute("newVaccine") Vaccine newVaccine, Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        vaccineValidator.validate(newVaccine, bindingResult);
 
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("typeList", vaccineTypeService.getVaccinesTypeDeleteFlagFalse());
+            return "/admin/Vaccines/NewVaccineForm";
+        }
+
+        try {
+            vaccineService.saveVaccine(newVaccine);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("messages", "Vaccine thêm mới thất bại!");
+            return "redirect:/admin/vaccines";
+        }
+
+        redirectAttributes.addFlashAttribute("messages", "Vaccine thêm mới thành công!");
         return "redirect:/admin/vaccines";
     }
 
@@ -108,7 +129,7 @@ public class VaccineController {
     @GetMapping("/admin/vaccines/editVaccine/{id}")
     public String showUpdateForm(@PathVariable("id") int vaccineID, Model model, ModelMap modelMap) {
         try {
-            List<VaccineType> vaccineTypeList = vaccineTypeService.getAllVaccineType();
+            List<VaccineType> vaccineTypeList = vaccineTypeService.getVaccinesTypeDeleteFlagFalse();
             Vaccine vaccine = vaccineService.getVaccineByID(vaccineID);
             model.addAttribute("updateVaccine", vaccine);
             model.addAttribute("pageTitle", vaccine.getName());
@@ -124,11 +145,23 @@ public class VaccineController {
      * HuyLVN
      * get information from the form to update to the database
      */
-    @PostMapping("/admin/vaccines/updateVaccine")
-    public String updateVaccine(Vaccine updatedVaccine, RedirectAttributes redirectAttributes) {
-        vaccineService.updateVaccine(updatedVaccine);
-        redirectAttributes.addFlashAttribute("messages", "The vaccine has been updated successfully");
 
+    @PostMapping("/admin/vaccines/editVaccine")
+    public String updateVaccine(@Validated @ModelAttribute("updateVaccine") Vaccine updatedVaccine, Model model, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        vaccineValidator.validate(updatedVaccine, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("typeList", vaccineTypeService.getVaccinesTypeDeleteFlagFalse());
+            return "/admin/Vaccines/UpdateVaccineForm";
+        }
+
+        try {
+            vaccineService.updateVaccine(updatedVaccine);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("messages", "Cập nhật thông tin vaccine thất bại!");
+            return "redirect:/admin/vaccines";
+        }
+
+        redirectAttributes.addFlashAttribute("messages", "Cập nhật thông tin vaccine thành công!");
         return "redirect:/admin/vaccines";
     }
 
@@ -144,7 +177,7 @@ public class VaccineController {
             e.printStackTrace();
         }
 
-        redirectAttributes.addFlashAttribute("messages", "The vaccine has been destroyed successfully");
+        redirectAttributes.addFlashAttribute("messages", "Vaccine đã được xóa khỏi CSDL!");
         return "redirect:/admin/vaccines/recycleVaccine";
     }
 
@@ -156,7 +189,7 @@ public class VaccineController {
     public String deleteVaccine(@PathVariable("id") int vaccineID, RedirectAttributes redirectAttributes) {
         vaccineService.deleteVaccine(vaccineID);
 
-        redirectAttributes.addFlashAttribute("messages", "The vaccine has been deleted successfully");
+        redirectAttributes.addFlashAttribute("messages", "Vaccine đã được chuyển vào thùng rác!");
 
         return "redirect:/admin/vaccines";
     }
@@ -169,7 +202,7 @@ public class VaccineController {
     public String restoreVaccine(@PathVariable("id") int vaccineID, RedirectAttributes redirectAttributes) {
         vaccineService.restoreVaccine(vaccineID);
 
-        redirectAttributes.addFlashAttribute("messages", "The vaccine has been restore successfully");
+        redirectAttributes.addFlashAttribute("messages", "Khôi phục vaccine thành công!");
 
         return "redirect:/admin/vaccines/recycleVaccine";
     }
@@ -182,13 +215,14 @@ public class VaccineController {
     public String vaccineDetail(@PathVariable("id") int vaccineID, Model model, ModelMap modelMap) {
         try {
             Vaccine vaccine = vaccineService.getVaccineByID(vaccineID);
-            List<VaccineType> vaccineTypeList = vaccineTypeService.getAllVaccineType();
             List<Inventory> inventoryList = inventoryService.getInventoriesByVaccine(vaccine);
 
+            NumberFormat formatter = new DecimalFormat("#0");
+
+            model.addAttribute("price", formatter.format(vaccine.getPrice()) + " VNĐ");
             model.addAttribute("inventoryList", inventoryList);
             model.addAttribute("vaccine", vaccine);
             model.addAttribute("pageTitle", vaccine.getName());
-            modelMap.addAttribute("typeList", vaccineTypeList);
         } catch (VaccineNotFoundException e) {
             e.printStackTrace();
         }

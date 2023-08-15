@@ -3,6 +3,7 @@ package com.example.vaccination_management.controller;
 import com.example.vaccination_management.dto.IPatientDTO;
 import com.example.vaccination_management.dto.IVaccinationHistoryDTO;
 import com.example.vaccination_management.entity.Patient;
+import com.example.vaccination_management.security.AccountDetailService;
 import com.example.vaccination_management.service.IPatientService;
 import com.example.vaccination_management.service.IVaccinationHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,12 @@ public class PatientController {
     @Autowired
     ILocationService iLocation;
 
+    @Autowired
+    private AccountDetailService accountDetailService;
+
+    @Autowired
+    private IPatientService patientService;
+
     @GetMapping("/doctor/patient")
     public String getAllPatient(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size , @RequestParam(defaultValue = "", required = false) String strSearch) {
         Pageable pageable = PageRequest.of(page, size);
@@ -100,7 +107,7 @@ public class PatientController {
         model.addAttribute("listLocation", listLocation);
         model.addAttribute("message",message);
         model.addAttribute("patient", new PatientDTO());
-        return "Patient/requires_account";
+        return "user/requires_account";
     }
 
 
@@ -138,8 +145,6 @@ public class PatientController {
         patientDTO.setPhone(patient.getPhoneNumber());
         patientDTO.setBirthday(LocalDate.parse(patient.getBirthday()));
 
-//        patientDTO.setBirthday(LocalDate.parse(patient.getBirthday()));
-        // Lấy giá trị Date từ đối tượng Patient (đối tượng java.util.Date)
 
 
 //         Tính toán độ tuổi
@@ -162,7 +167,7 @@ public class PatientController {
         model.addAttribute("patient", patientDTO);
         model.addAttribute("age", age);
         model.addAttribute("ageUnit", ageUnit);
-        return "Admin/Patient/patient_detail";
+        return "admin/Patient/patient_detail";
     }
 
 
@@ -178,11 +183,32 @@ public class PatientController {
         PatientDTO patientDTO=new PatientDTO();
         Patient entity = patient.get();
         BeanUtils.copyProperties(entity, patientDTO);
+        String address = entity.getAddress();
+        String regex = "(.*?)\\sQuận"; // Regex để tìm phần trước chữ "Quận"
+        String regex1 = "Quận\\s(.*)";
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(regex);
+        java.util.regex.Pattern pattern1 = java.util.regex.Pattern.compile(regex1);
+        java.util.regex.Matcher matcher = pattern.matcher(address);
+        java.util.regex.Matcher matcher1 = pattern1.matcher(address);
+
+        String extractedAddressPart = "";
+        if (matcher.find()) {
+            extractedAddressPart = matcher.group(1); // Lấy phần trước chữ "Quận"
+        }
+        String extractedAddressPart1 = "";
+        if (matcher1.find()) {
+            extractedAddressPart1 = matcher1.group(1); // Lấy phần trước chữ "Quận"
+        }
+        patientDTO.setLocation(extractedAddressPart1); // Gán địa chỉ tách được vào patientDTO
+        patientDTO.setAddress(extractedAddressPart); // Gán địa chỉ tách được vào patientDTO
+        List<Location> listLocation=iLocation.findAll();
+
         patientDTO.setPhone(entity.getPhoneNumber());
         patientDTO.setEmail(email);
         patientDTO.setBirthday(LocalDate.parse(entity.getBirthday()));
         model.addAttribute("patient",patientDTO);
-        return new ModelAndView("Admin/Patient/patient_edit",model);
+        model.addAttribute("listLocation", listLocation);
+        return new ModelAndView("admin/Patient/patient_edit",model);
 //        để đơn giản hóa việc truyền dữ liệu từ Controller đến view và  dễ dàng hiển thị các trang HTML động với dữ liệu từ phía Server.
     }
 
@@ -197,8 +223,12 @@ public class PatientController {
                              @Valid @ModelAttribute("patient") PatientDTO patientDTO, BindingResult result){
         editPatientValidator.validate(patientDTO, result);
         if (result.hasErrors()){
-            return new ModelAndView("Admin/Patient/patient_edit");
+            List<Location> listLocation=iLocation.findAll();
+            model.addAttribute("listLocation", listLocation);
+            return new ModelAndView("admin/Patient/patient_edit");
         }
+        String addressNew=patientDTO.getAddress()+" Quận "+patientDTO.getLocation();
+        patientDTO.setAddress(addressNew);
         iPatient.upPatient(patientDTO.getName(), patientDTO.getBirthday(),patientDTO.getAddress(),patientDTO.getGender(),patientDTO.getPhone(),patientDTO.getGuardianName(),patientDTO.getGuardianPhone(),patientDTO.getId());
         model.addAttribute("msg","Cập nhật thông tin bệnh nhân thành công!!!");
         return new ModelAndView("redirect:/admin/patient/view_patient", model);
@@ -228,7 +258,7 @@ public class PatientController {
         model.addAttribute("actionFlag",searchAction);
         model.addAttribute("msg",msg);
         model.addAttribute("patientList",patientList);
-        return "Admin/Patient/patient";
+        return "admin/Patient/patient";
     }
 
 
@@ -255,7 +285,7 @@ public class PatientController {
         model.addAttribute("actionFlag",searchAction);
         model.addAttribute("msg",msg);
         model.addAttribute("patientList",patientList);
-        return "Admin/Patient/patient";
+        return "admin/Patient/patient";
     }
 
 
@@ -282,7 +312,7 @@ public class PatientController {
         model.addAttribute("actionFlag",searchAction);
         model.addAttribute("msg",msg);
         model.addAttribute("patientList",patientList);
-        return "Admin/Patient/patient";
+        return "admin/Patient/patient";
     }
 
 
@@ -319,6 +349,69 @@ public class PatientController {
         LocalDate currentDate=LocalDate.now();
         modelAndView.addObject("msg","Lưu trữ thông tin bệnh nhân thành công");
         return modelAndView;
+    }
+
+
+    @GetMapping("/user/patient/view_form_edit_patient")
+    public ModelAndView viewFormEditInformation(){
+        ModelAndView modelAndView = new ModelAndView("/user/patient/edit_patient");
+
+        String username = accountDetailService.getCurrentUserName();
+
+        Patient entity = patientService.findPatientByUsername(username);
+
+        PatientDTO patientDTO=new PatientDTO();
+
+        BeanUtils.copyProperties(entity, patientDTO);
+        String address = entity.getAddress();
+        String regex = "(.*?)\\sQuận"; // Regex để tìm phần trước chữ "Quận"
+        String regex1 = "Quận\\s(.*)";
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(regex);
+        java.util.regex.Pattern pattern1 = java.util.regex.Pattern.compile(regex1);
+        java.util.regex.Matcher matcher = pattern.matcher(address);
+        java.util.regex.Matcher matcher1 = pattern1.matcher(address);
+
+        String extractedAddressPart = "";
+        if (matcher.find()) {
+            extractedAddressPart = matcher.group(1); // Lấy phần trước chữ "Quận"
+        }
+        String extractedAddressPart1 = "";
+        if (matcher1.find()) {
+            extractedAddressPart1 = matcher1.group(1); // Lấy phần trước chữ "Quận"
+        }
+        patientDTO.setLocation(extractedAddressPart1); // Gán địa chỉ tách được vào patientDTO
+        patientDTO.setAddress(extractedAddressPart); // Gán địa chỉ tách được vào patientDTO
+        patientDTO.setPhone(entity.getPhoneNumber());
+        patientDTO.setHealthInsurance(entity.getHealthInsurance());
+        patientDTO.setEnableFlag(entity.getAccount().getEnableFlag());
+        patientDTO.setEmail(entity.getAccount().getEmail());
+        patientDTO.setBirthday(LocalDate.parse(entity.getBirthday()));
+        List<Location> listLocation=iLocation.findAll();
+        modelAndView.addObject("listLocation", listLocation);
+        modelAndView.addObject("patient",patientDTO);
+        return modelAndView;
+    }
+
+
+    @PostMapping("/user/patient/save_information_patient")
+    public String savePatient(ModelMap model,
+                             @Valid @ModelAttribute("patient") PatientDTO patientDTO, BindingResult result,
+                              RedirectAttributes redirectAttributes){
+        editPatientValidator.validate(patientDTO, result);
+        if (result.hasErrors()){
+            List<Location> listLocation=iLocation.findAll();
+            model.addAttribute("listLocation", listLocation);
+        return "/user/patient/edit_patient";
+    }
+        String addressNew=patientDTO.getAddress()+" Quận "+patientDTO.getLocation();
+        patientDTO.setAddress(addressNew);
+        iPatient.upPatient(patientDTO.getName(), patientDTO.getBirthday(),patientDTO.getAddress(),patientDTO.getGender(),patientDTO.getPhone(),patientDTO.getGuardianName(),patientDTO.getGuardianPhone(),patientDTO.getId());
+        Integer id=patientDTO.getId();
+        model.addAttribute("msg","Cập nhật thông tin bệnh nhân thành công!!!");
+        redirectAttributes.addFlashAttribute("submitSuccess", true);
+        //        Thiết lập thuộc tính "submitSuccess" trong RedirectAttributes
+//        Chuyển hướng về trang đăng ký tiêm chủng để hiển thị thông báo thành công
+        return "redirect:/vaccination-history/patient";
     }
 
 }

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Chỉnh sửa thông tin cá nhân</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link th:href="@{/patient/assets/img/favicon.png}" rel="icon">
+  <link th:href="@{/patient/assets/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link th:href="@{/patient/assets/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet">
+  <link th:href="@{/patient/assets/vendor/animate.css/animate.min.css}" rel="stylesheet">
+  <link th:href="@{/patient/assets/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/patient/assets/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+  <link th:href="@{/patient/assets/vendor/boxicons/css/boxicons.min.css}" rel="stylesheet">
+  <link th:href="@{/patient/assets/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
+  <link th:href="@{/patient/assets/vendor/remixicon/remixicon.css}" rel="stylesheet">
+  <link th:href="@{/patient/assets/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+
+  <!-- Template Main CSS File -->
+  <link th:href="@{/patient/assets/css/style.css}" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/patient/assets/css/style1.css}">
+
+  <!-- =======================================================
+  * Template Name: Medilab
+  * Updated: Jun 23 2023 with Bootstrap v5.3.0
+  * Template URL: https://bootstrapmade.com/medilab-free-medical-bootstrap-theme/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+<!-- ======= Top Bar ======= -->
+<th:block th:insert="header"></th:block>
+
+<main id="main">
+  <section class="breadcrumbs">
+    <div class="container">
+
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>Thông tin cá nhân</h2>
+        <ol>
+          <li> <a th:href="@{/}">Home</a></li>
+          <li>Thông tin</li>
+        </ol>
+      </div>
+
+    </div>
+  </section><!-- End Breadcrumbs Section -->
+
+  <!-- ======= Breadcrumbs Section ======= -->
+  <link th:href="@{//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css}" rel="stylesheet" id="bootstrap-css">
+  <script th:src="@{//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js}"></script>
+  <script th:src="@{//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js}"></script>
+  <!------ Include the above in your HEAD tag ---------->
+
+  <div class="container register-form">
+    <form th:object="${patient}" th:action="@{/user/patient/save_information_patient}" method="post">
+      <div class="note">
+        <p>Chỉnh sửa thông tin hồ sơ </p>
+      </div>
+
+      <div class="form-content">
+        <div class="row">
+          <div class="col-md-6">
+            <input type="hidden" class="form-control"  th:field="${patient.id}" />
+            <div class="form-group">
+              <label>Họ và Tên: <span class="required1">(*)</span></label>
+              <input type="text" class="form-control"  th:field="${patient.name}"/>
+              <p  class=errors th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+            </div>
+            <div class="form-group">
+              <label>Số điện thoại <span class="required1">(*)</span> </label>
+              <input type="text" class="form-control"  th:field="${patient.phone}"/>
+              <p  class=errors th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Email : <span class="required1">(*)</span> </label>
+              <input type="text" class="form-control"  th:field="${patient.email}"/>
+              <p  class=errors th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+            </div>
+            <div class="form-group">
+              <label>Mã BHYT : <span style="color: green"><i class="fa-solid fa-paperclip"></i></span></label>
+              <input type="text" class="form-control"  th:field="${patient.healthInsurance}" readonly/>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Quận : <span class="required1">(*)</span> </label>
+              <select class="form-select" id="typeId" name="typeId" th:field="${patient.location}">
+                <option th:each="item:${listLocation}" th:value="${item.name}" th:text="${item.name}" th:selected="${patient.location == item.name}" >  </option>
+              </select>
+              <p  class=errors th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></p>
+            </div>
+            <div class="form-group">
+              <label>Ngày sinh : <span class="required1">(*)</span> </label>
+              <input type="date" class="form-control"  th:field="${patient.birthday}"  onchange = "showGuardianFields()"/>
+              <p  class=errors th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label>Địa chỉ : <span class="required1">(*)</span> </label>
+              <input type="text" class="form-control" th:field="${patient.address}"/>
+              <p  class=errors th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+            </div>
+            <div class="form-group">
+              <label>Giới tính: <span class="required1">(*)</span></label>
+              </br>
+              <span style="margin-right: 30px;"></span>
+                <input class="form-check-input" type="radio" value="true" name="gender" id="Male" th:checked="${patient.gender == true}" th:text="Nam">
+                <span style="margin-right: 40px;"></span>
+                <input class="form-check-input" type="radio" value="false" name="gender" id="Female" th:checked="${patient.gender == false}" th:text="Nữ">
+              <p  class=errors th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></p>
+            </div>
+          </div>
+          <div class="col-md-6" id="input1Container" style="display: none;">
+            <div class="form-group">
+              <label>Tên người giám hộ : <span class="required1">(*)</span> </label>
+              <input type="text" class="form-control" th:field="${patient.guardianName}" name="guardianName" id="input1" />
+              <p  class=errors th:if="${#fields.hasErrors('guardianName')}" th:errors="*{guardianName}"></p>
+            </div>
+          </div>
+
+          <div class="col-md-6" id="input2Container" style="display: none;">
+            <div class="form-group">
+              <label>Số điện thoại người giám hộ : <span class="required1">(*)</span> </label>
+              <input type="text" class="form-control" th:field="${patient.guardianPhone}" name="guardianPhone" id="input2"/>
+              <p  class=errors th:if="${#fields.hasErrors('guardianPhone')}" th:errors="*{guardianPhone}"></p>
+            </div>
+          </div>
+        <button type="button" class="btnSubmit btn btn-outline-primary" th:data-toggle="modal" th:data-target="'#editModal'">Lưu thông tin</button>
+        <button type="button" class="btnSubmit btn btn-outline-dark" th:data-toggle="modal" th:data-target="'#backModal'">Quay lại</button>
+
+        </div>
+<!--        Modal-->
+        <div class="modal fade custom-modal" th:id="'editModal'" tabindex="-1" role="dialog" aria-labelledby="editModal">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="background-color: rgba(16,75,218,0.94)">
+                <h5 class="modal-title" id="editModal">Lưu thông tin chi tiết ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Thông tin chỉnh sửa sẽ được lưu lại. Bạn có muốn lưu thông tin của mình hay không ?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
+                <button type="submit" class="btn btn-outline-primary">Xác nhận</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade custom-modal" th:id="'backModal'" tabindex="-1" role="dialog" aria-labelledby="backModal">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header" style="background-color: #edd122">
+                <h5 class="modal-title" id="backModal">Quay lại trang trước ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p>Bạn muốn trở lại khi thông tin cá nhân chỉnh sửa chưa được lưu, bạn vẫn muốn tiếp tục ?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
+                <button type="button" class="btn btn-outline-warning" id="backButton">Xác nhận</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<th:block th:insert="footer"></th:block>
+
+<div id="preloader"></div>
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+<div th:if="${submitSuccess}">
+  <!-- Đoạn mã JavaScript để hiển thị thông báo đăng ký thành công -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      Swal.fire({
+        icon: 'success',
+        title: 'Chỉnh sửa thông tin thành công!',
+        text: 'Bạn đã cập nhật thông tin cá nhân của mình thành công!!!',
+        confirmButtonText: 'Quay lại trang chủ',
+        confirmButtonColor: '#0d6efd', // Thay đổi màu sắc của nút xác nhận (Bootstrap 5)
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = '/vaccination-history/patient'; // Điều hướng về trang chủ khi người dùng nhấp vào nút "Quay lại trang chủ"
+        }
+      });
+    });
+  </script>
+</div>
+<script>
+  document.getElementById("backButton").addEventListener("click", function() {
+    history.back(); // Điều hướng trang trở lại trang trước
+  });
+  function showGuardianFields() {
+    var birthdayInput = document.getElementById("birthday");
+    var guardianNameInput = document.getElementById("input1Container");
+    var guardianPhoneInput = document.getElementById("input2Container");
+
+    // Tính tuổi dựa vào ngày sinh và ngày hiện tại
+    var birthday = new Date(birthdayInput.value);
+    var today = new Date();
+    var age = today.getFullYear() - birthday.getFullYear();
+
+    // Kiểm tra năm sinh nhỏ hơn 16
+    if (age < 16) {
+      guardianNameInput.style.display = "block"; // Hiển thị trường tên người giám hộ
+      guardianPhoneInput.style.display = "block"; // Hiển thị trường số điện thoại người giám hộ
+    } else {
+      guardianNameInput.style.display = "none"; // Ẩn trường tên người giám hộ
+      guardianPhoneInput.style.display = "none"; // Ẩn trường số điện thoại người giám hộ
+
+      guardianNameInput.value = "";
+      guardianPhoneInput.value = "";
+    }
+  }
+
+  // Gọi hàm hiển thị trường người đại diện khi tải trang
+  showGuardianFields();
+  function validateForm() {
+    showGuardianFields(); // Kiểm tra tuổi trước khi gửi form
+
+    var guardianNameInput = document.getElementById("input1");
+    var guardianPhoneInput = document.getElementById("input2");
+
+    // Kiểm tra trạng thái của trường người đại diện
+    if (guardianNameInput.required && guardianNameInput.value.trim() === "") {
+      alert("Vui lòng nhập tên người giám hộ");
+      return false; // Ngăn form gửi khi dữ liệu nhập sai
+    }
+
+    if (guardianPhoneInput.required && guardianPhoneInput.value.trim() === "") {
+      alert("Vui lòng nhập số điện thoại người giám hộ");
+      return false; // Ngăn form gửi khi dữ liệu nhập sai
+    }
+
+    return true; // Gửi form nếu dữ liệu hợp lệ
+  }
+</script>
+<!-- Vendor JS Files -->
+<script th:src="@{/patient/assets/vendor/purecounter/purecounter_vanilla.js}"></script>
+<script th:src="@{/patient/assets/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/patient/assets/vendor/glightbox/js/glightbox.min.js}"></script>
+<script th:src="@{/patient/assets/vendor/swiper/swiper-bundle.min.js}"></script>
+<script th:src="@{/patient/assets/vendor/php-email-form/validate.js}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- Template Main JS File -->
+<script th:src="@{/patient/assets/js/main.js}"></script>
+
+</body>
+
+</html>

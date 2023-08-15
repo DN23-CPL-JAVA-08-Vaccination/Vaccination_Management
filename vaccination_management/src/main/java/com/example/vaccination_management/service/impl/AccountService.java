@@ -7,7 +7,6 @@ import com.example.vaccination_management.repository.IAccountRepository;
 import com.example.vaccination_management.repository.IPatientRepository;
 import com.example.vaccination_management.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -122,7 +121,12 @@ public class AccountService implements IAccountService {
         iAccountRP.updateEnableFlagById(enableFlag, id);
     }
 
-    
+    @Override
+    public void updatePasswordById(String Password, Integer id) {
+
+    }
+
+
     /**
        * TLINH
        * delete patient by id and update account id = null
@@ -133,15 +137,20 @@ public class AccountService implements IAccountService {
         iAccountRP.deleteById(integer);
     }
 
+    @Override
+    public Account findAllByUsername(String userName) {
+        return null;
+    }
+
 
     /**
        * TLINH
        * find all account by userName
      */
-    @Override
-    public IAccountDTO findAllByUsername(String userName) {
-        return iAccountRP.findAllByUsername(userName);
-    }
+//    @Override
+//    public IAccountDTO findAllByUsername(String userName) {
+//        return iAccountRP.findAllByUsername(userName);
+//    }
 
     
     /**
@@ -183,25 +192,35 @@ public class AccountService implements IAccountService {
         iAccountRP.rePasswordByVerificationCode(password, verificationCode);
     }
 
+    @Override
+    public List<IAccountDTO> getAllAccountByPage(Integer roleId, String userName, Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public long getTotalAllAccount(Integer roleId, String userName) {
+        return 0;
+    }
+
 
     /**
        * TLINH
        * paging by username
      */
-    @Override
-    public List<Account> getAccountByPage(String userName, Pageable pageable){
-        Page<Account> accountPage=iAccountRP.findAccountListPage(userName, pageable);
-        return accountPage.getContent();
-    }
+//    @Override
+//    public List<Account> getAccountByPage(String userName, Pageable pageable){
+//        Page<Account> accountPage=iAccountRP.findAccountListPage(userName, pageable);
+//        return accountPage.getContent();
+//    }
 
     /**
        * TLINH
        * count is the number username
      */
-    @Override
-    public long getTotalAccount(String userName){
-        return iAccountRP.getTotalAccount(userName);
-    }
+//    @Override
+//    public long getTotalAccount(String userName){
+//        return iAccountRP.getTotalAccount(userName);
+//    }
 
     /**
      * VTquang

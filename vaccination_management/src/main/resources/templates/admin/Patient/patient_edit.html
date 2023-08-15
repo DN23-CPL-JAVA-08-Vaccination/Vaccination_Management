@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+    <title>Chỉnh sửa thông tin bệnh nhân</title>
+
+  <script th:src="@{//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js}"></script>
+  <script th:src="@{//code.jquery.com/jquery-1.11.1.min.js}"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+  <link th:href="@{/admin/css/styles.css}" rel="stylesheet" />
+  <link th:href="@{/admin/css/506.css}" rel="stylesheet" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+<body class="sb-nav-fixed">
+<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+  <!-- Navbar Brand-->
+  <a class="navbar-brand ps-3" th:href="@{../index.html}">Start Bootstrap</a>
+  <!-- Sidebar Toggle-->
+  <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+  <!-- Navbar Search-->
+  <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+    <div class="input-group">
+      <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+      <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+    </div>
+  </form>
+  <!-- Navbar-->
+  <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" href="#!">Settings</a></li>
+        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+        <li><hr class="dropdown-divider" /></li>
+        <li><a class="dropdown-item" href="#!">Logout</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+<th:block th:insert="admin/nav"></th:block>
+<div id="layoutSidenav">
+  <th:block th:insert="admin/sidenav"></th:block>
+  <div id="layoutSidenav_content">
+    <main>
+      <div class="container-fluid px-4" style="margin-left: 300px">
+        <div class="container">
+          <div class="row" >
+            <div class="receipt-main col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+
+              <form th:action="@{/admin/patient/save}" method="get" th:object="${patient}">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-10">
+                      <h2 class="mb-0">Thông tin bệnh nhân</h2>
+                    </div>
+                    <div class="col-2">
+                      <a th:href="@{/admin/patient/view_patient}" th:data-toggle="modal" th:data-target="'#cancelModal'" class="btn-close float-end"></a>
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div>
+                  <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                      <th class="col-md-5"></th>
+                      <th class="col-md-7"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <form>
+
+                    <tr>
+                      <input th:field="*{id}"  id="id" class="form-input" type="hidden"  >
+                      <td>Họ và tên : </td>
+                      <td><input th:field="*{name}"  id="name" class="form-input" type="text"  > </br>
+                        <p style="color: red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+                      </td>
+
+                    </tr>
+
+                    <tr>
+                      <td>Ngày sinh : </td>
+                      <td><input th:field="*{birthday}"  id="birthday" class="form-input" type="date" onchange="showGuardianFields()"  >
+                        <p  style="color: red" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></p>
+                      </td>
+
+                    </tr>
+                    <tr>
+                      <td>Giới tính : </td>
+                      <td>
+                        <span>
+                             <span style="margin-right: 10px;"></span>
+                            <input class="form-check-input" type="radio" value="true" name="gender" id="Male"
+                                   th:checked="${patient.gender == true}" th:text="Nam">
+                                  <span style="margin-right: 20px;"></span>
+                                  <input class="form-check-input" type="radio" value="false" name="gender" id="Female"
+                                     th:checked="${patient.gender == false}" th:text="Nữ">
+                          </br>
+                        <p  style="color: red" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></p>
+                        </span>
+                      </td>
+
+                    </tr>
+                    <tr>
+                      <td>Số điện thoại : </td>
+                      <td><input th:field="*{phone}"  id="phone" class="form-input" type="text"  >
+                        </br>
+                        <p style="color: red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+                      </td>
+
+                    </tr>
+                    <tr>
+                      <td>Địa chỉ : </td>
+                      <td><input th:field="*{address}"  id="address" class="form-input" type="text"  >
+                        </br>
+                        <p  style="color: red" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+                      </td>
+
+                    </tr>
+                      <tr>
+                        <td>Quận : </td>
+                        <td>
+                          <select  id="typeId" name="typeId" th:field="${patient.location}">
+                            <option th:each="item:${listLocation}" th:value="${item.name}" th:text="${item.name}" th:selected="${patient.location == item.name}" >  </option>
+                          </select>
+                          </br>
+                          <p  style="color: red" th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></p>
+                        </td>
+
+                      </tr>
+                      <tr>
+                        <td>Email : </td>
+                        <td><input th:field="*{email}"  id="email" class="form-input" type="text"  >
+                          </br>
+                          <p  style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+                        </td>
+
+                      </tr>
+                    <tr>
+                      <td >Số BHYT :</td>
+                      <td><input th:field="*{healthInsurance}"  id="healthInsurance" class="form-input" type="text" readonly> (*)</td>
+                    </tr>
+                    <tr  id="inputContainer" style="display: none;">
+                      <td >Tên người giám hộ : </td>
+                      <td><input th:field="*{guardianName}"  id="input1" class="form-input" type="text"  >
+                        </br>
+                        <p  style="color: red" th:if="${#fields.hasErrors('guardianName')}" th:errors="*{guardianName}"></p>
+                      </td>
+
+                    </tr>
+                    <tr id="option1Inputs" style="display: none;">
+                      <td >Số điện thoại người giám hộ : </td>
+                      <td><input th:field="*{guardianPhone}"  id="input2" class="form-input" type="text"  >
+                        </br>
+                        <p  style="color: red" th:if="${#fields.hasErrors('guardianPhone')}" th:errors="*{guardianPhone}"></p>
+                      </td>
+
+                    </tr>
+                    </form>
+                    </tbody>
+                  </table>
+                  <script>
+                    function showGuardianFields() {
+                      var birthdayInput = document.getElementById("birthday");
+                      var inputContainer = document.getElementById("inputContainer");
+                      var option1Inputs = document.getElementById("option1Inputs");
+                      var guardianNameInput = document.getElementById("input1");
+                      var guardianPhoneInput = document.getElementById("input2");
+
+                      // Tính tuổi dựa vào ngày sinh và ngày hiện tại
+                      var birthday = new Date(birthdayInput.value);
+                      var today = new Date();
+                      var age = today.getFullYear() - birthday.getFullYear();
+
+                      // Kiểm tra năm sinh nhỏ hơn 16
+                      if (age < 16) {
+                        inputContainer.style.display = "table-row";
+                        option1Inputs.style.display = "table-row";
+                        guardianNameInput.required = true;
+                        guardianPhoneInput.required = true;
+                      } else {
+                        inputContainer.style.display = "none";
+                        option1Inputs.style.display = "none";
+                        guardianNameInput.required = false;
+                        guardianPhoneInput.required = false;
+
+                        // Đặt lại giá trị rỗng cho hai trường khi birthday trên 16
+                        guardianNameInput.value = "";
+                        guardianPhoneInput.value = "";
+                      }
+                    }
+                    window.onload = showGuardianFields;
+                  </script>
+                </div>
+                <div class="row">
+                  <div class="receipt-header receipt-header-mid receipt-footer">
+                    <div class="container">
+                        <div class="text-center">
+                          <p style="font-size: 15px; color: rgba(186,192,196,0.89)">Những trường có (*) là không thay đổi được</p>
+                          <button  type="button" class="btn btn-outline-success btn-sm" th:data-toggle="modal" th:data-target="'#editModal'">Lưu</button>
+                          <button type="button" class="btn btn-outline-dark btn-sm" th:data-toggle="modal" th:data-target="'#cancelModal'">Thoát</button>
+                      </div>
+                    </div>
+                    <br>
+                    <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+                      <div class="receipt-right">
+                        <h5 style="color: rgb(140, 140, 140);">Da Nang City Immunization Center</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade custom-modal" th:id="'editModal'" tabindex="-1" role="dialog" aria-labelledby="editModal">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header" style="background-color: #1CB936">
+                        <h5 class="modal-title" id="editModal">Lưu thông tin bệnh nhân ?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Thông tin chỉnh sửa sẽ được lưu lại. Bạn có muốn lưu thông tin bệnh nhân ?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
+                        <button type="submit" class="btn btn-outline-success">Xác nhận</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade custom-modal" th:id="'cancelModal'" tabindex="-1" role="dialog" aria-labelledby="cancelModal">
+                  <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header" style="background-color: #F7E123">
+                        <h5 class="modal-title" id="cancelModal">Thoát?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Thông tin bệnh nhân chỉnh sửa chưa được lưu. Bạn có chắn chắn tiếp tục thoát ?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Thoát</button>
+                        <a th:href="@{/admin/patient/view_patient}"><button type="button" class="btn btn-outline-warning">Xác nhận</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <th:block th:insert="admin/footer_admin"></th:block>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script th:src="@{/admin/js/scripts.js}"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script th:src="@{/admin/js/datatables-simple-demo.js}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+</body>
+</html>

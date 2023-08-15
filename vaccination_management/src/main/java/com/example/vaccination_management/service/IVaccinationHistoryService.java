@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import com.example.vaccination_management.entity.Patient;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IVaccinationHistoryService {
@@ -78,5 +79,10 @@ public interface IVaccinationHistoryService {
      * Retrieves a paginated list of vaccination history records associated with the provided patient.
      */
     Page<VaccinationHistory> listVaccinationHistoryByPatientPaged(int patientId, Pageable pageable);
+
+    /**
+     * LoanHTP
+     */
+    void insertVaccinationHTR(Boolean deleteFlag, Double dosage, LocalDateTime endTime, String guardianName, String guardianPhone, LocalDateTime startTime, int vaccinationTimes, int patientId, int vaccinationId, int vaccinationStatusId);
 
 }

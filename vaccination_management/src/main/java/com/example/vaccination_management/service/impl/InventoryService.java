@@ -31,7 +31,16 @@ public class InventoryService implements IInventoryService {
      */
     @Override
     public List<Inventory> getAllInventories() {
-        return iInventoryRepository.findAll();
+        return iInventoryRepository.findInventoriesByDeleteFlagFalse();
+    }
+
+    /**
+     * HuyLVN
+     * get all information of inventories has delete flag is true, admin after login
+     */
+    @Override
+    public List<Inventory> getInventoryInRecycle(Vaccine vaccine) {
+        return iInventoryRepository.getInventoriesByVaccineAndDeleteFlagTrue(vaccine);
     }
 
     /**
@@ -55,7 +64,7 @@ public class InventoryService implements IInventoryService {
      */
     @Override
     public List<Inventory> getInventoriesByVaccine(Vaccine vaccine) {
-        return iInventoryRepository.getInventoriesByVaccine(vaccine);
+        return iInventoryRepository.getInventoriesByVaccineAndDeleteFlagFalse(vaccine);
     }
 
     /**
@@ -71,6 +80,7 @@ public class InventoryService implements IInventoryService {
 
         inventory.setCreatedDate(createDate.format(formatter));
         inventory.setUpdatedDate(updateDate.format(formatter));
+        inventory.setDeleteFlag(false);
 
         iInventoryRepository.save(inventory);
     }
@@ -95,7 +105,7 @@ public class InventoryService implements IInventoryService {
      * remove inventory from database, admin after login
      */
     @Override
-    public void deleteInventory(int inventoryID) throws InventoryNotFoundException {
+    public void destroyInventory(int inventoryID) throws InventoryNotFoundException {
         Long count = iInventoryRepository.countById(inventoryID);
 
         if (count == null || count == 0) {
@@ -103,6 +113,20 @@ public class InventoryService implements IInventoryService {
         }
 
         iInventoryRepository.deleteById(inventoryID);
+    }
+
+
+    @Override
+    public void deleteInventory(int inventoryID) {
+        Optional<Inventory> inventoryOptional = iInventoryRepository.findById(inventoryID);
+
+        if (inventoryOptional.isPresent()) {
+            Inventory inventory = inventoryOptional.get();
+
+            inventory.setDeleteFlag(true);
+
+            iInventoryRepository.save(inventory);
+        }
     }
 
     /**
@@ -113,5 +137,6 @@ public class InventoryService implements IInventoryService {
     public void updateInventoryQuantity(Integer vaccine_id){
         iInventoryRepository.updateInventoryQuantity(vaccine_id);
     }
+
 
 }

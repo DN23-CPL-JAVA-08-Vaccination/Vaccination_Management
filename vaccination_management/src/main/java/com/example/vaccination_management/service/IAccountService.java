@@ -1,7 +1,7 @@
 package com.example.vaccination_management.service;
 
-import com.example.vaccination_management.entity.Account;
 import com.example.vaccination_management.dto.IAccountDTO;
+import com.example.vaccination_management.entity.Account;
 import com.example.vaccination_management.dto.IAccountDetailDTO;
 import org.springframework.data.domain.Pageable;
 
@@ -46,13 +46,19 @@ public interface IAccountService {
 
     List<Account> findAll();
 
+
+
     IAccountDetailDTO findAccountById(Integer id);
+
+
 
     void updateEnableFlagById(Boolean enableFlag, Integer id);
 
+    void updatePasswordById(String Password, Integer id);
+
     void deleteById(Integer integer);
 
-    IAccountDTO findAllByUsername(String userName);
+    Account findAllByUsername(String userName);
 
     Integer finByUserName(String userName);
 
@@ -62,12 +68,16 @@ public interface IAccountService {
 
     void rePasswordByVerificationCode(String password, String verificationCode);
 
-    List<Account> getAccountByPage(String userName, Pageable pageable);
+    List<IAccountDTO> getAllAccountByPage(Integer roleId, String userName, Pageable pageable);
 
-    long getTotalAccount(String userName);
+    long getTotalAllAccount(Integer roleId, String userName);
+
+
+
     /**
      * Quangvt
      * count all account active
      */
     long countAllAccount();
+
 }

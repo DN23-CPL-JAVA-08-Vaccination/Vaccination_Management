@@ -6,12 +6,14 @@ import com.example.vaccination_management.service.ILocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
 
 @Service
 public class LocationService implements ILocationService {
+
     @Autowired
-    private ILocationRepository iLocationRP;
+    private ILocationRepository iLocationRepository;
 
     /**
      * TLINH
@@ -19,6 +21,7 @@ public class LocationService implements ILocationService {
      */
     @Override
     public List<Location> findAll() {
-        return iLocationRP.findAll();
+        return iLocationRepository.findAll();
     }
+
 }

@@ -1,25 +1,20 @@
 package com.example.vaccination_management.service.impl;
 
-
 import com.example.vaccination_management.dto.IVaccinationHistoryDTO;
 import com.example.vaccination_management.entity.VaccinationHistory;
-
 import com.example.vaccination_management.entity.Patient;
-
 
 import com.example.vaccination_management.repository.IVaccinationHistoryRepository;
 import com.example.vaccination_management.service.IVaccinationHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -147,7 +142,7 @@ public class VaccinationHistoryService implements IVaccinationHistoryService {
      */
     @Override
     public VaccinationHistory findVaccinationHistoryById(int id) {
-        return iVaccinationHistoryRepository.findById(id).orElse(null);
+        return iVaccinationHistoryRepository.findById(id);
     }
 
     /**
@@ -178,5 +173,13 @@ public class VaccinationHistoryService implements IVaccinationHistoryService {
     @Override
     public Page<VaccinationHistory> listVaccinationHistoryByPatientPaged(int patientId, Pageable pageable) {
         return iVaccinationHistoryRepository.findByPatientId(patientId, pageable);
+    }
+
+    /**
+     * LoanHTP
+     */
+    @Override
+    public void insertVaccinationHTR(Boolean deleteFlag, Double dosage, LocalDateTime endTime, String guardianName, String guardianPhone, LocalDateTime startTime, int vaccinationTimes, int patientId, int vaccinationId, int vaccinationStatusId) {
+        iVaccinationHistoryRepository.insertVaccinationHTR(deleteFlag, dosage, endTime, guardianName, guardianPhone, startTime, vaccinationTimes, patientId, vaccinationId, vaccinationStatusId);
     }
 }

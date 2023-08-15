@@ -1,12 +1,14 @@
 package com.example.vaccination_management.repository;
 
+
 import com.example.vaccination_management.dto.InforPatientDTO;
 import com.example.vaccination_management.dto.IPatientDTO;
+
+import com.example.vaccination_management.dto.PatientByUsernameDTO;
 import com.example.vaccination_management.entity.Patient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -44,6 +46,18 @@ public interface IPatientRepository extends JpaRepository<Patient, Integer> {
 
     @Query(value = SELECT_PATIENT_BY_ID, countQuery = SELECT_PATIENT_BY_ID, nativeQuery = true)
     InforPatientDTO getInforByUsername(String username);
+
+    /**
+     * ThangLV
+     * get Infor Patient by Username
+     */
+    String SELECT_PATIENT_BY_USERNAME = "select p.id, p.name, p.phone, p.address, p.birthday,p.gender,p.detele_flag, p.health_insurance as healthInsurance,p.guardian_name,p.guardian_phone, a.id as accountId, a.email,a.username, a.enable_flag from patient p\n" +
+            "    join account a on a.id = p.account_id\n" +
+            "    where username = ?1";
+    @Query(value = SELECT_PATIENT_BY_USERNAME, countQuery = SELECT_PATIENT_BY_USERNAME, nativeQuery = true)
+    PatientByUsernameDTO getPatientByUsername(String username);
+
+
 
     @Override
     Patient getById(Integer integer);
@@ -152,6 +166,7 @@ public interface IPatientRepository extends JpaRepository<Patient, Integer> {
      */
     @Query(value = "SELECT count(patient.id) FROM patient WHERE detele_flag = 0 AND account_id IS NOT NULL", nativeQuery = true)
     long countPatient();
+
 
 }
 

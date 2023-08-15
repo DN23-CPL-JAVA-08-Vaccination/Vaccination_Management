@@ -1,6 +1,19 @@
 body{
     background: -webkit-linear-gradient(left, #3931af, #00c6ff);
 }
+.mt-4-custom {
+    margin-top: 0px !important;
+}
+.tieu-de{
+    margin-bottom: 15px !important;
+}
+.custom-a {
+    color: black;
+    text-decoration: none;
+}
+.custom-a:hover {
+    text-decoration: none;
+}
 #vaccination-history-table th {
     background-color: #f5f5f5; /* Màu nền cho hàng tiêu đề */
 }
@@ -12,9 +25,9 @@ body{
     color:#5c636a; /* Màu biểu tượng khi rê chuột vào */
     transition: color 0.3s ease; /* Hiệu ứng mượt khi thay đổi màu */
 }
-/*.home-profile{*/
-/*    margin-top: 16px;*/
-/*}*/
+.home-profile{
+    margin-bottom: 0px;
+}
 .btn-secondary-custom {
     background-color: white;
     border: 1px solid black !important;

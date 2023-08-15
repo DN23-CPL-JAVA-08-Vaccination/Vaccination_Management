@@ -1,177 +1,189 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
-  <meta name="description" content=""/>
-  <meta name="author" content=""/>
-  <title>Tables - SB Admin</title>
-  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
-  <link th:href="@{/css/adminStyle.css}" rel="stylesheet"/>
-  <link rel="stylesheet" th:href="@{/css/custom-css.css}">
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Tables - SB Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/adminStyle.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/custom-css.css}">
 
-  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 
 </head>
 <body class="sb-nav-fixed">
 <th:block th:insert="admin/nav"></th:block>
 <div id="layoutSidenav">
-  <th:block th:insert="admin/sidenav"></th:block>
-  <div id="layoutSidenav_content">
-    <main>
-      <div class="container-fluid px-4">
+    <th:block th:insert="admin/sidenav"></th:block>
+    <div id="layoutSidenav_content">
+        <main>
+            <div class="container-fluid px-4">
 
-        <div class="card-body  mt-5 ">
-          <div class="row">
-            <h2> Thông tin bệnh nhân </h2>
-          </div>
-            <div class="row mt-4 p-3 ">
-              <div class="col-2 text-bold">
-                <p class="ps-4   w-75"> Họ và tên :</p>
-                <p class="ps-4   w-75"> Ngày sinh :</p>
-                <p class="ps-4   w-75"> Giới tính :</p>
-                <p class="ps-4   w-75"> Số điện thoại :</p>
-                <p class="ps-4   w-75"> Địa chỉ :</p>
-              </div>
-              <div class="col-4">
-                <p th:text="${patient.getName()}" ></p>
-                <p th:text="${patient.getBirthday()}" ></p>
-                <p th:if="${patient.isGender()}">Nam</p>
-                <p th:if="${!patient.isGender()}">Nữ </p>
-                <p th:text="${patient.getPhoneNumber()}" ></p>
-                <p th:text="${patient.getAddress()}" ></p>
-              </div>
+                <div class="card-body  mt-5 ">
+                    <div class="row">
+                        <h2> Thông tin bệnh nhân </h2>
+                    </div>
+                    <div class="row mt-4 p-3 ">
+                        <div class="col-2 text-bold">
+                            <p class="ps-4   w-75"> Họ và tên :</p>
+                            <p class="ps-4   w-75"> Ngày sinh :</p>
+                            <p class="ps-4   w-75"> Giới tính :</p>
+                            <p class="ps-4   w-75"> Số điện thoại :</p>
+                            <p class="ps-4   w-75"> Địa chỉ :</p>
+                        </div>
+                    </div>
+                    <div class="col-6  mt-4 p-3  ">
+
+                        <div>
+                            <p>
+                                Tình trạng sức khoẻ:
+                                <span th:text="${patient.getHealthInsurance()}"></span>
+                            </p>
+                            <p>
+                                Người giám hộ:
+                                <span th:text="${patient.getGuardianName()}"></span>
+                            </p>
+                            <p>
+                                Số điện thoại người giám hộ:
+                                <span th:text="${patient.getGuardianPhone()}"></span>
+                            </p>
+
+                            <div class="col-4">
+                                <p th:text="${patient.getName()}"></p>
+                                <p th:text="${patient.getBirthday()}"></p>
+                                <p th:if="${patient.isGender()}">Nam</p>
+                                <p th:if="${!patient.isGender()}">Nữ </p>
+                                <p th:text="${patient.getPhoneNumber()}"></p>
+                                <p th:text="${patient.getAddress()}"></p>
+                            </div>
 
 
+                            <div class="col-2 text-bold">
+                                <p class="ps-4 "> BHYT : </p>
+                                <p class="ps-4 "> Người giám hộ :</p>
+                                <p class="ps-4 "> Số điện thoại : </p>
+                            </div>
+                            <div class="col-4">
+                                <p th:text="${patient.getHealthInsurance()}"></p>
+                                <p th:text="${patient.getGuardianName()}"></p>
+                                <p th:text="${patient.getGuardianPhone()}"></p>
+                            </div>
 
-              <div class="col-2 text-bold">
-                 <p class="ps-4 "> BHYT : </p>
-                 <p class="ps-4 "> Người giám hộ :</p>
-                 <p class="ps-4 "> Số điện thoại : </p>
-              </div>
-              <div class="col-4">
-                <p th:text="${patient.getHealthInsurance()}" ></p>
-                <p th:text="${patient.getGuardianName()}" ></p>
-                <p th:text="${patient.getGuardianPhone()}" ></p>
-              </div>
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Lịch sử tiêm chủng
+                            </div>
+                            <div class="card-body">
+                                <!--                <form  th:action="@{/doctor/history}" method="get" class="col-3 ms-auto">-->
+                                <!--                  <div class="input-group mb-3">-->
+                                <!--                    <input type="text" class="form-control" name="strSearch" placeholder="Search here.."  aria-describedby="button-addon2">-->
+                                <!--                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>-->
+                                <!--                  </div>-->
+
+                                <!--                </form>-->
+                                <table id="datatablesSimple" class="table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Họ tên</th>
+                                        <th>Ngày sinh</th>
+                                        <th>Sự kiện TC</th>
+                                        <th>Vắc-xin</th>
+                                        <th>Thời gian tiêm</th>
+                                        <th>Lần tiêm</th>
+                                        <th>Trạng thái</th>
+                                        <th>Xem chi tiết</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr th:each="vaccination : ${vaccinationList}">
+                                        <td th:text="${vaccination.getId()}"></td>
+                                        <td th:text="${vaccination.getPatientName()}"></td>
+                                        <td th:text="${vaccination.getBirthFormat()}"></td>
+                                        <td th:text="${vaccination.getVaccinationDesc()}"></td>
+                                        <td th:text="${vaccination.getVaccineName()}"></td>
+                                        <td th:text="${vaccination.getLastTimeFormatted()}"></td>
+
+                                        <td th:text="${vaccination.getVaccinationTimes()}"></td>
+                                        <td>
+                                            <p th:if="${vaccination.getStatus() == 1}"> Chưa tiêm
+                                            </p>
+                                            <p th:if="${vaccination.getStatus() == 2}"> Đã tiêm
+                                            </p>
+                                            <p th:if="${vaccination.getStatus() == 3}"> Đã huỷ
+                                            </p>
+
+                                        </td>
+                                        <td>
+                                            <a th:href="@{'/doctor/vaccination/view?id='+${vaccination.getId()}}">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
 
 
+                                        </td>
+
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination ms-1 d-flex justify-content-end align-items-center p-3">
+                                        <li class="page-item me-3">
+                                            <a class="page-link"
+                                               th:href="@{'/doctor/patient/view?id=' + ${patientID} + '&page=' + ${vaccinationList.number - 1}}"
+                                               th:if="${vaccinationList.hasPrevious()}">Previous</a>
+                                        </li>
+                                        <li class="page-item" th:classappend="${vaccinationList.first} ? disabled : ''">
+                                            <a class="page-link"
+                                               th:href="@{'/doctor/patient/view?id=' + ${patientID} + '&page=0'}"
+                                               th:if="${vaccinationList.number > 2}">1</a>
+                                        </li>
+
+
+                                        <li class="page-item"
+                                            th:classappend="${i == vaccinationList.number} ? active : ''"
+                                            th:each="i : ${#numbers.sequence(vaccinationList.number, vaccinationList.number + 1)}">
+                                            <a class="page-link"
+                                               th:href="@{'/doctor/patient/view?id=' + ${patientID} + '&page=' +${i} }"
+                                               th:text="${i+1}"></a>
+                                            <!--                         th:href="@{/doctor/patient/view(page=${i})}"-->
+
+                                        </li>
+
+                                        <li class="page-item" th:classappend="${vaccinationList.last} ? disabled : ''">
+                                            <span class="page-link">...</span>
+                                        </li>
+                                        <li class="page-item" th:classappend="${vaccinationList.last} ? disabled : ''">
+                                            <a class="page-link"
+                                               th:href="@{'/doctor/patient/view?id=' + ${patientID} + '&page=' +${vaccinationList.totalPages - 1} }"
+                                               th:if="${vaccinationList.totalPages - vaccinationList.number > 3}">${vaccinationList.totalPages}</a>
+                                        </li>
+                                        <li class="page-item me-3">
+                                            <a class="page-link"
+                                               th:href="@{'/doctor/patient/view?id=' + ${patientID} + '&page=' +${vaccinationList.number + 1} }"
+                                               th:if="${vaccinationList.hasNext()}">Next</a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
-
-          </div>
-          <div class="row">
-            <div class="card mb-4">
-              <div class="card-header">
-                <i class="fas fa-table me-1"></i>
-                Lịch sử tiêm chủng
-              </div>
-              <div class="card-body">
-<!--                <form  th:action="@{/doctor/history}" method="get" class="col-3 ms-auto">-->
-<!--                  <div class="input-group mb-3">-->
-<!--                    <input type="text" class="form-control" name="strSearch" placeholder="Search here.."  aria-describedby="button-addon2">-->
-<!--                    <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>-->
-<!--                  </div>-->
-
-<!--                </form>-->
-                <table id="datatablesSimple" class="table-striped">
-                  <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Họ tên</th>
-                    <th>Ngày sinh</th>
-                    <th>Sự kiện TC</th>
-                    <th>Vắc-xin</th>
-                    <th>Thời gian tiêm</th>
-                    <th>Lần tiêm</th>
-                    <th>Trạng thái</th>
-                    <th>Xem chi tiết</th>
-                  </tr>
-                  </thead>
-
-                  <tbody>
-                  <tr th:each="vaccination : ${vaccinationList}">
-                    <td th:text="${vaccination.getId()}"></td>
-                    <td th:text="${vaccination.getPatientName()}"></td>
-                    <td th:text="${vaccination.getBirthFormat()}"></td>
-                    <td th:text="${vaccination.getVaccinationDesc()}"></td>
-                    <td th:text="${vaccination.getVaccineName()}"></td>
-                    <td th:text="${vaccination.getLastTimeFormatted()}"></td>
-
-                    <td th:text="${vaccination.getVaccinationTimes()}"></td>
-                    <td>
-                      <p th:if="${vaccination.getStatus() == 1}">  Chưa tiêm
-                      </p>
-                      <p th:if="${vaccination.getStatus() == 2}"> Đã tiêm
-                      </p>
-                      <p th:if="${vaccination.getStatus() == 3}"> Đã huỷ
-                      </p>
-
-                    </td>
-                    <td>
-                      <a th:href="@{'/doctor/vaccination/view?id='+${vaccination.getId()}}">
-                        <i class="fas fa-eye"></i>
-                      </a>
-
-
-                    </td>
-
-                  </tr>
-
-                  </tbody>
-                </table>
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination ms-1 d-flex justify-content-end align-items-center p-3">
-                    <li class="page-item me-3">
-                      <a class="page-link"
-                         th:href="@{'/doctor/patient/view?id=' + ${patientID} + '&page=' + ${vaccinationList.number - 1}}"
-                         th:if="${vaccinationList.hasPrevious()}">Previous</a>
-                    </li>
-                    <li class="page-item" th:classappend="${vaccinationList.first} ? disabled : ''">
-                      <a class="page-link"
-                         th:href="@{'/doctor/patient/view?id=' + ${patientID} + '&page=0'}"
-                         th:if="${vaccinationList.number > 2}">1</a>
-                    </li>
-
-
-                    <li class="page-item" th:classappend="${i == vaccinationList.number} ? active : ''"
-                        th:each="i : ${#numbers.sequence(vaccinationList.number, vaccinationList.number + 1)}">
-                      <a class="page-link"
-                         th:href="@{'/doctor/patient/view?id=' + ${patientID} + '&page=' +${i} }"
-                         th:text="${i+1}"></a>
-                      <!--                         th:href="@{/doctor/patient/view(page=${i})}"-->
-
-                    </li>
-
-                    <li class="page-item" th:classappend="${vaccinationList.last} ? disabled : ''">
-                      <span class="page-link">...</span>
-                    </li>
-                    <li class="page-item" th:classappend="${vaccinationList.last} ? disabled : ''">
-                      <a class="page-link"
-                         th:href="@{'/doctor/patient/view?id=' + ${patientID} + '&page=' +${vaccinationList.totalPages - 1} }"
-                         th:if="${vaccinationList.totalPages - vaccinationList.number > 3}">${vaccinationList.totalPages}</a>
-                    </li>
-                    <li class="page-item me-3">
-                      <a class="page-link"
-                         th:href="@{'/doctor/patient/view?id=' + ${patientID} + '&page=' +${vaccinationList.number + 1} }"
-                         th:if="${vaccinationList.hasNext()}">Next</a>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-
-
-
-
-    </main>
-    <th:block th:insert="admin/footer_admin"></th:block>
-  </div>
+        </main>
+        <th:block th:insert="admin/footer_admin"></th:block>
+    </div>
 </div>
 
 
