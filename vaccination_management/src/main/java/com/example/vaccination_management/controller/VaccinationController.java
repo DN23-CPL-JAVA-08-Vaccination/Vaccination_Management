@@ -125,7 +125,7 @@ public class VaccinationController {
         model.addAttribute("location", new Location());
         model.addAttribute("vaccinationType", new VaccinationType());
         model.addAttribute("vaccine", new Vaccine());
-        return "admin/vaccination/addVaccination";
+        return "Admin/vaccination/addVaccination";
     }
 
     /**
@@ -145,7 +145,7 @@ public class VaccinationController {
             model.addAttribute("locationList", locationList);
             List<VaccinationType> vaccineTypeList = iVaccinationTypeService.finAll();
             model.addAttribute("vaccineTypeList", vaccineTypeList);
-            return "admin/vaccination/addVaccination";
+            return "Admin/vaccination/addVaccination";
         }
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
@@ -186,7 +186,7 @@ public class VaccinationController {
         model.addAttribute("totalPages", totalPages);
 
         model.addAttribute("currentPage", page);
-        return "admin/vaccination/listVaccination";
+        return "Admin/vaccination/listVaccination";
     }
 
     /**
@@ -211,7 +211,7 @@ public class VaccinationController {
         model.addAttribute("totalPages", totalPages);
 
         model.addAttribute("currentPage", page); // Thêm dong nay đe truyen vào trang
-        return "admin/vaccination/listDeVaccination";
+        return "Admin/vaccination/listDeVaccination";
     }
 
     /**

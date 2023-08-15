@@ -63,8 +63,8 @@ public class EmployeeEditValidator implements Validator {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if ((now.getYear() - dateFormatted.getYear()) < 18 || (now.getYear() - dateFormatted.getYear()) > 60) {
-                errors.rejectValue("birthday", "birthday.format", "Độ tuổi trong khoảng 18 đến 60 tuổi.");
+            if ((now.getYear() - dateFormatted.getYear()) < 24 || (now.getYear() - dateFormatted.getYear()) > 60) {
+                errors.rejectValue("birthday", "birthday.format", "Độ tuổi trong khoảng 24 đến 60 tuổi.");
             }
         }
 
