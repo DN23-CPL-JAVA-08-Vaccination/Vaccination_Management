@@ -17,6 +17,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 @RequestMapping("/admin/vaccines")
@@ -193,6 +195,9 @@ public class VaccineController {
             Vaccine vaccine = vaccineService.getVaccineByID(vaccineID);
             List<Inventory> inventoryList = inventoryService.getInventoriesByVaccine(vaccine);
 
+            NumberFormat formatter = new DecimalFormat("#0");
+
+            model.addAttribute("price", formatter.format(vaccine.getPrice()) + " VNĐ");
             model.addAttribute("inventoryList", inventoryList);
             model.addAttribute("vaccine", vaccine);
             model.addAttribute("pageTitle", vaccine.getName());
