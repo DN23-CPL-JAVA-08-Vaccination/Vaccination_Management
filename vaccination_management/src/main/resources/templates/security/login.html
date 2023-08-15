@@ -28,8 +28,12 @@
             <!--            <div th:if="${param.error}" class="form-group">-->
             <!--                <span th:text="${param.exception}" class="alert alert-danger">잘못된 아이디나 암호입니다</span>-->
             <!--            </div>    -->
-            <div class="form-group">
-                <span th:text="${param.errorMessage}" class="alert alert-danger">잘못된 아이디나 암호입니다</span>
+
+            <div class="form-group" th:if="${param.error}">
+                <span  th:text="${'Tên đăng nhập, mật khẩu không được để trống'}" class="alert alert-danger"></span>
+            </div>
+            <div class="form-group" th:if="${param.wrong}">
+                <span  th:text="${'Sai tên đăng nhập hoặc mật khẩu'}" class="alert alert-danger"></span>
             </div>
             <form th:action="@{/j_spring_security_check}" method="post">
                 <section class="caixa__input">
@@ -65,7 +69,7 @@
                 <section class="controle__acesso">
                     <div class="container-login100-form-btn">
                         <div class="">
-                            <button type="submit" class="btn_login" th:attr="onclick=|login()|">
+                            <button type="submit" class="btn_login">
                                 Đăng nhập
                             </button>
                             <!--                        <div>-->
@@ -144,27 +148,6 @@
 
     }
 
-    function login() {
-        var username = document.getElementById('username').value;
-        var password = document.getElementById('newPasswordInput').value;
-        $.ajax({
-                contentType: 'application/json',
-                type: "GET",
-                dataType: "json",
-                //tên API
-                url: "http://localhost:8080/login/api?username=" + username + "&password=" + password,
-                success: function (data) {
-                    if (data == null) {
-
-                    } else {
-                        console.log(data)
-                        $("#detailName").text(data.name)
-                        $("#detailAddress").text(data.address)
-                    }
-                }
-            }
-        );
-    }
 </script>
 </body>
 </html>

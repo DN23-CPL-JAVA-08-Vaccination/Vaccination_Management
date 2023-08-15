@@ -93,15 +93,16 @@ public class SecurityController {
             }
 
             if (role.equals("ROLE_ADMIN")) {
-
+                attributes.addFlashAttribute("msg", "Đổi mật khẩu thành công !");
                 return "redirect:/admin";
             }
             if (role.equals("ROLE_EMPLOYEE")) {
-
+                attributes.addFlashAttribute("msg", "Đổi mật khẩu thành công !");
                 return "redirect:/doctor";
             }
             if (role.equals("ROLE_USER")) {
-                return "redirect:/";
+                attributes.addFlashAttribute("msg", "Đổi mật khẩu thành công !");
+                return "redirect:/vaccine/list-vaccine";
             }
             return "home_patient";
         }

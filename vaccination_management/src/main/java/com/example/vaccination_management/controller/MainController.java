@@ -55,7 +55,7 @@ public class MainController {
 
     @GetMapping("/admin")
     public ModelAndView homeAdminPage() {
-        ModelAndView modelAndView = new ModelAndView("admin/home_admin");
+        ModelAndView modelAndView = new ModelAndView("Admin/home_admin");
         return modelAndView;
     }
 

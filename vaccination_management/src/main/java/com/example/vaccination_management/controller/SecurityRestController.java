@@ -6,15 +6,19 @@ import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/customer/api")
+@RequestMapping("/")
 public class SecurityRestController {
 
-    @GetMapping("/detail/{id}")
-    public String getAttachFacility(@RequestParam String username, @RequestParam(defaultValue = "") String password) {
+    @GetMapping("/customer/api")
+    public String getAttachFacility(@RequestParam(defaultValue = "") String username, @RequestParam(defaultValue = "") String password) {
 
         if (username == "") {
-            return "";
+            System.out.println("U rõng");
+
         }
-        return "";
+        if (password == "") {
+            System.out.println("P rõng");
+        }
+        return "Rỗng";
     }
 }

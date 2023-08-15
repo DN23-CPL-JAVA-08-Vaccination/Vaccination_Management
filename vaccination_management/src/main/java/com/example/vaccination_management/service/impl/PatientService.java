@@ -48,9 +48,7 @@ public class PatientService implements IPatientService {
         return iPatientRepository.getPatients(strSearch, pageable);
     }
 
-    @Override
-    public Patient getPatientById(Integer id) {
-        return iPatientRepository.getById(id);
+    public Patient getPatientById(Integer id) {return iPatientRepository.getPatientById(id);
     }
 
     /**

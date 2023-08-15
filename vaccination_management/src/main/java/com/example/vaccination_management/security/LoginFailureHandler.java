@@ -22,12 +22,15 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         String password = request.getParameter("password");
         System.out.println(username);
         System.out.println(password);
-        if (username.equals("")) {
-            System.out.println("Rỗng username");
+        String error = "";
+        if (username.equals("") || password.equals("")) {
+            setDefaultFailureUrl("/login?error");
+        } else {
+            setDefaultFailureUrl("/login?wrong");
         }
-        if (password.equals("")) {
-            System.out.println("Rỗng password");
-        }
+//        if (!username.equals("") || !password.equals("")) {
+//            System.out.println("Rỗng password");
+//        }
         request.setAttribute("msg", "Đằng nhập thất bại");
         request.setAttribute("param", "error");
 
@@ -38,8 +41,8 @@ public class LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
         } else if (exception instanceof InsufficientAuthenticationException) {
             errorMessage = "Invalid Secret key";
         }
-        request.setAttribute("errorMessage",errorMessage);
-        setDefaultFailureUrl("/login?error=true&errorMessage");
+        request.setAttribute("errorMessage", errorMessage);
+
 
         super.onAuthenticationFailure(request, response, exception);
 //        request.setAttribute("errorMessage",errorMessage);

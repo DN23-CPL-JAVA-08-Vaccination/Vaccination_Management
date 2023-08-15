@@ -58,6 +58,7 @@ public interface IPatientRepository extends JpaRepository<Patient, Integer> {
     PatientByUsernameDTO getPatientByUsername(String username);
 
 
+    Patient getPatientById(Integer Id);
 
     @Override
     Patient getById(Integer integer);

@@ -28,6 +28,9 @@
 
     <!-- Template Main CSS File -->
     <link th:href="@{/css/style.css}" rel="stylesheet">
+    <script src=" http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
 
 </head>
 
@@ -111,6 +114,38 @@
 <!-- Template Main JS File -->
 <script th:src="@{/js/main.js}"></script>
 <script th:src="@{/js/script.js}"></script>
+<script th:inline="javascript">
+
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+    var str = [[${msg}]];
+    if (str != null) {
+        if (str.includes("Đổi mật khẩu")) {
+            if (str.includes("thành công")) {
+                toastr.success(str, "Thông báo");
+            } else {
+                toastr.error("Đổi mật khẩu thất bại !", "Thông báo");
+            }
+        }
+    }
+
+</script>
 </body>
 
 </html>
