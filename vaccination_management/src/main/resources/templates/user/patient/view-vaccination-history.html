@@ -83,7 +83,7 @@
                         </tr>
                         <tr>
                             <td class="col-md-6">Giá tiền</td>
-                            <td class="col-md-3" th:text="${vaccinationHistory.vaccination.vaccine.price + ' VNĐ'}"></td>
+                            <td class="col-md-3" th:text="${vaccinationHistory.vaccination.vaccine.getPriceFormat()}"></td>
                         </tr>
                         <tr>
                             <td class="col-md-6">Địa điểm tiêm</td>

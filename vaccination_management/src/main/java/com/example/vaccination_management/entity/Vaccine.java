@@ -1,6 +1,7 @@
 package com.example.vaccination_management.entity;
 
 
+import com.example.vaccination_management.utils.FormatPrice;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -180,6 +181,11 @@ public class Vaccine {
 
     public void setVaccineType(VaccineType vaccineType) {
         this.vaccineType = vaccineType;
+    }
+
+    public String getPriceFormat() {
+        FormatPrice formatPrice = new FormatPrice();
+        return formatPrice.formatCurrency(price);
     }
 }
 

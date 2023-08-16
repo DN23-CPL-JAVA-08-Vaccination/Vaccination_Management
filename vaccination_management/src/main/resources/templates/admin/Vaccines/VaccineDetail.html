@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="row">
                                     <label class="col-sm-4" style="font-weight: bold">Đơn giá: </label>
-                                    <div class="col-sm-8" th:text="${price}"></div>
+                                    <div class="col-sm-8" th:text="${vaccine.getPriceFormat()}"></div>
                                     <hr>
                                 </div>
                                 <div class="row">
@@ -73,6 +73,11 @@
                                 <div class="row">
                                     <label class="col-sm-4" style="font-weight: bold">Liều lượng (ml): </label>
                                     <div class="col-sm-8" th:text="${vaccine.dosage}"></div>
+                                    <hr>
+                                </div>
+                                <div class="row">
+                                    <label class="col-sm-4" style="font-weight: bold">Độ tuổi phù hợp: </label>
+                                    <div class="col-sm-8" th:text="${vaccine.age} + ' tuổi'"></div>
                                     <hr>
                                 </div>
                                 <div class="row">
