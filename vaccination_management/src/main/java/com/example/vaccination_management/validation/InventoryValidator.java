@@ -38,6 +38,8 @@ public class InventoryValidator implements Validator {
             errors.rejectValue(fieldQuantity, "quantity.null", "Vui lòng nhập số lượng vaccine.");
         } else if (inventory.getQuantity() < 0) {
             errors.rejectValue(fieldQuantity, "quantity.value", "Số lượng phải lớn hơn 0");
+        } else if (inventory.getQuantity() > 1000) {
+            errors.rejectValue(fieldQuantity, "quantity.value", "Số lượng tối đa 1000");
         }
 
         if (inventory.getSupplier() == null || inventory.getSupplier() == "") {
