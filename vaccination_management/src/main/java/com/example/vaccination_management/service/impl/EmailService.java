@@ -113,7 +113,7 @@ public class EmailService implements IEmailService {
             props.put("endTime", vaccination.getEndTime());
             props.put("duration", vaccination.getDuration());
             props.put("locationDetail", vaccination.getLocation().getLocationDetail());
-            props.put("registrationLink", "dangkitiemchung/" + vaccination.getId());
+            props.put("registrationLink", "vaccination/form-vaccination/" + vaccination.getId());
             emailDTO.setProps(props);
             sendHtmlMail(emailDTO, "/admin/vaccination/notification_email");
             return true;
