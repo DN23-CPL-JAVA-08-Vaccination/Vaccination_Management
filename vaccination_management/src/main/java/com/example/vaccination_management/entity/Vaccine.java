@@ -2,8 +2,13 @@ package com.example.vaccination_management.entity;
 
 import com.example.vaccination_management.utils.FormatPrice;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "vaccine")
 public class Vaccine {
@@ -25,10 +30,11 @@ public class Vaccine {
     @Column(name = "delete_flag")
     private boolean deleteFlag;
 
-    @Column(name = "create_date", columnDefinition = "Datetime" )
+
+    @Column(name = "create_date", columnDefinition = "Datetime")
     private String createDate;
 
-    @Column(name = "update_date", columnDefinition = "Datetime" )
+    @Column(name = "update_date", columnDefinition = "Datetime")
     private String updateDate;
 
     @Column(name = "price")
@@ -57,6 +63,7 @@ public class Vaccine {
 
     public Vaccine(String getPriceFormat, int id, String name, String code, String description, boolean deleteFlag, String createDate, String updateDate, Double price, String duration, String age, String image, Double dosage, VaccineType vaccineType) {
         this.getPriceFormat = getPriceFormat;
+
         this.id = id;
         this.name = name;
         this.code = code;
@@ -71,6 +78,7 @@ public class Vaccine {
         this.dosage = dosage;
         this.vaccineType = vaccineType;
     }
+
 
     public int getId() {
         return id;
@@ -184,5 +192,5 @@ public class Vaccine {
         FormatPrice formatPrice = new FormatPrice();
         return formatPrice.formatCurrency(price);
     }
-
 }
+

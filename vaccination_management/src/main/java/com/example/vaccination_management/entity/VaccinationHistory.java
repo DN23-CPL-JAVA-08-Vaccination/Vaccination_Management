@@ -15,13 +15,21 @@ public class VaccinationHistory {
     private String preStatus;
 
     @Column(name = "dosage")
-    private double dosage;
+    private Double dosage;
 
-    @Column(name = "start_time", columnDefinition = "Datetime" )
+
+    @Column(name = "start_time", columnDefinition = "Datetime")
     private String startTime;
 
-    @Column(name = "end_time", columnDefinition = "Datetime" )
+    @Column(name = "end_time", columnDefinition = "Datetime")
     private String endTime;
+
+    @Column(name = "delete_flag")
+    private boolean deleteFlag;
+
+
+    @Column(name = "vaccination_times")
+    private int vaccinationTimes;
 
     @Column(name = "guardian_name")
     private String guardianName;
@@ -29,15 +37,10 @@ public class VaccinationHistory {
     @Column(name = "guardian_phone")
     private String guardianPhone;
 
-    @Column(name = "delete_flag")
-    private boolean deleteflag;
-
-    @Column(name = "vaccination_times")
-    private int vaccinationTimes;
-
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
+
 
     @ManyToOne
     @JoinColumn(name = "vaccination_id")
@@ -54,16 +57,16 @@ public class VaccinationHistory {
     public VaccinationHistory() {
     }
 
-    public VaccinationHistory(int id, String preStatus, double dosage, String startTime, String endTime, String guardianName, String guardianPhone, boolean deleteflag, int vaccinationTimes, Patient patient, Vaccination vaccination, Employee employee, VaccinationStatus vaccinationStatus) {
+    public VaccinationHistory(int id, String preStatus, Double dosage, String startTime, String endTime, boolean deleteFlag, int vaccinationTimes, String guardianName, String guardianPhone, Patient patient, Vaccination vaccination, Employee employee, VaccinationStatus vaccinationStatus) {
         this.id = id;
         this.preStatus = preStatus;
         this.dosage = dosage;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.deleteFlag = deleteFlag;
+        this.vaccinationTimes = vaccinationTimes;
         this.guardianName = guardianName;
         this.guardianPhone = guardianPhone;
-        this.deleteflag = deleteflag;
-        this.vaccinationTimes = vaccinationTimes;
         this.patient = patient;
         this.vaccination = vaccination;
         this.employee = employee;
@@ -86,11 +89,11 @@ public class VaccinationHistory {
         this.preStatus = preStatus;
     }
 
-    public double getDosage() {
+    public Double getDosage() {
         return dosage;
     }
 
-    public void setDosage(double dosage) {
+    public void setDosage(Double dosage) {
         this.dosage = dosage;
     }
 
@@ -110,6 +113,22 @@ public class VaccinationHistory {
         this.endTime = endTime;
     }
 
+    public boolean isDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+
+    public int getVaccinationTimes() {
+        return vaccinationTimes;
+    }
+
+    public void setVaccinationTimes(int vaccinationTimes) {
+        this.vaccinationTimes = vaccinationTimes;
+    }
+
     public String getGuardianName() {
         return guardianName;
     }
@@ -124,22 +143,6 @@ public class VaccinationHistory {
 
     public void setGuardianPhone(String guardianPhone) {
         this.guardianPhone = guardianPhone;
-    }
-
-    public boolean isDeleteflag() {
-        return deleteflag;
-    }
-
-    public void setDeleteflag(boolean deleteflag) {
-        this.deleteflag = deleteflag;
-    }
-
-    public int getVaccinationTimes() {
-        return vaccinationTimes;
-    }
-
-    public void setVaccinationTimes(int vaccinationTimes) {
-        this.vaccinationTimes = vaccinationTimes;
     }
 
     public Patient getPatient() {

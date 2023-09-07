@@ -15,6 +15,15 @@ public class Inventory {
     @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "inventoryName")
+    private String inventoryName;
+
+    @Column(name = "delete_flag")
+    private boolean deleteFlag;
+
     @Column(name = "supplier")
     private String supplier;
 
@@ -37,9 +46,12 @@ public class Inventory {
     public Inventory() {
     }
 
-    public Inventory(int id, int quantity, String supplier, String productionDate, String expirationDate, String createdDate, String updatedDate, Vaccine vaccine) {
+    public Inventory(int id, int quantity, String address, String inventoryName, boolean deleteFlag, String supplier, String productionDate, String expirationDate, String createdDate, String updatedDate, Vaccine vaccine) {
         this.id = id;
         this.quantity = quantity;
+        this.address = address;
+        this.inventoryName = inventoryName;
+        this.deleteFlag = deleteFlag;
         this.supplier = supplier;
         this.productionDate = productionDate;
         this.expirationDate = expirationDate;
@@ -110,6 +122,30 @@ public class Inventory {
 
     public void setVaccine(Vaccine vaccine) {
         this.vaccine = vaccine;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getInventoryName() {
+        return inventoryName;
+    }
+
+    public void setInventoryName(String inventoryName) {
+        this.inventoryName = inventoryName;
+    }
+
+    public boolean isDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
     }
 }
 

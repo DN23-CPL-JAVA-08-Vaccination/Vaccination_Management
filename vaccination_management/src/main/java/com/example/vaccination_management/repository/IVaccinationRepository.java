@@ -1,5 +1,6 @@
 package com.example.vaccination_management.repository;
 
+import com.example.vaccination_management.dto.IVaccinationDTO;
 import com.example.vaccination_management.entity.Vaccination;
 import com.example.vaccination_management.entity.Vaccine;
 import org.springframework.data.domain.Page;
@@ -7,9 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
+import org.springframework.stereotype.Repository;
 import java.util.List;
 
+@Repository
 public interface IVaccinationRepository extends JpaRepository<Vaccination, Integer> {
 
     /**
@@ -23,6 +25,8 @@ public interface IVaccinationRepository extends JpaRepository<Vaccination, Integ
      * Retrieves a pageable list of vaccinations that have not been marked for deletion.
      */
     Page<Vaccination> findByDeleteFlagFalse(Pageable pageable);
+
+    Page<IVaccinationDTO> getVaccinations(String strSearch, Pageable pageable);
 
     /**
      *LoanHTP
@@ -49,5 +53,6 @@ public interface IVaccinationRepository extends JpaRepository<Vaccination, Integ
      * Counts the number of vaccines that have not been marked for deletion.
      */
     long countByDeleteFlagFalse();
+    long countByVaccine(Vaccine vaccine);
 
 }

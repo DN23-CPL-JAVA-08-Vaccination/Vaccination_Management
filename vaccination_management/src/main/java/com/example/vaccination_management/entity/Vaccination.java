@@ -11,13 +11,13 @@ public class Vaccination {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "date", columnDefinition = "Date" )
+    @Column(name = "date", columnDefinition = "Date")
     private String date;
 
-    @Column(name = "start_time", columnDefinition = "Datetime" )
+    @Column(name = "start_time", columnDefinition = "Datetime")
     private String startTime;
 
-    @Column(name = "end_time", columnDefinition = "Datetime" )
+    @Column(name = "end_time", columnDefinition = "Datetime")
     private String endTime;
 
     @Column(name = "delete_flag")
@@ -47,7 +47,8 @@ public class Vaccination {
     public Vaccination() {
     }
 
-        public Vaccination(int id, String date, String startTime, String endTime, String description, boolean deleteFlag, String duration, int times, Location location, VaccinationType vaccinationType, Vaccine vaccine) {
+
+    public Vaccination(int id, String date, String startTime, String endTime, boolean deleteFlag, String duration, int times, String description, Location location, VaccinationType vaccinationType, Vaccine vaccine) {
         this.id = id;
         this.date = date;
         this.startTime = startTime;
@@ -101,6 +102,15 @@ public class Vaccination {
         this.deleteFlag = deleteFlag;
     }
 
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getDuration() {
         return duration;
     }
@@ -115,14 +125,6 @@ public class Vaccination {
 
     public void setTimes(int times) {
         this.times = times;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Location getLocation() {

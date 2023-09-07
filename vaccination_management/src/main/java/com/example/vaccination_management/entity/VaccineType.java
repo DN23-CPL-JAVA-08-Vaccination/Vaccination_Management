@@ -26,14 +26,6 @@ public class VaccineType {
         this.deleteFlag = deleteFlag;
     }
 
-    public boolean isDeleteFlag() {
-        return deleteFlag;
-    }
-
-    public void setDeleteFlag(boolean deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
-
     public int getId() {
         return id;
     }
@@ -48,5 +40,13 @@ public class VaccineType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
     }
 }

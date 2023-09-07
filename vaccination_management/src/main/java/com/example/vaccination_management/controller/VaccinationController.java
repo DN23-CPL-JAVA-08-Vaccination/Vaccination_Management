@@ -1,5 +1,6 @@
 package com.example.vaccination_management.controller;
 
+<<<<<<< HEAD
 import com.example.vaccination_management.dto.VaccinationHistoryDTO;
 import com.example.vaccination_management.entity.*;
 import com.example.vaccination_management.repository.*;
@@ -9,41 +10,83 @@ import com.example.vaccination_management.service.IVaccinationService;
 import com.example.vaccination_management.service.IVaccineTypeService;
 import com.example.vaccination_management.service.impl.VaccineService;
 import com.example.vaccination_management.validator.VaccinationValidator;
+=======
+import com.example.vaccination_management.dto.IVaccinationDTO;
+import com.example.vaccination_management.dto.IVaccinationHistoryDTO;
+import com.example.vaccination_management.dto.VaccinationHistoryDTO;
+import com.example.vaccination_management.entity.VaccinationHistory;
+import com.example.vaccination_management.entity.VaccinationStatus;
+import com.example.vaccination_management.service.*;
+import com.example.vaccination_management.utils.Validation;
+>>>>>>> origin/fix_bug_thanglv_huylvn
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+<<<<<<< HEAD
+=======
+import org.springframework.validation.annotation.Validated;
+>>>>>>> origin/fix_bug_thanglv_huylvn
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.example.vaccination_management.entity.*;
+import com.example.vaccination_management.repository.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+<<<<<<< HEAD
 import static com.example.vaccination_management.utils.DateUtils.calculateAge;
 
 
 @RequestMapping(value = "/vaccination", method = RequestMethod.GET)
+=======
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
+@RequestMapping("/")
+>>>>>>> origin/fix_bug_thanglv_huylvn
 @Controller
 public class VaccinationController {
+
+    @Autowired
+<<<<<<< HEAD
+    private IVaccinationService vaccinationService;
+=======
+    private IVaccinationHistoryService iVaccinationHistoryService;
+>>>>>>> origin/fix_bug_thanglv_huylvn
+
+    @Autowired
+    private IVaccineStatusService iVaccineStatusService;
+
+    @Autowired
+    private Validation validation;
+
+    @Autowired
+    private IVaccinationService iVaccinationService;
 
     @Autowired
     private IVaccinationService vaccinationService;
 
     @Autowired
-    private IVaccineRepository iVaccineRepository;
-
-    @Autowired
     private IVaccinationHistoryRepository iVaccinationHistoryRepository;
 
     @Autowired
-    private IVaccinationRepository iVaccinationRepository;
+    private IVaccineService vaccineService;
 
     @Autowired
-    private VaccineService vaccineService;
+    private IVaccineTypeService vaccineTypeService;
 
     @Autowired
-    private IVaccineTypeRepository iVaccineTypeRepository;
+    private IPatientService patientService;
 
+<<<<<<< HEAD
     @Autowired
     private IVaccineTypeService vaccineTypeService;
 
@@ -55,13 +98,123 @@ public class VaccinationController {
 
     @Autowired
     private VaccinationValidator vaccinationValidator;
+=======
+
+    /**
+     * QuangVT
+     * get information of vaccination schedule
+     */
+    @GetMapping("/doctor/vaccination")
+
+    public String schedule(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "", required = false) String strSearch) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        Page<IVaccinationHistoryDTO> vaccinations = iVaccinationHistoryService.getVaccinationSchedule('%' + strSearch + '%', pageable);
+        model.addAttribute("vaccinationList", vaccinations);
+        return "doctors/scheduleVaccination";
+    }
+
+    /**
+     * QuangVT
+     * get information of vaccination history by ID,
+     */
+    @GetMapping("/doctor/vaccination/view")
+    public String schedule(Model model, @RequestParam int id) {
+        IVaccinationHistoryDTO iVacc = iVaccinationHistoryService.getVaccinationHistoryByID(id);
+        VaccinationHistoryDTO vaccinationHistoryDTO = new VaccinationHistoryDTO();
+        vaccinationHistoryDTO.setId(iVacc.getId());
+        vaccinationHistoryDTO.setPatientName(iVacc.getPatientName());
+        vaccinationHistoryDTO.setPatientBirth(iVacc.getBirthFormat());
+        vaccinationHistoryDTO.setVaccinationDesc(iVacc.getVaccinationDesc());
+        vaccinationHistoryDTO.setVaccineName(iVacc.getVaccineName());
+        vaccinationHistoryDTO.setRegisTime(iVacc.getRegisTimeFormatted());
+        vaccinationHistoryDTO.setVaccinationTimes(iVacc.getVaccinationTimes());
+        vaccinationHistoryDTO.setEmployeeName(iVacc.getEmployeeName());
+        vaccinationHistoryDTO.setEmployeePhone(iVacc.getEmployeePhone());
+        vaccinationHistoryDTO.setGuardianName(iVacc.getGuardianName());
+        vaccinationHistoryDTO.setGuardianPhone(iVacc.getGuardianPhone());
+        vaccinationHistoryDTO.setPreStatus(iVacc.getPreStatus());
+        vaccinationHistoryDTO.setStatus(iVacc.getStatus());
+        vaccinationHistoryDTO.setLastTime(iVacc.getRegisTimeFormatted());
+        vaccinationHistoryDTO.setDosage(iVacc.getDosage());
+        vaccinationHistoryDTO.setDuration(iVacc.getDuration());
+        vaccinationHistoryDTO.setAgePatient(iVacc.getAgePatient());
+        boolean hasErrors = false;
+        model.addAttribute("errorsCheck", hasErrors);
+        model.addAttribute("vaccinationdetail", iVacc);
+        model.addAttribute("vaccinationObject", vaccinationHistoryDTO);
+        return "doctors/detailhistory";
+    }
+
+    /**
+     * QuangVT
+     * update information of accination history by ID,
+     */
+    @PostMapping("/doctor/vaccination/view")
+    public String update(@Validated @ModelAttribute("vaccinationObject") VaccinationHistoryDTO vaccinationHistoryDTO,
+                         BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) {
+        VaccinationStatus vaccinationStatus = iVaccineStatusService.getById(vaccinationHistoryDTO.getStatus());
+        VaccinationHistory vaccinationHistory = iVaccinationHistoryService.getById(vaccinationHistoryDTO.getId());
+        validation.validate(vaccinationHistoryDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            boolean hasErrors = true;
+            model.addAttribute("errorsCheck", hasErrors);
+            return "doctors/detailhistory";
+
+        }
+        vaccinationHistory.setGuardianName(vaccinationHistoryDTO.getGuardianName());
+        vaccinationHistory.setGuardianPhone(vaccinationHistoryDTO.getGuardianPhone());
+        vaccinationHistory.setPreStatus(vaccinationHistoryDTO.getPreStatus());
+        vaccinationHistory.setVaccinationStatus(vaccinationStatus);
+        LocalDateTime now = LocalDateTime.now();
+        Timestamp timestamp = Timestamp.valueOf(now);
+        vaccinationHistory.setEndTime(String.valueOf(timestamp));
+        iVaccinationHistoryService.save(vaccinationHistory);
+        redirectAttributes.addFlashAttribute("submitCheck", true);
+        return "redirect:/doctor/history";
+    }
+
+    /**
+     * QuangVT
+     * get information of accination history completed
+     */
+    @GetMapping("/doctor/history")
+    public String history(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size,
+                          RedirectAttributes redirectAttributes, @RequestParam(defaultValue = "", required = false) String strSearch) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("lastTime").descending());
+        Page<IVaccinationHistoryDTO> history = iVaccinationHistoryService.getHistoryVaccination('%' + strSearch + '%', pageable);
+
+        String successMessage = (String) redirectAttributes.getFlashAttributes().get("submitCheck");
+
+        // Nếu có thông báo, thêm nó vào model để hiển thị trên trang danh sách
+        if (successMessage != null) {
+            model.addAttribute("submitCheck", successMessage);
+        }
+        model.addAttribute("historyList", history);
+        return "doctors/historylist";
+    }
+
+    @GetMapping("/doctor/event")
+    public String getVaccinationEvent(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "", required = false) String strSearch) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<IVaccinationDTO> vaccinations = iVaccinationService.getAllVaccination('%' + strSearch + '%', pageable);
+        model.addAttribute("vaccinationList", vaccinations);
+        return "doctors/vaccinationevent";
+    }
+
+    @GetMapping("/doctor/event/view")
+    public String getEventDetails(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "", required = false) String strSearch) {
+
+        return "doctors/detailevent";
+    }
+>>>>>>> origin/fix_bug_thanglv_huylvn
 
 
     /**
      * LoanHTP
      * Retrieves a paginated list of all vaccinations.
      */
-    @GetMapping("/list-vaccination")
+    @GetMapping("/vaccination/list-vaccination")
     public String listVaccination(Model model,
                                   @RequestParam(value = "page", defaultValue = "0") int page,
                                   @RequestParam(value = "size", defaultValue = "4") int size) {
@@ -93,7 +246,7 @@ public class VaccinationController {
      * LoanHTP
      * Retrieves a paginated list of vaccinations based on the provided vaccine ID.
      */
-    @GetMapping("list-vaccination/{vaccine_id}")
+    @GetMapping("/vaccination/list-vaccination/{vaccine_id}")
     public String listVaccinationByVaccine(@PathVariable("vaccine_id") int vaccine_id,
                                            @RequestParam(value = "page", defaultValue = "0") int page,
                                            @RequestParam(value = "size", defaultValue = "4") int size,
@@ -124,9 +277,13 @@ public class VaccinationController {
      * LoanHTP
      * Displays the vaccination registration form for a specific vaccination.
      */
-    @GetMapping("/form-vaccination/{vaccination_id}")
+    @GetMapping("/vaccination/form-vaccination/{vaccination_id}")
     public String showVaccinationForm(Model model,
+<<<<<<< HEAD
                                       @PathVariable ("vaccination_id") int vaccination_id){
+=======
+                                      @PathVariable("vaccination_id") int vaccination_id) {
+>>>>>>> origin/fix_bug_thanglv_huylvn
         Vaccination vaccination = vaccinationService.findVaccinationById(vaccination_id);
         model.addAttribute("vaccinationL", vaccination);
 
@@ -175,6 +332,7 @@ public class VaccinationController {
      * LoanHTP
      * Displays the vaccination registration form for a specific vaccination.
      */
+<<<<<<< HEAD
     @PostMapping("/register")
     public String registerVaccination(@ModelAttribute("vaccinationHistoryDTO")
                                       VaccinationHistoryDTO vaccinationHistoryDTO,
@@ -194,6 +352,43 @@ public class VaccinationController {
         vaccinationValidator.validate(vaccinationHistoryDTO,bindingResult);
         if(bindingResult.hasErrors()){
             return "/user/vaccination/vaccination-form-register";
+=======
+    @Transactional //đảm bảo tính toàn vẹn dữ liệu
+    @PostMapping("/vaccination/register/{vaccination_id}")
+    public String registerVaccination(Model model,
+                                      RedirectAttributes redirectAttributes,
+                                      @PathVariable("vaccination_id") int vaccination_id,
+                                      @ModelAttribute("vaccinationHistory") VaccinationHistory vaccinationHistory,
+                                      @RequestParam("patient_id") int patient_id) {
+
+        // Lấy thông tin Vaccination từ ID
+        Vaccination vaccination = vaccinationService.findVaccinationById(vaccination_id);
+
+        // Lấy thông tin Patient từ ID
+        // Patient patient = patientService.findPatientById(patient_id);
+        Patient patient = patientService.findPatientById(1);
+
+        //Thiết lập thông tin Patient cho VaccinationHistory
+        vaccinationHistory.setPatient(patient);
+
+        // Tính tuổi của bệnh nhân
+        int age = calculateAge(patient.getBirthday());
+        if (age < 16) {
+            // Nếu tuổi nhỏ hơn 16, yêu cầu nhập guardianName và guardianPhone
+            if (vaccinationHistory.getGuardianName() == null || vaccinationHistory.getGuardianName().isEmpty()) {
+                model.addAttribute("errorMessage", "Vui lòng nhập Họ và tên người giám hộ.");
+                return "/user/vaccination/vaccination-form-register";
+            }
+
+            if (vaccinationHistory.getGuardianPhone() == null || vaccinationHistory.getGuardianPhone().isEmpty()) {
+                model.addAttribute("errorMessage", "Vui lòng nhập Số điện thoại người giám hộ.");
+                return "/user/vaccination/vaccination-form-register";
+            }
+        } else {
+            // Nếu tuổi lớn hơn hoặc bằng 16, thiết lập guardianName và guardianPhone từ thông tin Patient
+            vaccinationHistory.setGuardianName(patient.getGuardianName());
+            vaccinationHistory.setGuardianPhone(patient.getGuardianPhone());
+>>>>>>> origin/fix_bug_thanglv_huylvn
         }
         iVaccinationHistory.insertVaccinationHTR(false, vaccinationHistoryDTO.getDosage(), endTime, vaccinationHistoryDTO.getGuardianName(), vaccinationHistoryDTO.getGuardianPhone(), startTime, vaccinationHistoryDTO.getVaccinationTimes(), patientGet.getId(), vaccinationHistoryDTO.getVaccinationId(), idStatus);
 
