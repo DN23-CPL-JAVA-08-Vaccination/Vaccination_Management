@@ -6,6 +6,7 @@ import com.example.vaccination_management.repository.IVaccineRepository;
 import com.example.vaccination_management.repository.IVaccineTypeRepository;
 import com.example.vaccination_management.service.impl.VaccineService;
 import com.example.vaccination_management.service.impl.VaccineTypeService;
+import com.example.vaccination_management.utils.FormatPrice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +32,8 @@ public class VaccineController {
 
     @Autowired
     private VaccineTypeService vaccineTypeService;
+
+    private String getPriceFormat;
 
     /**
      * LoanHTP

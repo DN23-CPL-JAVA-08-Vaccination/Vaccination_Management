@@ -121,9 +121,9 @@
                                 <img th:src="${vaccine.image}" class="card-img-top">
                                 <div class="card-body d-flex flex-column flex-grow-1">
                                     <p class="card-title" th:text="${vaccine.name}"></p>
-                                    <p class="card-text"><strong>Giá tiền: </strong><span th:text="${vaccine.price} + ' VNĐ'"></span></p>
+                                    <p class="card-text"><strong>Giá tiền: </strong><span th:text="${vaccine.getPriceFormat}"></span></p>
                                     <p class="card-text"><strong>Thời hạn tác dụng: </strong><span th:text="${vaccine.duration}"></span></p>
-                                    <p class="card-text"><strong>Dành cho độ tuổi: </strong><span th:text="${vaccine.age}"></span></p>
+                                    <p class="card-text"><strong>Dành cho độ tuổi: </strong><span th:text="${vaccine.age} + ' tuổi'"></span></p>
                                     <p class="card-text"><strong>Liều lượng: </strong><span th:text="${vaccine.dosage} + ' ml'"></span></p>
                                     <!-- <p class="card-text"><strong>Description: </strong><span th:text="${vaccine.description}"></span></p> -->
                                 </div>

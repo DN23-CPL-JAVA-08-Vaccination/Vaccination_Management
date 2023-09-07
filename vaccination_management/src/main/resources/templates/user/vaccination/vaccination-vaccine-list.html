@@ -121,8 +121,8 @@
             </div>
           </div>
           <div class="col-sm-10">
-            <h2 class="mb-2 text-left"><strong>Thông báo tiêm chủng của thành phố Đà Nẵng</strong></h2>
-            <p class="mb-4 text-left">Dưới đây là danh sách thông báo tiêm chủng của vắc-xin <span th:text="${vaccine.name}"></span>. Xem và đăng ký tiêm chủng ngay để bảo vệ sức khỏe cho bản thân và cộng đồng!</p>
+<!--            <h2 class="mb-2 text-left"><strong>Thông báo tiêm chủng của thành phố Đà Nẵng</strong></h2>-->
+<!--            <p class="mb-4 text-left">Dưới đây là danh sách thông báo tiêm chủng của vắc-xin <span th:text="${vaccine.name}"></span>. Xem và đăng ký tiêm chủng ngay để bảo vệ sức khỏe cho bản thân và cộng đồng!</p>-->
             <div class="row flex-row flex-wrap row-custom">
               <div class="col-sm-6 col-md-6 col-lg-6" th:each="vaccinations : ${vaccinationList}">
                 <div class="card d-flex flex-column align-items-start card-custom">
@@ -138,7 +138,9 @@
                       <p class="card-text"><strong>Loại vắc-xin: </strong><span th:text="${vaccinations.vaccine.vaccineType.name}"></span></p>
                       <p class="card-text"><strong>Đợt tiêm lần: </strong><span th:text="${vaccinations.times}"></span></p>
 <!--                      <p class="card-text"><strong>Thời hạn tác dụng: </strong><span th:text="${vaccinations.duration + ' tháng'}"></span></p>-->
-                      <p class="card-text"><strong>Ngày bắt đầu tiêm: </strong><span th:text="${vaccinations.startTime}"></span></p>
+                      <p class="card-text"><strong>Ngày bắt đầu tiêm: </strong>
+                        <span th:text="${vaccinations.startTime}"></span>
+                      </p>
                       <p class="card-text"><strong>Ngày kết thúc tiêm: </strong><span th:text="${vaccinations.endTime}"></span></p>
                       <p class="card-text"><strong>Mô tả: </strong><span th:text="${vaccinations.description}"></span></p>
                       <p class="card-text"><strong>Địa chỉ tiêm: </strong><span th:text="${vaccinations.location.name}"></span></p>
@@ -246,6 +248,13 @@
 <div id="preloader"></div>
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+<script th:inline="javascript">
+  /* <![CDATA[ */
+  function showToast(message) {
+    toastr.error(message); // Sử dụng toastr để hiển thị toast thông báo lỗi
+  }
+  /* ]]> */
+</script>
 <!-- Vendor JS Files -->
 <script th:src="@{/vendor/purecounter/purecounter_vanilla.js}"></script>
 <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>

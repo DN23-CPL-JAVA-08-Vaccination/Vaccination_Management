@@ -7,10 +7,7 @@ import com.example.vaccination_management.service.IPatientService;
 import com.example.vaccination_management.service.IVaccinationHistoryService;
 import com.example.vaccination_management.service.IVaccinationService;
 import com.example.vaccination_management.service.IVaccineTypeService;
-import com.example.vaccination_management.service.impl.PatientService;
-import com.example.vaccination_management.service.impl.VaccinationService;
 import com.example.vaccination_management.service.impl.VaccineService;
-import com.example.vaccination_management.service.impl.VaccineTypeService;
 import com.example.vaccination_management.validator.VaccinationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -58,6 +55,7 @@ public class VaccinationController {
 
     @Autowired
     private VaccinationValidator vaccinationValidator;
+
 
     /**
      * LoanHTP
@@ -142,6 +140,16 @@ public class VaccinationController {
         int age = calculateAge(patient.getBirthday());
         model.addAttribute("age", age);
 
+        Vaccine vaccine = vaccination.getVaccine(); // Lấy đối tượng vaccine từ đối tượng Vaccination
+
+        validateAgeForVaccine(vaccine, age, model);
+
+        // Kiểm tra nếu có lỗi
+        if (model.containsAttribute("ageError")) {
+            // Điều hướng đến trang đăng ký tiêm chủng với thông báo lỗi
+            return "redirect:/vaccination/list-vaccination/" + vaccine.getId();
+        }
+
         VaccinationHistoryDTO vaccinationHistoryDTO = new VaccinationHistoryDTO();
         vaccinationHistoryDTO.setVaccinationId(vaccination_id);
         vaccinationHistoryDTO.setVaccination(vaccination);
@@ -195,4 +203,14 @@ public class VaccinationController {
 //        return "/user/vaccination/vaccination-form-register";
     }
 
+    public void validateAgeForVaccine(Vaccine vaccine, int patientAge, Model model) {
+        String[] ageRange = vaccine.getAge().split("-");
+        int minAge = Integer.parseInt(ageRange[0]);
+        int maxAge = Integer.parseInt(ageRange[1]);
+
+        if (patientAge < minAge || patientAge > maxAge) {
+            String errorMessage = "Bệnh nhân không nằm trong khoảng tuổi của vaccine.";
+            model.addAttribute("ageError", errorMessage);
+        }
+    }
 }

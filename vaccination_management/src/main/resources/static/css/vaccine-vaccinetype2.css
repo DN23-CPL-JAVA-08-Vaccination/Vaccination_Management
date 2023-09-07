@@ -227,3 +227,8 @@
     color: white;
     /* Các thuộc tính CSS khác */
 }
+.card-img-top {
+    width: 100%;
+    height: 250px !important; /* Định rõ kích thước chiều cao */
+    object-fit: cover !important;
+}

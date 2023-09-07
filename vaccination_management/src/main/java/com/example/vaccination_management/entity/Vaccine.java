@@ -1,5 +1,7 @@
 package com.example.vaccination_management.entity;
 
+import com.example.vaccination_management.utils.FormatPrice;
+
 import javax.persistence.*;
 
 @Entity
@@ -48,10 +50,13 @@ public class Vaccine {
     @JoinColumn(name = "vaccine_type_id")
     private VaccineType vaccineType;
 
+    private String getPriceFormat;
+
     public Vaccine() {
     }
 
-    public Vaccine(int id, String name, String code, String description, boolean deleteFlag, String createDate, String updateDate, Double price, String duration, String age, String image, Double dosage, VaccineType vaccineType) {
+    public Vaccine(String getPriceFormat, int id, String name, String code, String description, boolean deleteFlag, String createDate, String updateDate, Double price, String duration, String age, String image, Double dosage, VaccineType vaccineType) {
+        this.getPriceFormat = getPriceFormat;
         this.id = id;
         this.name = name;
         this.code = code;
@@ -170,4 +175,14 @@ public class Vaccine {
     public void setVaccineType(VaccineType vaccineType) {
         this.vaccineType = vaccineType;
     }
+
+    /**
+     * LoanHTP
+     * format price.
+     */
+    public String getGetPriceFormat() {
+        FormatPrice formatPrice = new FormatPrice();
+        return formatPrice.formatCurrency(price);
+    }
+
 }
