@@ -12,106 +12,106 @@
 
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="receipt-main col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
-                <div class="d-flex">
-                    <h4 class="col-md-11">
+<div class="container">
+    <div class="row">
+        <div class="receipt-main col-xs-10 col-sm-10 col-md-6 col-xs-offset-1 col-sm-offset-1 col-md-offset-3">
+            <div class="d-flex">
+                <h4 class="col-md-11">
                         <span th:text="${vaccinationHistory.vaccinationStatus.name}">
                         </span> chủng
-                    </h4>
-                    <h4 class="col-md-1 text-end">
-                        <a th:href="${originalUrl}">
-                            <i class="bi bi-x-circle"></i>
-                        </a>
-                    </h4>
-                </div>
-                <div>
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th>Mô tả</th>
-                            <th>Chi tiết</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td class="col-md-6">Họ tên người đăng ký tiêm</td>
-                            <td class="col-md-3" th:text="${vaccinationHistory.patient.name}"></td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-6">Tên vaccine</td>
-                            <td class="col-md-3" th:text="${vaccinationHistory.vaccination.vaccine.name}"></td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-6">Bác sĩ tiêm</td>
-                            <td class="col-md-3" th:text="${vaccinationHistory.employee.name}"></td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-6">Đăng ký tiêm ngày</td>
-                            <td class="col-md-3" th:text="${vaccinationHistory.endTime}"></td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-6">Người giám hộ</td>
-                            <td class="col-md-3">
-                                <span th:if="${vaccinationHistory.guardianName != null}" th:text="${vaccinationHistory.guardianName}"></span>
-                                <span th:unless="${vaccinationHistory.guardianName != null}">Không có</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-6">Số điện thoại người giám hộ</td>
-                            <td class="col-md-3">
-                                <span th:if="${vaccinationHistory.guardianPhone != null}" th:text="${vaccinationHistory.guardianPhone}"></span>
-                                <span th:unless="${vaccinationHistory.guardianPhone != null}">Không có</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-6">Trạng thái trước khi tiêm</td>
-                            <td class="col-md-3" th:text="${vaccinationHistory.preStatus}"></td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-6">Liều lượng</td>
-                            <td class="col-md-3" th:text="${vaccinationHistory.dosage + ' ml'}"></td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-6">Lần tiêm thứ</td>
-                            <td class="col-md-3" th:text="${vaccinationHistory.vaccinationTimes}"></td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-6">Thời hạn</td>
-                            <td class="col-md-3" th:text="${vaccinationHistory.vaccination.duration + ' tháng'}"></td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-6">Giá tiền</td>
-                            <td class="col-md-3" th:text="${vaccinationHistory.vaccination.vaccine.getPriceFormat}"></td>
-                        </tr>
-                        <tr>
-                            <td class="col-md-6">Địa điểm tiêm</td>
-                            <td class="col-md-3" th:text="${vaccinationHistory.vaccination.location.name}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="row">
-                    <div class="receipt-header receipt-header-mid receipt-footer">
-                        <div class="col-xs-8 col-sm-8 col-md-8 text-left">
-                            <div class="receipt-right">
-                                <p><b>Ngày đăng ký :</b> <span th:text="${vaccinationHistory.startTime}"></span></p>
-                            </div>
-                        </div>
-<!--                        <div class="col-xs-4 col-sm-4 col-md-4">-->
-<!--                            <div class="receipt-left">-->
-<!--                                <h1>Kí tên</h1>-->
-<!--                            </div>-->
-<!--                        </div>-->
-                    </div>
-                </div>
-
+                </h4>
+                <h4 class="col-md-1 text-end">
+                    <a th:href="${originalUrl}">
+                        <i class="bi bi-x-circle"></i>
+                    </a>
+                </h4>
             </div>
+            <div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Mô tả</th>
+                        <th>Chi tiết</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="col-md-6">Họ tên người đăng ký tiêm</td>
+                        <td class="col-md-3" th:text="${vaccinationHistory.patient.name}"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-6">Tên vaccine</td>
+                        <td class="col-md-3" th:text="${vaccinationHistory.vaccination.vaccine.name}"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-6">Bác sĩ tiêm</td>
+                        <td class="col-md-3" th:text="${vaccinationHistory.employee.name}"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-6">Đăng ký tiêm ngày</td>
+                        <td class="col-md-3" th:text="${vaccinationHistory.endTime}"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-6">Người giám hộ</td>
+                        <td class="col-md-3">
+                            <span th:if="${vaccinationHistory.guardianName != null}" th:text="${vaccinationHistory.guardianName}"></span>
+                            <span th:unless="${vaccinationHistory.guardianName != null}">Không có</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-6">Số điện thoại người giám hộ</td>
+                        <td class="col-md-3">
+                            <span th:if="${vaccinationHistory.guardianPhone != null}" th:text="${vaccinationHistory.guardianPhone}"></span>
+                            <span th:unless="${vaccinationHistory.guardianPhone != null}">Không có</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-6">Trạng thái trước khi tiêm</td>
+                        <td class="col-md-3" th:text="${vaccinationHistory.preStatus}"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-6">Liều lượng</td>
+                        <td class="col-md-3" th:text="${vaccinationHistory.dosage + ' ml'}"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-6">Lần tiêm thứ</td>
+                        <td class="col-md-3" th:text="${vaccinationHistory.vaccinationTimes}"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-6">Thời hạn</td>
+                        <td class="col-md-3" th:text="${vaccinationHistory.vaccination.duration + ' tháng'}"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-6">Giá tiền</td>
+                        <td class="col-md-3" th:text="${vaccinationHistory.vaccination.vaccine.getPriceFormat}"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-6">Địa điểm tiêm</td>
+                        <td class="col-md-3" th:text="${vaccinationHistory.vaccination.location.name}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row">
+                <div class="receipt-header receipt-header-mid receipt-footer">
+                    <div class="col-xs-8 col-sm-8 col-md-8 text-left">
+                        <div class="receipt-right">
+                            <p><b>Ngày đăng ký :</b> <span th:text="${vaccinationHistory.startTime}"></span></p>
+                        </div>
+                    </div>
+                    <!--                        <div class="col-xs-4 col-sm-4 col-md-4">-->
+                    <!--                            <div class="receipt-left">-->
+                    <!--                                <h1>Kí tên</h1>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                </div>
+            </div>
+
         </div>
     </div>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+</div>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </body>
 </html>
