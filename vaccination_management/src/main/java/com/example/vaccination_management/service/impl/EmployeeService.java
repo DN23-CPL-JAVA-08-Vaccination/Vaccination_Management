@@ -23,6 +23,9 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.security.SecureRandom;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -239,6 +242,18 @@ public class EmployeeService implements IEmployeeService {
      */
     public void sendEmail(MailEmployeeDTO mailEmployeeDTO) {
         try {
+
+            SimpleDateFormat formatStringToDate = new SimpleDateFormat("yyyy-MM-dd");
+            Date now = new Date();
+            Date dateFormatted = null;
+            try {
+                dateFormatted = formatStringToDate.parse(mailEmployeeDTO.getBirthday());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat formatString = new SimpleDateFormat("dd/MM/yyyy");
+            String dateFormat = formatString.format(dateFormatted);
+
             EmailDTO emailDTO = new EmailDTO();
             emailDTO.setTo(mailEmployeeDTO.getEmail());
             emailDTO.setSubject("THÔNG BÁO CẤP TÀI KHOẢN TIÊM CHỦNG ĐÀ NẴNG");
@@ -249,9 +264,9 @@ public class EmployeeService implements IEmployeeService {
             props.put("phone", mailEmployeeDTO.getPhone());
             props.put("gender", mailEmployeeDTO.isGender());
             props.put("address", mailEmployeeDTO.getAddress());
-            props.put("birthday", mailEmployeeDTO.getBirthday());
+            props.put("birthday", dateFormat);
             props.put("idCard", mailEmployeeDTO.getIdCard());
-            props.put("email", mailEmployeeDTO.getBirthday());
+            props.put("email", mailEmployeeDTO.getEmail());
             emailDTO.setProps(props);
             sendHtmlMail(emailDTO, "Admin/Email/form_email_employee");
         } catch (MessagingException exp) {

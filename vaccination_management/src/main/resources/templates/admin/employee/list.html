@@ -63,14 +63,14 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <img
-                                                th:if="${employee.getImage() == null}"
+                                                th:if="${employee.getImage() == ''}"
                                                 src="https://cdn-icons-png.flaticon.com/512/6386/6386976.png"
                                                 alt="Ảnh"
                                                 style="width: 45px; height: 45px"
                                                 class="rounded-circle"
                                         />
                                         <img
-                                                th:if="${employee.getImage() != null}"
+                                                th:if="${employee.getImage() != ''}"
                                                 th:src="${employee.getImage()}"
                                                 alt="Ảnh"
                                                 style="width: 45px; height: 45px"
@@ -299,7 +299,11 @@
         document.getElementById("genderDetail").innerText = tempGender;
         document.getElementById("idCardDetail").innerText = idCard;
         document.getElementById("phoneDetail").innerText = phone;
-        document.getElementById("imageDetail").src = image;
+        if (image==''){
+            document.getElementById("imageDetail").src = 'https://cdn-icons-png.flaticon.com/512/6386/6386976.png';
+        }else {
+            document.getElementById("imageDetail").src = image;
+        }
         document.getElementById("positionDetail").innerText = position;
         document.getElementById("emailDetail").innerText = email;
         document.getElementById("usernameDetail").innerText = username;
